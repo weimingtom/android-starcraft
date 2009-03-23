@@ -52,9 +52,9 @@ public final class Image{
 		int dB = Color.blue(color);
 		for(int i = 0; i< indexes.length; i++)
 		{
-			byte R = (byte)(dR*alpha[i]);
-			byte G = (byte)(dG*alpha[i]);
-			byte B = (byte)(dB*alpha[i]);
+			int R = (int)(dR*alpha[i]);
+			int G = (int)(dG*alpha[i]);
+			int B = (int)(dB*alpha[i]);
 			res[indexes[i]] =(255<<24) + (R<<16) + (G<<8) + B; 
 		}
 		

@@ -33,8 +33,14 @@ public final class Unit {
 		int health =  (units[id*4 + healthOffset + 1]&0xFF) +
 					  ((units[id*4 + healthOffset + 2]&0xFF)<<8);
 		
+		int elevationLevelOffset = healthOffset + count*4;
+		int elevationLevel = (units[id + elevationLevelOffset]&0xFF);
+		
 		int groundWeaponOffset = healthOffset + count*12;
-		int weapon =  (units[id + groundWeaponOffset]&0xFF);
+		int groundWeapon =  (units[id + groundWeaponOffset]&0xFF);
+		
+		int airWeaponOffset = groundWeaponOffset + 2*count;
+		int airWeapon =  (units[id + airWeaponOffset]&0xFF);
 		
 		int readySoundOffset = groundWeaponOffset + count*15;
 //		int readySound = (units[readySoundOffset + id*2]&0xFF) +
@@ -68,7 +74,7 @@ public final class Unit {
 		res.teamColor = teamColor;
 		res.health = health;
 		res.maxHealth = health;
-		
+		res.elevationLevel = elevationLevel;
 		if (id<106)
 		{
 			res.YesSoundStart = yesSound1;
@@ -78,8 +84,10 @@ public final class Unit {
 		res.WhatSoundStart = whatSound1;
 		res.WhatSoundEnd = whatSound2;
 		
-		if (weapon != 130)
-			res.weapon = Weapon.getWeapon(weapon);
+		if (groundWeapon != 130)
+			res.groundWeapon = Weapon.getWeapon(groundWeapon);
+		if (airWeapon != 130)
+			res.airWeapon = Weapon.getWeapon(airWeapon);
 		
 		if (subUnit1 != 228)
 		{
@@ -105,8 +113,11 @@ public final class Unit {
 	public static final int ACTION_AIR_ATTACK         = 4;
 	public static final int ACTION_REPEAT_AIR_ATTACK  = 5;
 	
+	public static final int MAX_GROUND_LEVEL = 11;
+	
 	public Flingy flingy;
-	public Weapon weapon;
+	public Weapon groundWeapon;
+	public Weapon airWeapon;
 	
 	public Unit subunit1 = null;
 	public Unit subunit2 = null;
@@ -120,6 +131,8 @@ public final class Unit {
 	
 	public int repeatTime = 0;
 	
+	public int elevationLevel;
+	
 	public int armor;
 	public boolean selected = false;
 	
@@ -130,6 +143,11 @@ public final class Unit {
 	public int WhatSoundEnd = -1;
 	
 	public int action =  ACTION_IDLE;
+	
+	public final boolean isGround()
+	{
+		return elevationLevel<=MAX_GROUND_LEVEL;
+	}
 	
 	public final void sayYes()
 	{
@@ -247,11 +265,16 @@ public final class Unit {
 		if (subunit2 != null)
 			subunit2.update();
 
-		if (action == ACTION_GRND_ATTACK)
+		if ((action == ACTION_GRND_ATTACK)
+				||(action == ACTION_AIR_ATTACK))
 		{
 			if (targetUnit != null)
 			{
-				if (weapon != null)
+				Weapon selWeapon = airWeapon;
+				if (action == ACTION_GRND_ATTACK)
+					selWeapon = groundWeapon;
+				
+				if (selWeapon != null)
 				{
 					int dposX = (int)targetUnit.flingy.posX;
 					int dposY = (int)targetUnit.flingy.posY;
@@ -260,9 +283,12 @@ public final class Unit {
 					int len_sq = (int) ((dposX - flingy.posX)*(dposX - flingy.posX) + 
 			    			 	(dposY - flingy.posY)*(dposY - flingy.posY));
 
-					if (len_sq<= weapon.maxDistance*weapon.maxDistance)
+					if (len_sq<= selWeapon.maxDistance*selWeapon.maxDistance)
 					{
-						flingy.attack();
+						if (action == ACTION_GRND_ATTACK)
+							flingy.attack(Flingy.ATTACK_GRND);
+						else
+							flingy.attack(Flingy.ATTACK_AIR);
 						if (parent!=null)
 							parent.stop();
 					}
@@ -273,13 +299,19 @@ public final class Unit {
 				}
 			}
 		}
-		else if (action == ACTION_REPEAT_GRND_ATTACK)
+		else if (
+				(action == ACTION_REPEAT_GRND_ATTACK)||
+				(action == ACTION_REPEAT_AIR_ATTACK))
 		{
 			repeatTime++;
-			if (weapon.reloadTime<=repeatTime)
+			if (groundWeapon.reloadTime<=repeatTime)
 			{
 				repeatTime = 0;
-				action = ACTION_GRND_ATTACK;
+				if (action == ACTION_REPEAT_GRND_ATTACK)
+					action = ACTION_GRND_ATTACK;
+				else
+					action = ACTION_AIR_ATTACK;
+				
 				flingy.repeatAttack();
 			}
 		}
@@ -320,27 +352,45 @@ public final class Unit {
 	public final void attack(Unit unit)
 	{
 		action = ACTION_GRND_ATTACK;
+		if (!unit.isGround())
+			action = ACTION_AIR_ATTACK;
+		
 		if (subunit1 != null)
 			subunit1.attack(unit);
 		if (subunit2 != null)
 			subunit1.attack(unit);
 		
 		targetUnit = unit;
-		flingy.attack();
+		
+		
+		if (action == ACTION_GRND_ATTACK)
+			flingy.attack(Flingy.ATTACK_GRND);
+		else
+			flingy.attack(Flingy.ATTACK_AIR);
+		
+		
 	}
 	public final void attack(int type)
 	{
-		if (weapon==null)
+		Weapon selWeapon = airWeapon;
+		if (type == 1)
+			selWeapon = groundWeapon;
+		
+		if (selWeapon==null)
 			return;
 			
 		if (targetUnit != null)
 		{
-			targetUnit.hit(weapon.damage);
-		
-			if (targetUnit.health<=0)
+			if (selWeapon.attack(this, targetUnit))
 			{
 				targetUnit = null;
 				flingy.stop();
+				
+				
+				if (subunit1 != null)
+					subunit1.stop();
+				if (subunit2 != null)
+					subunit1.stop();
 			}
 		}
 		else
@@ -355,7 +405,11 @@ public final class Unit {
 	public final void repeatAttack()
 	{
 		repeatTime = 0;
-		action = ACTION_REPEAT_GRND_ATTACK;
+		if (action == ACTION_GRND_ATTACK)
+			action = ACTION_REPEAT_GRND_ATTACK;
+		else
+			action = ACTION_REPEAT_AIR_ATTACK;
+		
 	}
 	public final void hit(int points)
 	{

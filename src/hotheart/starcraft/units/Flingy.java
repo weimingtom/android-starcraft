@@ -3,7 +3,7 @@ package hotheart.starcraft.units;
 import android.graphics.Canvas;
 import hotheart.starcraft.graphics.Sprite;
 
-public final class Flingy {
+public class Flingy {
 	public static final int FLINGY_DAT = 0;
 	public static final int MIXED = 1;
 	public static final int ISCRIPT_BIN = 2;
@@ -43,16 +43,22 @@ public final class Flingy {
 		res.topSpeed = speed/120;
 		res.acceleration = accel;
 		res.haltDistantion = haltDist/256;
-		res.tutnRadius = turnRadius;
+		res.turnRadius = turnRadius;
 		res.moveControl = moveControl;
 		return res;
 	}
+	
+	public static final int ATTACK_AIR  = 2;
+	public static final int ATTACK_GRND = 3;
+	public static final int IDLE        = 4;
+	public static final int MOVING      = 5;
+	public static final int DEATH       = 6;
 
 	public Sprite sprite;
 	public int topSpeed;
 	public int acceleration;
 	public int haltDistantion;
-	public int tutnRadius;
+	public int turnRadius;
 	public int moveControl;
 
 	public int posX = 0;
@@ -84,7 +90,7 @@ public final class Flingy {
 	}
 
 	int speed = 0;
-	int action = -1;
+	int action = IDLE;
 
 	public int destX = 0, destY = 0;
 
@@ -92,9 +98,9 @@ public final class Flingy {
 		destX = dx;
 		destY = dy;
 		
-		if (action == 1)
+		if (action == MOVING)
 			return;
-		action = 1;
+		action = MOVING;
 
 		if (sprite!=null)
 			sprite.image.play(11);
@@ -103,11 +109,12 @@ public final class Flingy {
 	}
 
 	public final void stop() {
-		if (action != 1)
+		if (action != MOVING)
 			return;
+
 		sprite.image.play(12);
 
-		action = -1;
+		action = IDLE;
 		speed = 0;
 	}
 
@@ -118,7 +125,7 @@ public final class Flingy {
 		
 		int current_angle = sprite.image.angle;
 
-		int delta = (int) (18 * 3.1415 * tutnRadius / (topSpeed));
+		int delta = (int) (18 * 3.1415 * turnRadius / (topSpeed));
 
 		if (moveControl != Flingy.FLINGY_DAT)
 			delta = 30;
@@ -145,12 +152,13 @@ public final class Flingy {
 	}
 	
 	public void update() {
-		if (action == 1)
+		if (action == MOVING)
 		{
 			final int len_sq = (int) ((posX - destX) * (posX - destX) + (posY - destY)
 					* (posY - destY));
 			
-			if (moveControl == FLINGY_DAT)
+			if ((moveControl == FLINGY_DAT)
+					|| (moveControl == MIXED))
 			{
 				speed += acceleration;
 
@@ -189,7 +197,7 @@ public final class Flingy {
 			
 			rotateTo(destX, destY);
 			
-			if (moveControl == FLINGY_DAT)
+			if ((moveControl == FLINGY_DAT)|| (moveControl == MIXED))
 			{
 				move(speed);
 			}
@@ -197,17 +205,28 @@ public final class Flingy {
 		sprite.update();
 	}
 
-	public void attack() {
-		if (action == 2)
+	private int currentAttack = ATTACK_GRND;
+	
+	public void attack(int attackType) {
+		if (action == attackType)
 			return;
 		
-		action = 2;
-		sprite.image.play(2);
+		if (attackType == ATTACK_GRND)
+		{
+			currentAttack = action = ATTACK_GRND;
+			sprite.image.play(2);
+		}
+		else
+		{
+			currentAttack = action = ATTACK_AIR;
+			sprite.image.play(3);
+		}
+		
 	}
 	
 	public void repeatAttack()
 	{
-		action = 2;
+		action = currentAttack;
 		sprite.image.play(5);
 	}
 
@@ -217,10 +236,10 @@ public final class Flingy {
 	}
 	
 	public void kill() {
-		if (action == 3)
+		if (action == DEATH)
 			return;
 
-		action = 3;
+		action = DEATH;
 
 		sprite.image.play(1);
 		

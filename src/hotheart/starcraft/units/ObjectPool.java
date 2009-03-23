@@ -4,7 +4,6 @@ import hotheart.starcraft.graphics.Image;
 import hotheart.starcraft.graphics.Sprite;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.Random;
 import java.util.TreeSet;
@@ -159,11 +158,24 @@ public final class ObjectPool {
 		sprites.remove(s);
 	}
 	
+	public static ArrayList<Flingy> flingys = new ArrayList<Flingy>(); 
+	public static void addFlingy(Flingy f)
+	{
+		flingys.add(f);
+	}
+	public static void removeFlingy(Flingy f)
+	{
+		flingys.remove(f);
+	}
+	
 	public static TreeSet<Image> drawObjects = new TreeSet<Image>();
 	
 	public static void preDraw()
 	{
 		drawObjects.clear();
+		
+		for(Flingy f: ObjectPool.flingys)
+    		f.preDraw();
 		
 		for(Sprite s: ObjectPool.sprites)
     		s.preDraw(s.globalY);
@@ -182,39 +194,17 @@ public final class ObjectPool {
     	for(Unit u: units)
     		u.draw_selection(c);
 	}
-	
-	public static void draw(Canvas c)
-	{
-		drawCount = 0;
-		Canvas dc = c;//new Canvas(surface);
-    	for(Sprite s: ObjectPool.sprites)
-    		s.draw(dc);
-		
-    	Collections.sort(units, new Comparator<Unit>()
-		{
-			public int compare(Unit arg0, Unit arg1) {
-				if (arg0 == arg1)
-					return 0;
-				else if (arg0.flingy.posY < arg1.flingy.posY)
-					return -1;
-				else
-					return 1;
-			}
-		});
-    	
-    	for(Unit u: units)
-    	{
-    		u.draw(dc);
-    	}
-    	
-    	//c.drawBitmap(surface, 0, 0, new Paint());
-	}
-	
+
 	public static void update()
 	{
 		for(Object s: ObjectPool.sprites.toArray())
     	{
     		((Sprite)s).update();
+    	}
+		
+		for(Object u: ObjectPool.flingys.toArray())
+    	{
+    		((Flingy)u).update();
     	}
     	
     	for(Object u: ObjectPool.units.toArray())
@@ -222,5 +212,7 @@ public final class ObjectPool {
     		((Unit)u).update();
     	}
 	}
+
+	
 }
 

@@ -99,9 +99,7 @@ public class Sprite {
 	public void delete()
 	{
 		if (flingy!= null)
-		{
-			flingy.sprite = null;
-		}
+			ObjectPool.removeFlingy(flingy);
 		ObjectPool.removeSprite(this);
 	}
 }

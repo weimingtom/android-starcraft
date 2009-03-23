@@ -36,13 +36,16 @@ public final class MainActivity extends Activity {
 		Weapon.init(FileSystemUtils.readAllBytes("/sdcard/starcraft/weapons.dat"));
 		
 		ObjectPool.init();
+
 		
 		for(int i = 0; i < 5; i++)
-			ObjectPool.addUnit(Unit.getUnit(38, Image.COLOR_RED), 64*32, 64*32);
-			
-        view = new UnitView(this);
-        
-        
+			ObjectPool.addUnit(Unit.getUnit(70, Image.COLOR_RED), 66*32, 66*32);
+		
+		for(int i = 0; i < 5; i++)
+			ObjectPool.addUnit(Unit.getUnit(0, Image.COLOR_BLUE), 62*32, 62*32);
+		
+
+		view = new UnitView(this);
         setContentView(view);
     }
 }

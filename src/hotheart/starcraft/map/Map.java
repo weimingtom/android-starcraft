@@ -4,10 +4,18 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Bitmap.Config;
+import android.os.Debug;
 import android.util.Log;
 
 public class Map {
 
+	class MapTile
+	{
+		public Canvas c;
+		public boolean isLoaded;
+		public Bitmap image;
+	}
+	
 	public int width;
 	public int height;
 
@@ -56,12 +64,16 @@ public class Map {
 
 		for (int i = 0; i < cachedTiles.length; i++)
 		{
-			cachedTiles[i] = Bitmap.createBitmap(32, 32, Config.RGB_565);
-			loaded[i] = true;
+			cachedTiles[i] = new MapTile();
+			cachedTiles[i].image = Bitmap.createBitmap(TILE_SIZE, TILE_SIZE, Config.RGB_565);
+			cachedTiles[i].c = new Canvas(cachedTiles[i].image);
+			cachedTiles[i].isLoaded = true;
 		}
 		thrd = new Loader();
 		thrd.start();
 	}
+	
+	
 	
 	class Loader extends Thread
 	{
@@ -77,15 +89,18 @@ public class Map {
 					for (int i = 0; i < TILE_CACHE_SIZE; i++)
 						for (int j = 0; j < TILE_CACHE_SIZE; j++)
 						{
-							if ((i + r_x1 >= 0) && (i + r_y1 >= 0)&& (i + r_x1 < width) && (j + r_y1 < height)&& (!loaded[i + j * TILE_CACHE_SIZE])) {
-								TileLib.draw(0, 0, mapTiles[i + r_x1 + (j + r_y1)* width], buf, 32);
-								cachedTiles[i + j * TILE_CACHE_SIZE].setPixels(buf,	0, 32, 0, 0, 32, 32);
+							if ((i + r_x1 >= 0) && (i + r_y1 >= 0)&& (i + r_x1 < width) && (j + r_y1 < height)&& (!cachedTiles[i + j * TILE_CACHE_SIZE].isLoaded)) {
 								
-								Bitmap img = cachedTiles[i + j * TILE_CACHE_SIZE];
-								mapImageCanvas.drawBitmap(img, i << 5, j << 5,
-												new Paint());
+								TileLib.draw(0, 0, mapTiles[i + r_x1 + (j + r_y1)* width], cachedTiles[i + j * TILE_CACHE_SIZE].c);
+//								
+								Bitmap img =  cachedTiles[i + j * TILE_CACHE_SIZE].image;
+								
+								//TileLib.draw(i << 5, j << 5, mapTiles[i + r_x1 + (j + r_y1)* width], mapImageCanvas);
+								
+								mapImageCanvas.drawBitmap(img, i * TILE_SIZE, j*TILE_SIZE,
+										new Paint());
 
-								loaded[i + j * TILE_CACHE_SIZE] = true;
+								cachedTiles[i + j * TILE_CACHE_SIZE].isLoaded = true;
 							}
 						}
 					
@@ -104,22 +119,18 @@ public class Map {
 	
 	private static final int CACHE_SIZE_DELTA = 6;
 	private static final int TILE_CACHE_SIZE = 25;
+	public static final int TILE_SIZE = 32;
 
-	private Bitmap[] cachedTiles = new Bitmap[TILE_CACHE_SIZE
+	private MapTile[] cachedTiles = new MapTile[TILE_CACHE_SIZE
 			* TILE_CACHE_SIZE];
+	
 
-	private int[] buf = new int[32 * 32];
+	private MapTile[] cachedTiles2 = new MapTile[TILE_CACHE_SIZE
+	                               			* TILE_CACHE_SIZE];
+	
 	
 	private boolean allIsLoaded = false;
 	
-	private boolean[] loaded = new boolean[TILE_CACHE_SIZE
-	                              			* TILE_CACHE_SIZE];
-	
-	private boolean[] loaded2 = new boolean[TILE_CACHE_SIZE
-	                              			* TILE_CACHE_SIZE];
-	
-	private Bitmap[] cachedTiles2 = new Bitmap[TILE_CACHE_SIZE
-			* TILE_CACHE_SIZE];
 	
 	private int r_x1 = -10000, r_x2 = -10000, r_y1 = -10000, r_y2 = -100000;
 	
@@ -131,13 +142,13 @@ public class Map {
 						&& (i - r_x1 < TILE_CACHE_SIZE)
 						&& (j - r_y1 < TILE_CACHE_SIZE)) {
 					
-					if (!loaded[(i - r_x1) + (j - r_y1)* TILE_CACHE_SIZE])
+					if (!cachedTiles[(i - r_x1) + (j - r_y1)* TILE_CACHE_SIZE].isLoaded)
 							allIsLoaded = false;
 					else
 					{
 						Bitmap img = cachedTiles[(i - r_x1) + (j - r_y1)
-						                         * TILE_CACHE_SIZE];
-						mapImageCanvas.drawBitmap(img, (i - r_x1) << 5, (j - r_y1) << 5,
+						                         * TILE_CACHE_SIZE].image;
+						mapImageCanvas.drawBitmap(img, (i - r_x1) *TILE_SIZE, (j - r_y1) *TILE_SIZE,
 										new Paint());
 					}
 				}
@@ -169,9 +180,6 @@ public class Map {
 				dX = 10000;
 				dY = 10000;
 			}
-			
-			Log.v("VERBOSE", "offset:" + dX + ":" + dY);
-
 			for (int i = 0; i < TILE_CACHE_SIZE; i++)
 				for (int j = 0; j < TILE_CACHE_SIZE; j++)
 				{
@@ -179,16 +187,12 @@ public class Map {
 					int srsIndex = (i + dX + TILE_CACHE_SIZE)% TILE_CACHE_SIZE + ((j + dY + TILE_CACHE_SIZE) % TILE_CACHE_SIZE)* TILE_CACHE_SIZE;
 					
 					cachedTiles2[dstIndex] = cachedTiles[srsIndex];
-					loaded2[dstIndex] = loaded[srsIndex];
 				}
 
-			Bitmap[] old = cachedTiles;
+			MapTile[] old = cachedTiles;
 			cachedTiles = cachedTiles2;
 			cachedTiles2 = old;
-			
-			boolean[] old_loaded = loaded;
-			loaded = loaded2;
-			loaded2 = old_loaded;
+
 
 			for (int i = 0; i < TILE_CACHE_SIZE; i++)
 				for (int j = 0; j < TILE_CACHE_SIZE; j++)
@@ -196,33 +200,37 @@ public class Map {
 							&& (j + dY >= 0) && (j + dY < TILE_CACHE_SIZE))) {
 						
 						if ((i + r_x1 >= 0) && (i + r_y1 >= 0)&& (i + r_x1 < width) && (j + r_y1 < height)) {
-							loaded[i + j * TILE_CACHE_SIZE] = false;
-//							TileLib.draw(0, 0, mapTiles[i + r_x1 + (j + r_y1)* width], buf, 32);
-//							cachedTiles[i + j * TILE_CACHE_SIZE].setPixels(buf,	0, 32, 0, 0, 32, 32);
+							cachedTiles[i + j * TILE_CACHE_SIZE].isLoaded = false;
 						}
 					}
 			redrawCache();
 			allIsLoaded = false;
 		}
-		for (int i = x1; i <= x2; i++)
-			for (int j = y1; j <= y2; j++) {
-				if ((i - r_x1 >= 0) && (j - r_y1 >= 0)
-						&& (i - r_x1 < TILE_CACHE_SIZE)
-						&& (j - r_y1 < TILE_CACHE_SIZE)) {
-					
-				 while (!loaded[(i - r_x1) + (j - r_y1)* TILE_CACHE_SIZE])
-				 {
-					allIsLoaded = false;
-					try {
-						Thread.sleep(10);
-					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				 }
-				}
-			}
-		//redrawCache();
-		c.drawBitmap(mapImage, -(x1 - r_x1)*32, -(y1 - r_y1)*32, new Paint());
+//		for (int i = x1; i <= x2; i++)
+//			for (int j = y1; j <= y2; j++) {
+//				if ((i - r_x1 >= 0) && (j - r_y1 >= 0)
+//						&& (i - r_x1 < TILE_CACHE_SIZE)
+//						&& (j - r_y1 < TILE_CACHE_SIZE)) {
+//					
+//				 while (!cachedTiles[(i - r_x1) + (j - r_y1)* TILE_CACHE_SIZE].isLoaded)
+//				 {
+//					allIsLoaded = false;
+//					try {
+//						Thread.sleep(10);
+//					} catch (InterruptedException e) {
+//						// TODO Auto-generated catch block
+//						e.printStackTrace();
+//					}
+//				 }
+//				}
+//			}
+		
+		c.drawBitmap(mapImage, -(x1 - r_x1)*TILE_SIZE, -(y1 - r_y1)*TILE_SIZE, new Paint());
+		
+//		for (int i = x1; i < x2; i++)
+//			for (int j = y1; j < y2; j++)
+//			{
+//				TileLib.draw( (i-x1)<<5, (j-y1)<<5, mapTiles[i + j* width], c);
+//			}
 	}
 }

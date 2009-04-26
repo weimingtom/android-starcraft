@@ -28,7 +28,7 @@ public class Sprite {
 		selCircles = new Image[20];
 		for(int i = 0; i < 20; i++)
 		{
-			selCircles[i] = Image.getImage(i + FIRST_CIRCLE_IMAGE, Image.COLOR_GREEN, Image.MAX_IMAGE_LAYER);
+			selCircles[i] = Image.getImage(i + FIRST_CIRCLE_IMAGE, TeamColors.COLOR_GREEN, Image.MAX_IMAGE_LAYER);
 		}
 	}
 	//TODO: Add isVisible and isSelectable

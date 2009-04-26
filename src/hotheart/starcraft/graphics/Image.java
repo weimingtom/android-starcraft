@@ -20,31 +20,113 @@ public final class Image {
 	public static final int MAX_IMAGE_LAYER = 10000;
 	public static final int MIN_IMAGE_LAYER = -10000;
 
-	// Data from images.tbl file
+	/*
+	 * File format: File is list of arrays(Stupid eclipse brokes formatting)
+	 * 
+	 * [HEADER] Varcount=14 InputEntrycount=999 OutputEntrycount=999
+	 * 
+	 * [FORMAT] 0Name=GRP File 0Size=4
+	 * 
+	 * 1Name=Gfx Turns 1Size=1
+	 * 
+	 * 2Name=Clickable 2Size=1
+	 * 
+	 * 3Name=Use Full Iscript 3Size=1
+	 * 
+	 * 4Name=Draw If Cloaked 4Size=1
+	 * 
+	 * 5Name=Draw Function 5Size=1
+	 * 
+	 * 6Name=Remapping 6Size=1
+	 * 
+	 * 7Name=Iscript ID 7Size=4
+	 * 
+	 * 8Name=Shield Overlay 8Size=4
+	 * 
+	 * 9Name=Attack Overlay 9Size=4
+	 * 
+	 * 10Name=Damage Overlay 10Size=4
+	 * 
+	 * 11Name=Special Overlay 11Size=4
+	 * 
+	 * 12Name=Landing Dust Overlay 12Size=4
+	 * 
+	 * 13Name=Lift-Off Overlay 13Size=4
+	 */
+
+	// Data from images.dat file
 	private static int count; // number of elements
 	private static byte[] data; // elements of tbl-file
+
+	private static int[] grpFileId;
+	private static byte[] gfxTurns;
+	private static byte[] clickable;
+	private static byte[] useFullISCript;
+	private static byte[] drawIfCloacked;
+	private static byte[] drawFunc;
+	private static byte[] remappingData;
+	private static int[] iScriptId;
+	private static int[] shieldOverlay;
+	private static int[] attackOverlay;
+	private static int[] damageOverlay;
+	private static int[] SpecialOverlay;
+	private static int[] landingDustOverlay;
+	private static int[] liftOffOverlay;
 
 	public final static void init(byte[] _data) {
 		data = _data;
 		count = data.length / 38;
-
 		StarcraftPalette.initPalette();
+
+		initBuffers();
+	}
+
+	static int position = 0;
+
+	final static void initBuffers() {
+		position = 0;
+		grpFileId = read4ByteData();
+		gfxTurns = read1ByteData();
+		clickable = read1ByteData();
+		useFullISCript = read1ByteData();
+		drawIfCloacked = read1ByteData();
+		drawFunc = read1ByteData();
+		remappingData = read1ByteData();
+		iScriptId = read4ByteData();
+		shieldOverlay = read4ByteData();
+		attackOverlay = read4ByteData();
+		damageOverlay = read4ByteData();
+		SpecialOverlay = read4ByteData();
+		landingDustOverlay = read4ByteData();
+		liftOffOverlay = read4ByteData();
+	}
+
+	final static byte[] read1ByteData() {
+		byte[] res = new byte[count];
+		for (int i = 0; i < count; i++) {
+			res[i] = data[position++];
+		}
+		return res;
+	}
+
+	final static int[] read4ByteData() {
+		int[] res = new int[count];
+
+		for (int i = 0; i < count; i++) {
+			res[i] = (data[position++] & 0xFF)
+					+ ((data[position++] & 0xFF) << 8)
+					+ ((data[position++] & 0xFF) << 16)
+					+ ((data[position++] & 0xFF) << 24);
+		}
+		return res;
 	}
 
 	public final static Image getImage(int id, int color, int layer) {
-		int grpId = (data[id * 4] & 0xFF) + ((data[id * 4 + 1] & 0xFF) << 8)
-				+ ((data[id * 4 + 2] & 0xFF) << 16)
-				+ ((data[id * 4 + 3] & 0xFF) << 24);
-
-		int scriptId = (data[id * 4 + count * 10] & 0xFF)
-				+ ((data[id * 4 + count * 10 + 1] & 0xFF) << 8)
-				+ ((data[id * 4 + count * 10 + 2] & 0xFF) << 16)
-				+ ((data[id * 4 + count * 10 + 3] & 0xFF) << 24);
-
-		int align = (data[id + count * 4] & 0xFF);
-
-		int functionId = (data[id + count * 8] & 0xFF);
-		int remapping = (data[id + count * 9] & 0xFF);
+		int grpId = grpFileId[id];
+		int scriptId = iScriptId[id];
+		int align = gfxTurns[id] & 0xFF;
+		int functionId = drawFunc[id] & 0xFF;
+		int remapping = remappingData[id] & 0xFF;
 
 		Image res = new Image(new GRPContainer(grpId), ImageScriptEngine
 				.createHeader(scriptId), id, layer);

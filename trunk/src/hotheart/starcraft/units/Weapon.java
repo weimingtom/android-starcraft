@@ -2,6 +2,7 @@ package hotheart.starcraft.units;
 
 import hotheart.starcraft.graphics.Image;
 import hotheart.starcraft.graphics.Sprite;
+import hotheart.starcraft.graphics.TeamColors;
 
 public final class Weapon {
 	
@@ -92,7 +93,7 @@ public final class Weapon {
 	{
 		if (behaviour == B_APPEAR_ON_TARGET)
 		{
-			Flingy f = Flingy.getFlingy(flingyId, Image.COLOR_DEFAULT);
+			Flingy f = Flingy.getFlingy(flingyId, TeamColors.COLOR_DEFAULT);
 			f.posX = targetUnit.flingy.posX;
 			f.posY = targetUnit.flingy.posY;
 			f.sprite.image.angle = targetUnit.flingy.sprite.image.angle; 
@@ -100,7 +101,7 @@ public final class Weapon {
 		}
 		else if (behaviour == B_FLY_TO_TARGET)
 		{
-			Flingy f = Flingy.getFlingy(flingyId, Image.COLOR_DEFAULT);
+			Flingy f = Flingy.getFlingy(flingyId, TeamColors.COLOR_DEFAULT);
 			f.posX = srsUnit.flingy.posX;
 			f.posY = srsUnit.flingy.posY;
 			

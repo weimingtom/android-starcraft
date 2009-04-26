@@ -55,8 +55,7 @@ public final class Image {
 	 */
 
 	// Data from images.dat file
-	private static int count; // number of elements
-	private static byte[] data; // elements of tbl-file
+	private static final int COUNT = 999;
 
 	private static int[] grpFileId;
 	private static byte[] gfxTurns;
@@ -74,49 +73,46 @@ public final class Image {
 	private static int[] liftOffOverlay;
 
 	public final static void init(byte[] _data) {
-		data = _data;
-		count = data.length / 38;
 		StarcraftPalette.initPalette();
-
-		initBuffers();
+		initBuffers(_data);
 	}
 
 	static int position = 0;
 
-	final static void initBuffers() {
+	final static void initBuffers(byte[] buff) {
 		position = 0;
-		grpFileId = read4ByteData();
-		gfxTurns = read1ByteData();
-		clickable = read1ByteData();
-		useFullISCript = read1ByteData();
-		drawIfCloacked = read1ByteData();
-		drawFunc = read1ByteData();
-		remappingData = read1ByteData();
-		iScriptId = read4ByteData();
-		shieldOverlay = read4ByteData();
-		attackOverlay = read4ByteData();
-		damageOverlay = read4ByteData();
-		SpecialOverlay = read4ByteData();
-		landingDustOverlay = read4ByteData();
-		liftOffOverlay = read4ByteData();
+		grpFileId = read4ByteData(COUNT, buff);
+		gfxTurns = read1ByteData(COUNT, buff);
+		clickable = read1ByteData(COUNT, buff);
+		useFullISCript = read1ByteData(COUNT, buff);
+		drawIfCloacked = read1ByteData(COUNT, buff);
+		drawFunc = read1ByteData(COUNT, buff);
+		remappingData = read1ByteData(COUNT, buff);
+		iScriptId = read4ByteData(COUNT, buff);
+		shieldOverlay = read4ByteData(COUNT, buff);
+		attackOverlay = read4ByteData(COUNT, buff);
+		damageOverlay = read4ByteData(COUNT, buff);
+		SpecialOverlay = read4ByteData(COUNT, buff);
+		landingDustOverlay = read4ByteData(COUNT, buff);
+		liftOffOverlay = read4ByteData(COUNT, buff);
 	}
 
-	final static byte[] read1ByteData() {
-		byte[] res = new byte[count];
-		for (int i = 0; i < count; i++) {
-			res[i] = data[position++];
+	final static byte[] read1ByteData(int size, byte[] buff) {
+		byte[] res = new byte[size];
+		for (int i = 0; i < size; i++) {
+			res[i] = buff[position++];
 		}
 		return res;
 	}
 
-	final static int[] read4ByteData() {
-		int[] res = new int[count];
+	final static int[] read4ByteData(int size, byte[] buff) {
+		int[] res = new int[size];
 
-		for (int i = 0; i < count; i++) {
-			res[i] = (data[position++] & 0xFF)
-					+ ((data[position++] & 0xFF) << 8)
-					+ ((data[position++] & 0xFF) << 16)
-					+ ((data[position++] & 0xFF) << 24);
+		for (int i = 0; i < size; i++) {
+			res[i] = (buff[position++] & 0xFF)
+					+ ((buff[position++] & 0xFF) << 8)
+					+ ((buff[position++] & 0xFF) << 16)
+					+ ((buff[position++] & 0xFF) << 24);
 		}
 		return res;
 	}

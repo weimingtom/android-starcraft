@@ -83,12 +83,12 @@ public final class Image {
 		drawFunc = file.read1ByteData(COUNT, buff);
 		remappingData = file.read1ByteData(COUNT, buff);
 		iScriptId = file.read4ByteData(COUNT, buff);
-		// shieldOverlay = file.read4ByteData(COUNT, buff);
-		// attackOverlay = file.read4ByteData(COUNT, buff);
-		// damageOverlay = file.read4ByteData(COUNT, buff);
-		// SpecialOverlay = file.read4ByteData(COUNT, buff);
-		// landingDustOverlay = file.read4ByteData(COUNT, buff);
-		// liftOffOverlay = file.read4ByteData(COUNT, buff);
+//		shieldOverlay = file.read4ByteData(COUNT, buff);
+//		attackOverlay = file.read4ByteData(COUNT, buff);
+//		damageOverlay = file.read4ByteData(COUNT, buff);
+//		SpecialOverlay = file.read4ByteData(COUNT, buff);
+//		landingDustOverlay = file.read4ByteData(COUNT, buff);
+//		liftOffOverlay = file.read4ByteData(COUNT, buff);
 	}
 
 	public final static Image getImage(int id, int color, int layer) {

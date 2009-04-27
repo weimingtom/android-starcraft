@@ -1,4 +1,4 @@
-package hotheart.starcraft.graphics;
+package hotheart.starcraft.files;
 
 public class LoFile {
 	

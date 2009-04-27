@@ -45,7 +45,7 @@ public class ImageScriptEngine {
 		
 		return null;
 	}
-	public static final void init(Image instance)
+	public static final void init(ScriptState instance)
 	{
 		play(instance, 0);
 	}
@@ -101,7 +101,7 @@ public class ImageScriptEngine {
 	private static final int OP_FOLLOW_PARENT_ANIM   = 0x2c;
 	private static final int OP_PLAY_SOUND_BETWEEN   = 0x1a;
 
-	public static final void exec(Image instance)
+	public static final void exec(ScriptState instance)
 	{
 		if (instance.isPaused)
 			return;
@@ -143,19 +143,19 @@ public class ImageScriptEngine {
 				return;
 				
 			case OP_PLAY_FRAME:
-				instance.baseFrame = (script[instance.scriptPos ++ ]&0xFF);
+				instance.image.baseFrame = (script[instance.scriptPos ++ ]&0xFF);
 				break;
 			//OK	
 			case OP_PLAY_FRAME_SET:
-				instance.baseFrame = (script[instance.scriptPos ++ ]&0xFF) + ((script[instance.scriptPos ++ ]&0xFF)<<8);
-				instance.visible = true;
+				instance.image.baseFrame = (script[instance.scriptPos ++ ]&0xFF) + ((script[instance.scriptPos ++ ]&0xFF)<<8);
+				instance.image.visible = true;
 				break;
 			case OP_SHIFT_LEFT:
-				instance.offsetX = script[instance.scriptPos ++ ]&0xFF; 
+				instance.image.offsetX = script[instance.scriptPos ++ ]&0xFF; 
 				break;
 			//OK
 			case OP_SHIFT_DOWN:
-				instance.offsetY = script[instance.scriptPos ++ ]&0xFF; 
+				instance.image.offsetY = script[instance.scriptPos ++ ]&0xFF; 
 				break;
 			
 			//OK
@@ -168,10 +168,10 @@ public class ImageScriptEngine {
 				instance.scriptPos ++;
 				int destPos = (script[instance.scriptPos ++ ]&0xFF) +
 							 ((script[instance.scriptPos ++ ]&0xFF)<<8);
-				if (instance.sprite!=null)
-					if (instance.sprite.flingy!=null)
-						if (instance.sprite.flingy.unit!=null)/*<= or => ?!*/
-							if (instance.sprite.flingy.unit.getLenSqToTarget() <= dist*dist)
+				if (instance.image.sprite!=null)
+					if (instance.image.sprite.flingy!=null)
+						if (instance.image.sprite.flingy.unit!=null)/*<= or => ?!*/
+							if (instance.image.sprite.flingy.unit.getLenSqToTarget() <= dist*dist)
 								instance.scriptPos = destPos;
 				
 				break;
@@ -194,16 +194,16 @@ public class ImageScriptEngine {
 							   ((script[instance.scriptPos ++ ]&0xFF)<<8);
 				int ov_dx = script[instance.scriptPos ++ ]&0xFF;
 				int ov_dy = script[instance.scriptPos ++ ]&0xFF;
-				Image overlay = Image.getImage(overlayId, instance.foregroundColor, instance.currentImageLayer+1);
-				overlay.parentOverlay = instance;
+				Image overlay = Image.getImage(overlayId, instance.image.foregroundColor, instance.image.currentImageLayer+1);
+				overlay.parentOverlay = instance.image;
 				overlay.followParent = false;
 //				overlay.followParentAnim = true;
 //				overlay.followParentAngle = true;
 				overlay.offsetX = ov_dx;
 				overlay.offsetY = ov_dy;
-				overlay.sprite = instance.sprite;
-				overlay.angle = instance.angle;
-				instance.addOverlay(overlay);
+				overlay.sprite = instance.image.sprite;
+				overlay.angle = instance.image.angle;
+				instance.image.addOverlay(overlay);
 				break;
 				
 			//OK	
@@ -212,29 +212,29 @@ public class ImageScriptEngine {
 				   ((script[instance.scriptPos ++ ]&0xFF)<<8);
 				int un_dx = script[instance.scriptPos ++ ]&0xFF;
 				int un_dy = script[instance.scriptPos ++ ]&0xFF;
-				Image underlay = Image.getImage(underlayId, instance.foregroundColor,instance.currentImageLayer-1);
-				underlay.parentOverlay = instance;
+				Image underlay = Image.getImage(underlayId, instance.image.foregroundColor,instance.image.currentImageLayer-1);
+				underlay.parentOverlay = instance.image;
 				underlay.followParent = false;
 //				underlay.followParentAnim = true;
 //				underlay.followParentAngle = true;
 				underlay.offsetX = un_dx;
-				underlay.sprite = instance.sprite;
+				underlay.sprite = instance.image.sprite;
 				underlay.offsetY = un_dy;
-				underlay.angle = instance.angle;
-				instance.addUnderlay(underlay);
+				underlay.angle = instance.image.angle;
+				instance.image.addUnderlay(underlay);
 				break;
 				
 			//OK
 			case OP_ADD_SHADOW:
-				int shadowId = instance.imageId + 1;
+				int shadowId = instance.image.imageId + 1;
 				int sh_dx = script[instance.scriptPos ++ ]&0xFF;
 				int sh_dy = script[instance.scriptPos ++ ]&0xFF;
-				Image shadow = Image.getImage(shadowId, instance.foregroundColor, instance.currentImageLayer - 1);
-				shadow.parentOverlay = instance;
+				Image shadow = Image.getImage(shadowId, instance.image.foregroundColor, instance.image.currentImageLayer - 1);
+				shadow.parentOverlay = instance.image;
 				shadow.followParent = true;
 				shadow.offsetX = sh_dx;
 				shadow.offsetY = sh_dy;
-				instance.addUnderlay(shadow);
+				instance.image.addUnderlay(shadow);
 				break;
 				
 			
@@ -251,22 +251,22 @@ public class ImageScriptEngine {
 			//OK	
 			case OP_TURN_GRAPHICS_CCW:
 				int fr_count_ccw = script[instance.scriptPos ++ ]&0xFF;
-				instance.angle-=(int)((fr_count_ccw/17.0)*360);
+				instance.image.angle-=(int)((fr_count_ccw/17.0)*360);
 				break;
 			
 			//OK
 			case OP_TURN_GRAPHICS_CW:
 				int fr_count_cw = script[instance.scriptPos ++ ]&0xFF;
-				instance.angle+=(int)((fr_count_cw/17.0)*360);
+				instance.image.angle+=(int)((fr_count_cw/17.0)*360);
 				break;
 			
 			//OK
 			case OP_TURN_GRAPHICS_RAND:
 				int fr_count = script[instance.scriptPos ++ ]&0xFF;
 				if (rnd.nextBoolean())
-					instance.angle+=(int)((fr_count/17.0)*360);
+					instance.image.angle+=(int)((fr_count/17.0)*360);
 				else
-					instance.angle-=(int)((fr_count/17.0)*360);
+					instance.image.angle-=(int)((fr_count/17.0)*360);
 				break;
 			
 			//OK
@@ -275,11 +275,11 @@ public class ImageScriptEngine {
 				   ((script[instance.scriptPos ++ ]&0xFF)<<8);
 				int sp_dx = script[instance.scriptPos ++ ]&0xFF;
 				int sp_dy = script[instance.scriptPos ++ ]&0xFF;
-				Sprite sp = Sprite.getSprite(sp_Id, instance.foregroundColor, Image.MIN_IMAGE_LAYER);
-				sp.globalX = instance.sprite.globalX + sp_dx;
-				sp.globalY = instance.sprite.globalY + sp_dy;
-				sp.image.angle = instance.angle;
-				sp.parent = instance.sprite; 
+				Sprite sp = Sprite.getSprite(sp_Id, instance.image.foregroundColor, Image.MIN_IMAGE_LAYER);
+				sp.globalX = instance.image.sprite.globalX + sp_dx;
+				sp.globalY = instance.image.sprite.globalY + sp_dy;
+				sp.image.angle = instance.image.angle;
+				sp.parent = instance.image.sprite; 
 				ObjectPool.addSprite(sp);
 				break;
 
@@ -292,14 +292,14 @@ public class ImageScriptEngine {
 				
 				//int lo_Id = (script[instance.scriptPos ++ ]&0xFF) + ((script[instance.scriptPos ++ ]&0xFF)<<8);
 				
-				Sprite lo_sprite = Sprite.getSprite(x15_Id, instance.foregroundColor, instance.currentImageLayer + 1);
+				Sprite lo_sprite = Sprite.getSprite(x15_Id, instance.image.foregroundColor, instance.image.currentImageLayer + 1);
 				//LoFile lo = GRPImage.getLoData(lo_Id);
 				//byte[] offsets = new byte[2];
 				//lo.getOffsets(0, instance.baseFrame, offsets);
-				lo_sprite.globalX = instance.sprite.globalX;
-				lo_sprite.globalY = instance.sprite.globalY;
-				lo_sprite.image.angle = instance.angle;
-				lo_sprite.parent = instance.sprite; 
+				lo_sprite.globalX = instance.image.sprite.globalX;
+				lo_sprite.globalY = instance.image.sprite.globalY;
+				lo_sprite.image.angle = instance.image.angle;
+				lo_sprite.parent = instance.image.sprite; 
 				ObjectPool.addSprite(lo_sprite);
 				break;
 			
@@ -312,19 +312,19 @@ public class ImageScriptEngine {
 				   ((script[instance.scriptPos ++ ]&0xFF)<<8);
 				int l_dx = script[instance.scriptPos ++ ]&0xFF;
 				int l_dy = script[instance.scriptPos ++ ]&0xFF;
-				Sprite l = Sprite.getSprite(Id, instance.foregroundColor, instance.currentImageLayer + 1);
-				l.globalX = instance.sprite.globalX + l_dx;
-				l.globalY = instance.sprite.globalY + l_dy;
-				l.image.angle = instance.angle;
-				l.parent = instance.sprite; 
+				Sprite l = Sprite.getSprite(Id, instance.image.foregroundColor, instance.image.currentImageLayer + 1);
+				l.globalX = instance.image.sprite.globalX + l_dx;
+				l.globalY = instance.image.sprite.globalY + l_dy;
+				l.image.angle = instance.image.angle;
+				l.parent = instance.image.sprite; 
 				ObjectPool.addSprite(l);
 				break;
 
 			//OK
 			case OP_MOVE:
-				if (instance.sprite != null)
-					if (instance.sprite.flingy != null)
-						instance.sprite.flingy.move(script[instance.scriptPos + 1 ]&0xFF);
+				if (instance.image.sprite != null)
+					if (instance.image.sprite.flingy != null)
+						instance.image.sprite.flingy.move(script[instance.scriptPos + 1 ]&0xFF);
 				
 					instance.scriptPos++;
 				break;
@@ -345,34 +345,34 @@ public class ImageScriptEngine {
 			//OK
 			case OP_FOLLOW_PARENT_ANIM:
 				if ((script[instance.scriptPos ++ ]&0xFF) == 1)
-					instance.followParentAnim = true;
+					instance.image.followParentAnim = true;
 				else
-					instance.followParentAnim = false;
+					instance.image.followParentAnim = false;
 				break;
 			//OK	
 			case OP_HIDE:
-				instance.visible = false;
+				instance.image.visible = false;
 				break;
 			//OK
 			case OP_SHOW:
-				instance.visible = true;
+				instance.image.visible = true;
 				break;
 				
 			//OK	
 			case OP_FOLLOW:
-				instance.followParent = true;
-				instance.followParentAngle = true;
+				instance.image.followParent = true;
+				instance.image.followParentAngle = true;
 				break;
 			
 			//OK
 			case OP_TURN_GRAPHICS_1CW:
-				instance.angle+=(int)((1.0/17.0)*360);
+				instance.image.angle+=(int)((1.0/17.0)*360);
 				break;
 				
 			//OK
 			case 0xff:
 			case OP_END:
-				instance.delete();
+				instance.image.delete();
 				break;
 				
 			//Not checked
@@ -382,41 +382,41 @@ public class ImageScriptEngine {
 				
 			case OP_SET_DIRECTION:
 				int new_angle = script[instance.scriptPos ++ ]&0xFF;
-				instance.angle =(int)((new_angle/17.0)*360);
+				instance.image.angle =(int)((new_angle/17.0)*360);
 				break;
 			
 				
 			//Attacking control
 			case OP_REPEAT_ATTACK:
-				if (instance.sprite!=null)
-					if (instance.sprite.flingy!=null)
-						if (instance.sprite.flingy.unit!=null)
-							instance.sprite.flingy.unit.repeatAttack();
+				if (instance.image.sprite!=null)
+					if (instance.image.sprite.flingy!=null)
+						if (instance.image.sprite.flingy.unit!=null)
+							instance.image.sprite.flingy.unit.repeatAttack();
 				break;
 				
 			case 0x1b:
 			case OP_ATTACK:
-				if (instance.sprite!=null)
-					if (instance.sprite.flingy!=null)
-						if (instance.sprite.flingy.unit!=null)
-							instance.sprite.flingy.unit.attack(-1);
+				if (instance.image.sprite!=null)
+					if (instance.image.sprite.flingy!=null)
+						if (instance.image.sprite.flingy.unit!=null)
+							instance.image.sprite.flingy.unit.attack(-1);
 				break;
 			
 			case OP_ATTACK_WITH:
-				if (instance.sprite!=null)
-					if (instance.sprite.flingy!=null)
-						if (instance.sprite.flingy.unit!=null)
-							instance.sprite.flingy.unit.attack(script[instance.scriptPos + 1 ]&0xFF);
+				if (instance.image.sprite!=null)
+					if (instance.image.sprite.flingy!=null)
+						if (instance.image.sprite.flingy.unit!=null)
+							instance.image.sprite.flingy.unit.attack(script[instance.scriptPos + 1 ]&0xFF);
 				
 				instance.scriptPos ++;
 				
 				break;
 				
 			case OP_ATTACK_WITH_SOUND:
-				if (instance.sprite!=null)
-					if (instance.sprite.flingy!=null)
-						if (instance.sprite.flingy.unit!=null)
-							instance.sprite.flingy.unit.attack(-1);
+				if (instance.image.sprite!=null)
+					if (instance.image.sprite.flingy!=null)
+						if (instance.image.sprite.flingy.unit!=null)
+							instance.image.sprite.flingy.unit.attack(-1);
 			
 			//Sound control
 			case OP_PLAY_RANDROM_SOUND://Play random sound
@@ -454,7 +454,7 @@ public class ImageScriptEngine {
 		}
 	}
 
-	public static final void play(Image instance, int animId)
+	public static final void play(ScriptState instance, int animId)
 	{
 		instance.isPaused = false;
 		int offset = (script[instance.scriptHeader.headerOffset + 8 + animId*2]&0xFF) + 

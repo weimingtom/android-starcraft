@@ -124,7 +124,7 @@ public final class Image {
 
 		if (BuildParameters.CACHE_GRP)
 			res.grp.image.makeCache(pal);
-		res.align = align == 1;
+		res.scriptState.align = align == 1;
 		res.graphicsFuntion = functionId;
 		res.remapping = remapping;
 		res.foregroundColor = color;
@@ -147,9 +147,6 @@ public final class Image {
 	public int currentImageLayer;
 
 	// Graphics data
-	public int baseFrame = 0;
-	public boolean align = true;
-	public boolean visible = true;
 	public GRPContainer grp;
 
 	public int graphicsFuntion = 0;
@@ -160,15 +157,10 @@ public final class Image {
 
 	public Image[] childs = new Image[20];
 
-	public boolean followParent = false;
-	public boolean followParentAnim = false;
-	public boolean followParentAngle = false;
-
 	// Graphics script data
 	public ScriptState scriptState;
 	// Game Data
 	public Image parentOverlay = null;
-	public int angle = 0;
 	public Sprite sprite = null;
 
 	public boolean deleted = false;
@@ -235,7 +227,7 @@ public final class Image {
 
 		for (int i = 0; i < childs.length; i++)
 			if (childs[i] != null)
-				if (childs[i].followParentAnim)
+				if (childs[i].scriptState.followParentAnim)
 					childs[i].play(anim);
 	}
 
@@ -243,7 +235,7 @@ public final class Image {
 	public int sortIndex = 0;
 
 	public final void preDraw(int dX, int dY, int dSortIndex) {
-		if (!this.visible)
+		if (!this.scriptState.visible)
 			return;
 		resX = dX;
 		resY = dY;
@@ -258,10 +250,10 @@ public final class Image {
 	public final void drawWithoutChilds(Canvas c) {
 		if (!scriptState.isBlocked)
 			if (parentOverlay != null) {
-				if (followParent)
-					this.baseFrame = parentOverlay.baseFrame;
-				if (followParentAngle)
-					this.angle = parentOverlay.angle;
+				if (scriptState.followParent)
+					scriptState.baseFrame = parentOverlay.scriptState.baseFrame;
+				if (scriptState.followParentAngle)
+					scriptState.angle = parentOverlay.scriptState.angle;
 			}
 
 		if (!deleted) {
@@ -304,15 +296,15 @@ public final class Image {
 	}
 
 	public final void draw(Canvas c, int dX, int dY) {
-		if (!this.visible)
+		if (!scriptState.visible)
 			return;
 
 		if (!scriptState.isBlocked)
 			if (parentOverlay != null) {
-				if (followParent)
-					this.baseFrame = parentOverlay.baseFrame;
-				if (followParentAngle)
-					this.angle = parentOverlay.angle;
+				if (scriptState.followParent)
+					scriptState.baseFrame = parentOverlay.scriptState.baseFrame;
+				if (scriptState.followParentAngle)
+					scriptState.angle = parentOverlay.scriptState.angle;
 			}
 
 		for (int i = 0; i < childs.length; i++)

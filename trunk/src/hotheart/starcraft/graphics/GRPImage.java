@@ -1,6 +1,7 @@
 package hotheart.starcraft.graphics;
 
 import hotheart.starcraft.configure.BuildParameters;
+import hotheart.starcraft.files.LoFile;
 import hotheart.starcraft.units.ObjectPool;
 import hotheart.starcraft.utils.FileSystemUtils;
 

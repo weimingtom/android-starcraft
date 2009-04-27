@@ -197,8 +197,8 @@ public class ImageScriptEngine {
 				Image overlay = Image.getImage(overlayId, instance.foregroundColor, instance.currentImageLayer+1);
 				overlay.parentOverlay = instance;
 				overlay.followParent = false;
-				overlay.followParentAnim = true;
-				overlay.followParentAngle = true;
+//				overlay.followParentAnim = true;
+//				overlay.followParentAngle = true;
 				overlay.offsetX = ov_dx;
 				overlay.offsetY = ov_dy;
 				overlay.sprite = instance.sprite;
@@ -215,8 +215,8 @@ public class ImageScriptEngine {
 				Image underlay = Image.getImage(underlayId, instance.foregroundColor,instance.currentImageLayer-1);
 				underlay.parentOverlay = instance;
 				underlay.followParent = false;
-				underlay.followParentAnim = true;
-				underlay.followParentAngle = true;
+//				underlay.followParentAnim = true;
+//				underlay.followParentAngle = true;
 				underlay.offsetX = un_dx;
 				underlay.sprite = instance.sprite;
 				underlay.offsetY = un_dy;

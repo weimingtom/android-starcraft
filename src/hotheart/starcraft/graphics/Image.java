@@ -135,8 +135,8 @@ public final class Image {
 			int imageLayer) {
 		imageId = id;
 		this.grp = ovGRP;
-		this.scriptHeader = ovHeader;
-		ImageScriptEngine.init(this);
+		this.scriptState = new ScriptState(this, ovHeader);
+		ImageScriptEngine.init(this.scriptState);
 		currentImageLayer = imageLayer;
 	}
 
@@ -165,14 +165,7 @@ public final class Image {
 	public boolean followParentAngle = false;
 
 	// Graphics script data
-	public int scriptPos = 0;
-	public int scriptWait = 0;
-	public ImageScriptHeader scriptHeader;
-	public int gotoLine = -1;
-	public boolean isBlocked = false;
-	public boolean isPaused = false;
-	public int returnLine = 0;
-
+	public ScriptState scriptState;
 	// Game Data
 	public Image parentOverlay = null;
 	public int angle = 0;
@@ -228,7 +221,7 @@ public final class Image {
 
 	public final void update() {
 		if (!deleted)
-			ImageScriptEngine.exec(this);
+			ImageScriptEngine.exec(this.scriptState);
 
 		for (int i = 0; i < childs.length; i++)
 			if (childs[i] != null)
@@ -238,7 +231,7 @@ public final class Image {
 
 	public final void play(int anim) {
 		if (!deleted)
-			ImageScriptEngine.play(this, anim);
+			ImageScriptEngine.play(this.scriptState, anim);
 
 		for (int i = 0; i < childs.length; i++)
 			if (childs[i] != null)
@@ -263,7 +256,7 @@ public final class Image {
 	}
 
 	public final void drawWithoutChilds(Canvas c) {
-		if (!isBlocked)
+		if (!scriptState.isBlocked)
 			if (parentOverlay != null) {
 				if (followParent)
 					this.baseFrame = parentOverlay.baseFrame;
@@ -314,7 +307,7 @@ public final class Image {
 		if (!this.visible)
 			return;
 
-		if (!isBlocked)
+		if (!scriptState.isBlocked)
 			if (parentOverlay != null) {
 				if (followParent)
 					this.baseFrame = parentOverlay.baseFrame;

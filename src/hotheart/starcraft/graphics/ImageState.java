@@ -1,7 +1,7 @@
 package hotheart.starcraft.graphics;
 
-public class ScriptState {
-	public ScriptState (Image parent, ImageScriptHeader header)
+public class ImageState {
+	public ImageState (Image parent, ImageScriptHeader header)
 	{
 		image = parent;
 		scriptHeader = header;

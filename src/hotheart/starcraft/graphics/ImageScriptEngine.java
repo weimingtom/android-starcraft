@@ -45,7 +45,7 @@ public class ImageScriptEngine {
 		
 		return null;
 	}
-	public static final void init(ScriptState instance)
+	public static final void init(ImageState instance)
 	{
 		play(instance, 0);
 	}
@@ -101,7 +101,7 @@ public class ImageScriptEngine {
 	private static final int OP_FOLLOW_PARENT_ANIM   = 0x2c;
 	private static final int OP_PLAY_SOUND_BETWEEN   = 0x1a;
 
-	public static final void exec(ScriptState instance)
+	public static final void exec(ImageState instance)
 	{
 		if (instance.isPaused)
 			return;
@@ -196,13 +196,13 @@ public class ImageScriptEngine {
 				int ov_dy = script[instance.scriptPos ++ ]&0xFF;
 				Image overlay = Image.getImage(overlayId, instance.image.foregroundColor, instance.image.currentImageLayer+1);
 				overlay.parentOverlay = instance.image;
-				overlay.scriptState.followParent = false;
+				overlay.imageState.followParent = false;
 //				overlay.followParentAnim = true;
 //				overlay.followParentAngle = true;
 				overlay.offsetX = ov_dx;
 				overlay.offsetY = ov_dy;
 				overlay.sprite = instance.image.sprite;
-				overlay.scriptState.angle = instance.angle;
+				overlay.imageState.angle = instance.angle;
 				instance.image.addOverlay(overlay);
 				break;
 				
@@ -214,13 +214,13 @@ public class ImageScriptEngine {
 				int un_dy = script[instance.scriptPos ++ ]&0xFF;
 				Image underlay = Image.getImage(underlayId, instance.image.foregroundColor,instance.image.currentImageLayer-1);
 				underlay.parentOverlay = instance.image;
-				underlay.scriptState.followParent = false;
+				underlay.imageState.followParent = false;
 //				underlay.followParentAnim = true;
 //				underlay.followParentAngle = true;
 				underlay.offsetX = un_dx;
 				underlay.sprite = instance.image.sprite;
 				underlay.offsetY = un_dy;
-				underlay.scriptState.angle = instance.angle;
+				underlay.imageState.angle = instance.angle;
 				instance.image.addUnderlay(underlay);
 				break;
 				
@@ -231,7 +231,7 @@ public class ImageScriptEngine {
 				int sh_dy = script[instance.scriptPos ++ ]&0xFF;
 				Image shadow = Image.getImage(shadowId, instance.image.foregroundColor, instance.image.currentImageLayer - 1);
 				shadow.parentOverlay = instance.image;
-				shadow.scriptState.followParent = true;
+				shadow.imageState.followParent = true;
 				shadow.offsetX = sh_dx;
 				shadow.offsetY = sh_dy;
 				instance.image.addUnderlay(shadow);
@@ -278,7 +278,7 @@ public class ImageScriptEngine {
 				Sprite sp = Sprite.getSprite(sp_Id, instance.image.foregroundColor, Image.MIN_IMAGE_LAYER);
 				sp.globalX = instance.image.sprite.globalX + sp_dx;
 				sp.globalY = instance.image.sprite.globalY + sp_dy;
-				sp.image.scriptState.angle = instance.angle;
+				sp.image.imageState.angle = instance.angle;
 				sp.parent = instance.image.sprite; 
 				ObjectPool.addSprite(sp);
 				break;
@@ -298,7 +298,7 @@ public class ImageScriptEngine {
 				//lo.getOffsets(0, instance.baseFrame, offsets);
 				lo_sprite.globalX = instance.image.sprite.globalX;
 				lo_sprite.globalY = instance.image.sprite.globalY;
-				lo_sprite.image.scriptState.angle = instance.angle;
+				lo_sprite.image.imageState.angle = instance.angle;
 				lo_sprite.parent = instance.image.sprite; 
 				ObjectPool.addSprite(lo_sprite);
 				break;
@@ -315,7 +315,7 @@ public class ImageScriptEngine {
 				Sprite l = Sprite.getSprite(Id, instance.image.foregroundColor, instance.image.currentImageLayer + 1);
 				l.globalX = instance.image.sprite.globalX + l_dx;
 				l.globalY = instance.image.sprite.globalY + l_dy;
-				l.image.scriptState.angle = instance.angle;
+				l.image.imageState.angle = instance.angle;
 				l.parent = instance.image.sprite; 
 				ObjectPool.addSprite(l);
 				break;
@@ -454,7 +454,7 @@ public class ImageScriptEngine {
 		}
 	}
 
-	public static final void play(ScriptState instance, int animId)
+	public static final void play(ImageState instance, int animId)
 	{
 		instance.isPaused = false;
 		int offset = (script[instance.scriptHeader.headerOffset + 8 + animId*2]&0xFF) + 

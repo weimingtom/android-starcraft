@@ -14,11 +14,11 @@ public class StarcraftPalette {
 	private static final String DEFAULT_PALETTE_FILE = BuildParameters.GAME_FOLDER
 			+ "units.pal";
 	private static final String ORANGE_FIRE_PALETTE_FILE = BuildParameters.GAME_FOLDER
-			+ "ofile.pal";
+			+ "ofire.pal";
 	private static final String BLUE_FIRE_PALETTE_FILE = BuildParameters.GAME_FOLDER
 			+ "blue.pal";
 	private static final String GREEN_FIRE_PALETTE_FILE = BuildParameters.GAME_FOLDER
-			+ "gfile.pal";
+			+ "gfire.pal";
 	private static final String BLUE_EXPLOSION_PALETTE_FILE = BuildParameters.GAME_FOLDER
 			+ "bexpl.pal";
 

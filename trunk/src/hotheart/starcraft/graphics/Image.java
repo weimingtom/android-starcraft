@@ -124,7 +124,7 @@ public final class Image {
 
 		if (BuildParameters.CACHE_GRP)
 			res.grp.image.makeCache(pal);
-		res.scriptState.align = align == 1;
+		res.imageState.align = align == 1;
 		res.graphicsFuntion = functionId;
 		res.remapping = remapping;
 		res.foregroundColor = color;
@@ -135,8 +135,8 @@ public final class Image {
 			int imageLayer) {
 		imageId = id;
 		this.grp = ovGRP;
-		this.scriptState = new ScriptState(this, ovHeader);
-		ImageScriptEngine.init(this.scriptState);
+		this.imageState = new ImageState(this, ovHeader);
+		ImageScriptEngine.init(this.imageState);
 		currentImageLayer = imageLayer;
 	}
 
@@ -158,7 +158,7 @@ public final class Image {
 	public Image[] childs = new Image[20];
 
 	// Graphics script data
-	public ScriptState scriptState;
+	public ImageState imageState;
 	// Game Data
 	public Image parentOverlay = null;
 	public Sprite sprite = null;
@@ -213,7 +213,7 @@ public final class Image {
 
 	public final void update() {
 		if (!deleted)
-			ImageScriptEngine.exec(this.scriptState);
+			ImageScriptEngine.exec(this.imageState);
 
 		for (int i = 0; i < childs.length; i++)
 			if (childs[i] != null)
@@ -223,11 +223,11 @@ public final class Image {
 
 	public final void play(int anim) {
 		if (!deleted)
-			ImageScriptEngine.play(this.scriptState, anim);
+			ImageScriptEngine.play(this.imageState, anim);
 
 		for (int i = 0; i < childs.length; i++)
 			if (childs[i] != null)
-				if (childs[i].scriptState.followParentAnim)
+				if (childs[i].imageState.followParentAnim)
 					childs[i].play(anim);
 	}
 
@@ -235,7 +235,7 @@ public final class Image {
 	public int sortIndex = 0;
 
 	public final void preDraw(int dX, int dY, int dSortIndex) {
-		if (!this.scriptState.visible)
+		if (!this.imageState.visible)
 			return;
 		resX = dX;
 		resY = dY;
@@ -248,12 +248,12 @@ public final class Image {
 	}
 
 	public final void drawWithoutChilds(Canvas c) {
-		if (!scriptState.isBlocked)
+		if (!imageState.isBlocked)
 			if (parentOverlay != null) {
-				if (scriptState.followParent)
-					scriptState.baseFrame = parentOverlay.scriptState.baseFrame;
-				if (scriptState.followParentAngle)
-					scriptState.angle = parentOverlay.scriptState.angle;
+				if (imageState.followParent)
+					imageState.baseFrame = parentOverlay.imageState.baseFrame;
+				if (imageState.followParentAngle)
+					imageState.angle = parentOverlay.imageState.angle;
 			}
 
 		if (!deleted) {
@@ -296,15 +296,15 @@ public final class Image {
 	}
 
 	public final void draw(Canvas c, int dX, int dY) {
-		if (!scriptState.visible)
+		if (!imageState.visible)
 			return;
 
-		if (!scriptState.isBlocked)
+		if (!imageState.isBlocked)
 			if (parentOverlay != null) {
-				if (scriptState.followParent)
-					scriptState.baseFrame = parentOverlay.scriptState.baseFrame;
-				if (scriptState.followParentAngle)
-					scriptState.angle = parentOverlay.scriptState.angle;
+				if (imageState.followParent)
+					imageState.baseFrame = parentOverlay.imageState.baseFrame;
+				if (imageState.followParentAngle)
+					imageState.angle = parentOverlay.imageState.angle;
 			}
 
 		for (int i = 0; i < childs.length; i++)

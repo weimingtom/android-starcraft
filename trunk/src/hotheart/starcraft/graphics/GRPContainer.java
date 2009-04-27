@@ -20,13 +20,13 @@ public final class GRPContainer{
 		if (image == null)
 			return;
 
-		if (!data.scriptState.align)
+		if (!data.imageState.align)
 		{
-			drawSCFrame(c, data.scriptState.baseFrame, palette, dX, dY);
+			drawSCFrame(c, data.imageState.baseFrame, palette, dX, dY);
 		}
 		else
 		{
-			drawSCFrame(c, data.scriptState.angle, data.scriptState.baseFrame, data.scriptState.baseFrame + 16, palette, dX, dY);
+			drawSCFrame(c, data.imageState.angle, data.imageState.baseFrame, data.imageState.baseFrame + 16, palette, dX, dY);
 		}
 	}
 

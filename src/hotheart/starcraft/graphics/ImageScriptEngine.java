@@ -143,12 +143,12 @@ public class ImageScriptEngine {
 				return;
 				
 			case OP_PLAY_FRAME:
-				instance.image.baseFrame = (script[instance.scriptPos ++ ]&0xFF);
+				instance.baseFrame = (script[instance.scriptPos ++ ]&0xFF);
 				break;
 			//OK	
 			case OP_PLAY_FRAME_SET:
-				instance.image.baseFrame = (script[instance.scriptPos ++ ]&0xFF) + ((script[instance.scriptPos ++ ]&0xFF)<<8);
-				instance.image.visible = true;
+				instance.baseFrame = (script[instance.scriptPos ++ ]&0xFF) + ((script[instance.scriptPos ++ ]&0xFF)<<8);
+				instance.visible = true;
 				break;
 			case OP_SHIFT_LEFT:
 				instance.image.offsetX = script[instance.scriptPos ++ ]&0xFF; 
@@ -196,13 +196,13 @@ public class ImageScriptEngine {
 				int ov_dy = script[instance.scriptPos ++ ]&0xFF;
 				Image overlay = Image.getImage(overlayId, instance.image.foregroundColor, instance.image.currentImageLayer+1);
 				overlay.parentOverlay = instance.image;
-				overlay.followParent = false;
+				overlay.scriptState.followParent = false;
 //				overlay.followParentAnim = true;
 //				overlay.followParentAngle = true;
 				overlay.offsetX = ov_dx;
 				overlay.offsetY = ov_dy;
 				overlay.sprite = instance.image.sprite;
-				overlay.angle = instance.image.angle;
+				overlay.scriptState.angle = instance.angle;
 				instance.image.addOverlay(overlay);
 				break;
 				
@@ -214,13 +214,13 @@ public class ImageScriptEngine {
 				int un_dy = script[instance.scriptPos ++ ]&0xFF;
 				Image underlay = Image.getImage(underlayId, instance.image.foregroundColor,instance.image.currentImageLayer-1);
 				underlay.parentOverlay = instance.image;
-				underlay.followParent = false;
+				underlay.scriptState.followParent = false;
 //				underlay.followParentAnim = true;
 //				underlay.followParentAngle = true;
 				underlay.offsetX = un_dx;
 				underlay.sprite = instance.image.sprite;
 				underlay.offsetY = un_dy;
-				underlay.angle = instance.image.angle;
+				underlay.scriptState.angle = instance.angle;
 				instance.image.addUnderlay(underlay);
 				break;
 				
@@ -231,7 +231,7 @@ public class ImageScriptEngine {
 				int sh_dy = script[instance.scriptPos ++ ]&0xFF;
 				Image shadow = Image.getImage(shadowId, instance.image.foregroundColor, instance.image.currentImageLayer - 1);
 				shadow.parentOverlay = instance.image;
-				shadow.followParent = true;
+				shadow.scriptState.followParent = true;
 				shadow.offsetX = sh_dx;
 				shadow.offsetY = sh_dy;
 				instance.image.addUnderlay(shadow);
@@ -251,22 +251,22 @@ public class ImageScriptEngine {
 			//OK	
 			case OP_TURN_GRAPHICS_CCW:
 				int fr_count_ccw = script[instance.scriptPos ++ ]&0xFF;
-				instance.image.angle-=(int)((fr_count_ccw/17.0)*360);
+				instance.angle-=(int)((fr_count_ccw/17.0)*360);
 				break;
 			
 			//OK
 			case OP_TURN_GRAPHICS_CW:
 				int fr_count_cw = script[instance.scriptPos ++ ]&0xFF;
-				instance.image.angle+=(int)((fr_count_cw/17.0)*360);
+				instance.angle+=(int)((fr_count_cw/17.0)*360);
 				break;
 			
 			//OK
 			case OP_TURN_GRAPHICS_RAND:
 				int fr_count = script[instance.scriptPos ++ ]&0xFF;
 				if (rnd.nextBoolean())
-					instance.image.angle+=(int)((fr_count/17.0)*360);
+					instance.angle+=(int)((fr_count/17.0)*360);
 				else
-					instance.image.angle-=(int)((fr_count/17.0)*360);
+					instance.angle-=(int)((fr_count/17.0)*360);
 				break;
 			
 			//OK
@@ -278,7 +278,7 @@ public class ImageScriptEngine {
 				Sprite sp = Sprite.getSprite(sp_Id, instance.image.foregroundColor, Image.MIN_IMAGE_LAYER);
 				sp.globalX = instance.image.sprite.globalX + sp_dx;
 				sp.globalY = instance.image.sprite.globalY + sp_dy;
-				sp.image.angle = instance.image.angle;
+				sp.image.scriptState.angle = instance.angle;
 				sp.parent = instance.image.sprite; 
 				ObjectPool.addSprite(sp);
 				break;
@@ -298,7 +298,7 @@ public class ImageScriptEngine {
 				//lo.getOffsets(0, instance.baseFrame, offsets);
 				lo_sprite.globalX = instance.image.sprite.globalX;
 				lo_sprite.globalY = instance.image.sprite.globalY;
-				lo_sprite.image.angle = instance.image.angle;
+				lo_sprite.image.scriptState.angle = instance.angle;
 				lo_sprite.parent = instance.image.sprite; 
 				ObjectPool.addSprite(lo_sprite);
 				break;
@@ -315,7 +315,7 @@ public class ImageScriptEngine {
 				Sprite l = Sprite.getSprite(Id, instance.image.foregroundColor, instance.image.currentImageLayer + 1);
 				l.globalX = instance.image.sprite.globalX + l_dx;
 				l.globalY = instance.image.sprite.globalY + l_dy;
-				l.image.angle = instance.image.angle;
+				l.image.scriptState.angle = instance.angle;
 				l.parent = instance.image.sprite; 
 				ObjectPool.addSprite(l);
 				break;
@@ -345,28 +345,28 @@ public class ImageScriptEngine {
 			//OK
 			case OP_FOLLOW_PARENT_ANIM:
 				if ((script[instance.scriptPos ++ ]&0xFF) == 1)
-					instance.image.followParentAnim = true;
+					instance.followParentAnim = true;
 				else
-					instance.image.followParentAnim = false;
+					instance.followParentAnim = false;
 				break;
 			//OK	
 			case OP_HIDE:
-				instance.image.visible = false;
+				instance.visible = false;
 				break;
 			//OK
 			case OP_SHOW:
-				instance.image.visible = true;
+				instance.visible = true;
 				break;
 				
 			//OK	
 			case OP_FOLLOW:
-				instance.image.followParent = true;
-				instance.image.followParentAngle = true;
+				instance.followParent = true;
+				instance.followParentAngle = true;
 				break;
 			
 			//OK
 			case OP_TURN_GRAPHICS_1CW:
-				instance.image.angle+=(int)((1.0/17.0)*360);
+				instance.angle+=(int)((1.0/17.0)*360);
 				break;
 				
 			//OK
@@ -382,7 +382,7 @@ public class ImageScriptEngine {
 				
 			case OP_SET_DIRECTION:
 				int new_angle = script[instance.scriptPos ++ ]&0xFF;
-				instance.image.angle =(int)((new_angle/17.0)*360);
+				instance.angle =(int)((new_angle/17.0)*360);
 				break;
 			
 				

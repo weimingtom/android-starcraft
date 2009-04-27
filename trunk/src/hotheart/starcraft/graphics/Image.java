@@ -6,14 +6,9 @@
 package hotheart.starcraft.graphics;
 
 import hotheart.starcraft.configure.BuildParameters;
+import hotheart.starcraft.files.DatFile;
 import hotheart.starcraft.units.ObjectPool;
-
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-
 import android.graphics.Canvas;
-import android.graphics.Color;
 
 public final class Image {
 
@@ -59,62 +54,41 @@ public final class Image {
 
 	private static int[] grpFileId;
 	private static byte[] gfxTurns;
-	private static byte[] clickable;
-	private static byte[] useFullISCript;
-	private static byte[] drawIfCloacked;
+	// private static byte[] clickable;
+	// private static byte[] useFullISCript;
+	// private static byte[] drawIfCloacked;
 	private static byte[] drawFunc;
 	private static byte[] remappingData;
 	private static int[] iScriptId;
-	private static int[] shieldOverlay;
-	private static int[] attackOverlay;
-	private static int[] damageOverlay;
-	private static int[] SpecialOverlay;
-	private static int[] landingDustOverlay;
-	private static int[] liftOffOverlay;
+
+	// private static int[] shieldOverlay;
+	// private static int[] attackOverlay;
+	// private static int[] damageOverlay;
+	// private static int[] SpecialOverlay;
+	// private static int[] landingDustOverlay;
+	// private static int[] liftOffOverlay;
 
 	public final static void init(byte[] _data) {
 		StarcraftPalette.initPalette();
 		initBuffers(_data);
 	}
 
-	static int position = 0;
-
 	final static void initBuffers(byte[] buff) {
-		position = 0;
-		grpFileId = read4ByteData(COUNT, buff);
-		gfxTurns = read1ByteData(COUNT, buff);
-		clickable = read1ByteData(COUNT, buff);
-		useFullISCript = read1ByteData(COUNT, buff);
-		drawIfCloacked = read1ByteData(COUNT, buff);
-		drawFunc = read1ByteData(COUNT, buff);
-		remappingData = read1ByteData(COUNT, buff);
-		iScriptId = read4ByteData(COUNT, buff);
-		shieldOverlay = read4ByteData(COUNT, buff);
-		attackOverlay = read4ByteData(COUNT, buff);
-		damageOverlay = read4ByteData(COUNT, buff);
-		SpecialOverlay = read4ByteData(COUNT, buff);
-		landingDustOverlay = read4ByteData(COUNT, buff);
-		liftOffOverlay = read4ByteData(COUNT, buff);
-	}
-
-	final static byte[] read1ByteData(int size, byte[] buff) {
-		byte[] res = new byte[size];
-		for (int i = 0; i < size; i++) {
-			res[i] = buff[position++];
-		}
-		return res;
-	}
-
-	final static int[] read4ByteData(int size, byte[] buff) {
-		int[] res = new int[size];
-
-		for (int i = 0; i < size; i++) {
-			res[i] = (buff[position++] & 0xFF)
-					+ ((buff[position++] & 0xFF) << 8)
-					+ ((buff[position++] & 0xFF) << 16)
-					+ ((buff[position++] & 0xFF) << 24);
-		}
-		return res;
+		DatFile file = new DatFile(buff);
+		grpFileId = file.read4ByteData(COUNT, buff);
+		gfxTurns = file.read1ByteData(COUNT, buff);
+		/* clickable = */file.read1ByteData(COUNT, buff);
+		/* useFullISCript = */file.read1ByteData(COUNT, buff);
+		/* drawIfCloacked = */file.read1ByteData(COUNT, buff);
+		drawFunc = file.read1ByteData(COUNT, buff);
+		remappingData = file.read1ByteData(COUNT, buff);
+		iScriptId = file.read4ByteData(COUNT, buff);
+		// shieldOverlay = file.read4ByteData(COUNT, buff);
+		// attackOverlay = file.read4ByteData(COUNT, buff);
+		// damageOverlay = file.read4ByteData(COUNT, buff);
+		// SpecialOverlay = file.read4ByteData(COUNT, buff);
+		// landingDustOverlay = file.read4ByteData(COUNT, buff);
+		// liftOffOverlay = file.read4ByteData(COUNT, buff);
 	}
 
 	public final static Image getImage(int id, int color, int layer) {

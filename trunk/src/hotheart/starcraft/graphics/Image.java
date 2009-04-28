@@ -124,7 +124,7 @@ public final class Image {
 
 		if (BuildParameters.CACHE_GRP)
 			res.grp.image.makeCache(pal);
-		res.imageState.align = align == 1;
+		res.align = align == 1;
 		res.graphicsFuntion = functionId;
 		res.remapping = remapping;
 		res.foregroundColor = color;
@@ -151,6 +151,7 @@ public final class Image {
 
 	public int graphicsFuntion = 0;
 	public int remapping = 0;
+	public boolean align = true;
 
 	public int offsetX = 0;
 	public int offsetY = 0;

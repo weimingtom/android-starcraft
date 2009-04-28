@@ -16,17 +16,17 @@ public final class GRPContainer{
 		image = GRPImage.getGraphics(spriteId);
 	}
 	
-	public final void draw(Canvas c, Image data, int[] palette, int dX, int dY) {
+	public final void draw(int dX, int dY, boolean align, int baseFrame, int angle, int[] palette, Canvas c) {
 		if (image == null)
 			return;
 
-		if (!data.align)
+		if (!align)
 		{
-			drawSCFrame(c, data.imageState.baseFrame, palette, dX, dY);
+			drawSCFrame(c, baseFrame, palette, dX, dY);
 		}
 		else
 		{
-			drawSCFrame(c, data.imageState.angle, data.imageState.baseFrame, data.imageState.baseFrame + 16, palette, dX, dY);
+			drawSCFrame(c, angle, baseFrame, baseFrame + 16, palette, dX, dY);
 		}
 	}
 

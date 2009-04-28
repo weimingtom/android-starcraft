@@ -83,12 +83,12 @@ public final class Image {
 		drawFunc = file.read1ByteData(COUNT, buff);
 		remappingData = file.read1ByteData(COUNT, buff);
 		iScriptId = file.read4ByteData(COUNT, buff);
-//		shieldOverlay = file.read4ByteData(COUNT, buff);
-//		attackOverlay = file.read4ByteData(COUNT, buff);
-//		damageOverlay = file.read4ByteData(COUNT, buff);
-//		SpecialOverlay = file.read4ByteData(COUNT, buff);
-//		landingDustOverlay = file.read4ByteData(COUNT, buff);
-//		liftOffOverlay = file.read4ByteData(COUNT, buff);
+		// shieldOverlay = file.read4ByteData(COUNT, buff);
+		// attackOverlay = file.read4ByteData(COUNT, buff);
+		// damageOverlay = file.read4ByteData(COUNT, buff);
+		// SpecialOverlay = file.read4ByteData(COUNT, buff);
+		// landingDustOverlay = file.read4ByteData(COUNT, buff);
+		// liftOffOverlay = file.read4ByteData(COUNT, buff);
 	}
 
 	public final static Image getImage(int id, int color, int layer) {
@@ -147,15 +147,57 @@ public final class Image {
 	public int currentImageLayer;
 
 	// Graphics data
-	public GRPContainer grp;
+	private GRPContainer grp;
 
-	public int graphicsFuntion = 0;
-	public int remapping = 0;
-	public boolean align = true;
+	private int graphicsFuntion = 0;
+	private int remapping = 0;
+	private boolean align = true;
 
-	public int offsetX = 0;
-	public int offsetY = 0;
+	// Offset from main offset
 
+	private int offsetX = 0;
+	private int offsetY = 0;
+
+	public void setOffset(int dx, int dy) {
+		offsetX = dx;
+		offsetY = dy;
+	}
+
+	public void setOffsetX(int dx) {
+		offsetX = dx;
+	}
+
+	public void setOffsetY(int dy) {
+		offsetY = dy;
+	}
+
+	public int getOffsetX() {
+		return offsetX;
+	}
+
+	public int getOffsetY() {
+		return offsetY;
+	}
+
+	
+	// Global positions
+	private int posX = 0;
+	private int posY = 0;
+
+	public void setPos(int dx, int dy) {
+		posX = dx;
+		posY = dy;
+	}
+
+	public void setPosX(int dx) {
+		posX = dx;
+	}
+
+	public void setPosY(int dy) {
+		posY = dy;
+	}
+
+	// Children data
 	public Image[] childs = new Image[20];
 
 	// Graphics script data
@@ -232,14 +274,14 @@ public final class Image {
 					childs[i].play(anim);
 	}
 
-	public int resX = 0, resY = 0;
 	public int sortIndex = 0;
 
 	public final void preDraw(int dX, int dY, int dSortIndex) {
 		if (!this.imageState.visible)
 			return;
-		resX = dX;
-		resY = dY;
+
+		setPos(dX, dY);
+
 		sortIndex = dSortIndex;
 		ObjectPool.drawObjects.add(this);
 
@@ -292,7 +334,9 @@ public final class Image {
 					break;
 				}
 
-			grp.draw(c, this, pal, offsetX + resX, offsetY + resY);
+			//c, this, pal, 
+			grp.draw(posX + offsetX, posY + offsetY, this.align, imageState.baseFrame,
+					imageState.angle, pal, c);
 		}
 	}
 
@@ -312,9 +356,7 @@ public final class Image {
 			if (childs[i] != null)
 				childs[i].draw(c, dX, dY);
 
-		resX = dX;
-		resY = dY;
+		setPos(dX, dY);
 		drawWithoutChilds(c);
-
 	}
 }

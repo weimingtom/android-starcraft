@@ -7,6 +7,9 @@ package hotheart.starcraft.graphics;
 
 import hotheart.starcraft.configure.BuildParameters;
 import hotheart.starcraft.files.DatFile;
+import hotheart.starcraft.graphics.script.ImageScriptEngine;
+import hotheart.starcraft.graphics.script.ImageScriptHeader;
+import hotheart.starcraft.graphics.script.ImageState;
 import hotheart.starcraft.units.ObjectPool;
 import android.graphics.Canvas;
 

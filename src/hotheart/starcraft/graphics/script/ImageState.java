@@ -1,4 +1,6 @@
-package hotheart.starcraft.graphics;
+package hotheart.starcraft.graphics.script;
+
+import hotheart.starcraft.graphics.Image;
 
 public class ImageState {
 	public ImageState(Image parent, ImageScriptHeader header) {

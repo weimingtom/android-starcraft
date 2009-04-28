@@ -1,4 +1,4 @@
-package hotheart.starcraft.graphics;
+package hotheart.starcraft.graphics.script;
 
 public class ImageScriptHeader {
 	public int id;

@@ -20,7 +20,7 @@ public final class GRPContainer{
 		if (image == null)
 			return;
 
-		if (!data.imageState.align)
+		if (!data.align)
 		{
 			drawSCFrame(c, data.imageState.baseFrame, palette, dX, dY);
 		}

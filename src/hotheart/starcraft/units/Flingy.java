@@ -80,10 +80,10 @@ public class Flingy {
 
 	public final void move(int d) {
 		final float dx = (float) Math
-				.cos(((sprite.image.angle - 90) / 180.0f) * 3.1415f)
+				.cos(((sprite.image.imageState.angle - 90) / 180.0f) * 3.1415f)
 				* d;
 		final float dy = (float) Math
-				.sin(((sprite.image.angle - 90) / 180.0f) * 3.1415f)
+				.sin(((sprite.image.imageState.angle - 90) / 180.0f) * 3.1415f)
 				* d;
 		posX += dx;
 		posY += dy;
@@ -123,7 +123,7 @@ public class Flingy {
 		final int len_sq = (int) ((posX - dx) * (posX - dx) + (posY - dy)
 				* (posY - dy));
 		
-		int current_angle = sprite.image.angle;
+		int current_angle = sprite.image.imageState.angle;
 
 		int delta = (int) (18 * 3.1415 * turnRadius / (topSpeed));
 
@@ -148,7 +148,7 @@ public class Flingy {
 		else
 			current_angle = (current_angle + delta) % 360;
 		
-		sprite.image.angle = current_angle;
+		sprite.image.imageState.angle = current_angle;
 	}
 	
 	public void update() {

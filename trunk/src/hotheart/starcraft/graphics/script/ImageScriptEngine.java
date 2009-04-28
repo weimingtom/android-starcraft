@@ -1,6 +1,8 @@
-package hotheart.starcraft.graphics;
+package hotheart.starcraft.graphics.script;
 
 import hotheart.starcraft.configure.BuildParameters;
+import hotheart.starcraft.graphics.Image;
+import hotheart.starcraft.graphics.Sprite;
 import hotheart.starcraft.sounds.StarcraftSoundPool;
 import hotheart.starcraft.units.ObjectPool;
 

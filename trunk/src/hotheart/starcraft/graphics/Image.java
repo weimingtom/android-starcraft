@@ -80,12 +80,18 @@ public final class Image {
 		DatFile file = new DatFile(buff);
 		grpFileId = file.read4ByteData(COUNT, buff);
 		gfxTurns = file.read1ByteData(COUNT, buff);
-		/* clickable = */file.read1ByteData(COUNT, buff);
-		/* useFullISCript = */file.read1ByteData(COUNT, buff);
-		/* drawIfCloacked = */file.read1ByteData(COUNT, buff);
+
+		// Seek unused sections
+		file.seekFromCurrentPos(COUNT * 3);
+		// clickable = file.read1ByteData(COUNT, buff);
+		// useFullISCript = file.read1ByteData(COUNT, buff);
+		// drawIfCloacked = file.read1ByteData(COUNT, buff);
+
 		drawFunc = file.read1ByteData(COUNT, buff);
 		remappingData = file.read1ByteData(COUNT, buff);
 		iScriptId = file.read4ByteData(COUNT, buff);
+
+		// Unused sections
 		// shieldOverlay = file.read4ByteData(COUNT, buff);
 		// attackOverlay = file.read4ByteData(COUNT, buff);
 		// damageOverlay = file.read4ByteData(COUNT, buff);
@@ -143,6 +149,27 @@ public final class Image {
 		currentImageLayer = imageLayer;
 	}
 
+	public Image(Image src) {
+		this.align = src.align;
+		this.childCount = src.childCount;
+		this.childs = src.childs;
+		this.currentImageLayer = src.currentImageLayer;
+		this.deleted = src.deleted;
+		this.foregroundColor = src.foregroundColor;
+		this.graphicsFuntion = src.graphicsFuntion;
+		this.grp = src.grp;
+		this.imageId = src.imageId;
+		this.imageState = src.imageState;// TODO: Copy this
+		this.offsetX = src.offsetX;
+		this.offsetY = src.offsetY;
+		this.parentOverlay = src.parentOverlay;
+		this.posX = src.posX;
+		this.posY = src.posY;
+		this.remapping = src.remapping;
+		this.sortIndex = src.sortIndex;
+		this.sprite = src.sprite;// TODO: remove this
+	}
+
 	public int imageId;
 
 	public int foregroundColor;
@@ -182,7 +209,6 @@ public final class Image {
 		return offsetY;
 	}
 
-	
 	// Global positions
 	private int posX = 0;
 	private int posY = 0;
@@ -337,9 +363,9 @@ public final class Image {
 					break;
 				}
 
-			//c, this, pal, 
-			grp.draw(posX + offsetX, posY + offsetY, this.align, imageState.baseFrame,
-					imageState.angle, pal, c);
+			// c, this, pal,
+			grp.draw(posX + offsetX, posY + offsetY, this.align,
+					imageState.baseFrame, imageState.angle, pal, c);
 		}
 	}
 

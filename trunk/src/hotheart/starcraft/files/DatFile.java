@@ -16,6 +16,11 @@ public class DatFile {
 		position = 0;
 	}
 	
+	public final void seekFromCurrentPos(int offset)
+	{
+		position += offset;
+	}
+	
 	public final void seek(int nPos)
 	{
 		position = nPos;

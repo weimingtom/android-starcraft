@@ -7,10 +7,20 @@ import android.graphics.Canvas;
 
 public class Sprite extends Image {
 	
+	public Sprite(Sprite src) {
+		super(src);
+		
+		this.selCircle = src.selCircle;
+		this.healthBar = src.healthBar;
+		this.vertPos = src.vertPos;
+		this.currentImageLayer = src.currentImageLayer;
+		this.isVisible = src.isVisible;
+		this.isSelectable = src.isSelectable;
+		this.flingy = src.flingy;
+	}
 	
 	private Sprite(Image src) {
 		super(src);
-		// TODO Auto-generated constructor stub
 	}
 
 	private static byte[] sprites;
@@ -55,26 +65,11 @@ public class Sprite extends Image {
 	public boolean isVisible = true;
 	public boolean isSelectable = true;
 	
-	public Sprite parent = null;
-	
 	public Flingy flingy = null;
-	
-	public void preDraw(int sortIndex)
-	{
-		super.preDraw(this.posX, this.posY, sortIndex); // From Image
-	}
-	
-	public void draw(Canvas c)
-	{
-		super.draw(c, this.posX, this.posY);
-	}
-	public void update()
-	{
-		super.update();
-	}
 	
 	public void delete()
 	{
+		super.delete();
 		if (flingy!= null)
 			ObjectPool.removeFlingy(flingy);
 		ObjectPool.removeSprite(this);

@@ -164,12 +164,12 @@ public class ImageScriptEngine {
 			instance.scriptPos++;
 			int destPos = (script[instance.scriptPos++] & 0xFF)
 					+ ((script[instance.scriptPos++] & 0xFF) << 8);
-			if (instance.image.sprite != null)
-				if (instance.image.sprite.flingy != null)
-					if (instance.image.sprite.flingy.unit != null)/* <= or => ?! */
-						if (instance.image.sprite.flingy.unit
-								.getLenSqToTarget() <= dist * dist)
-							instance.scriptPos = destPos;
+
+			if (((Sprite) instance.image).flingy != null)
+				if (((Sprite) instance.image).flingy.unit != null)
+					if (((Sprite) instance.image).flingy.unit
+							.getLenSqToTarget() <= dist * dist)
+						instance.scriptPos = destPos;
 
 			break;
 		// OK
@@ -200,7 +200,10 @@ public class ImageScriptEngine {
 			// overlay.followParentAngle = true;
 			overlay.setOffsetX(ov_dx);
 			overlay.setOffsetY(ov_dy);
-			overlay.sprite = instance.image.sprite;
+
+			// TODO Check this
+			// overlay.sprite = instance.image.sprite;
+
 			overlay.imageState.angle = instance.angle;
 			instance.image.addOverlay(overlay);
 			break;
@@ -219,7 +222,9 @@ public class ImageScriptEngine {
 			// underlay.followParentAnim = true;
 			// underlay.followParentAngle = true;
 
-			underlay.sprite = instance.image.sprite;
+			// TODO: Check this
+			// underlay.sprite = instance.image.sprite;
+
 			underlay.setOffsetX(un_dx);
 			underlay.setOffsetY(un_dy);
 			underlay.imageState.angle = instance.angle;
@@ -280,12 +285,16 @@ public class ImageScriptEngine {
 			int sp_dy = script[instance.scriptPos++] & 0xFF;
 			Sprite sp = Sprite.getSprite(sp_Id, instance.image.foregroundColor,
 					Image.MIN_IMAGE_LAYER);
-			
-			sp.setPos(instance.image.getOffsetX() + sp_dx , 
-					instance.image.getOffsetY() + sp_dy);
-			
+
+			sp.setPos(instance.image.getOffsetX() + sp_dx, instance.image
+					.getOffsetY()
+					+ sp_dy);
+
 			sp.imageState.angle = instance.angle;
-			sp.parent = instance.image.sprite;
+
+			if (instance.image instanceof Sprite)
+				sp.parent = (Sprite) instance.image;
+
 			ObjectPool.addSprite(sp);
 			break;
 
@@ -305,10 +314,13 @@ public class ImageScriptEngine {
 			// LoFile lo = GRPImage.getLoData(lo_Id);
 			// byte[] offsets = new byte[2];
 			// lo.getOffsets(0, instance.baseFrame, offsets);
-			lo_sprite.setPos(instance.image.getOffsetX(), 
-					instance.image.getOffsetY());
+			lo_sprite.setPos(instance.image.getOffsetX(), instance.image
+					.getOffsetY());
 			lo_sprite.imageState.angle = instance.angle;
-			lo_sprite.parent = instance.image.sprite;
+
+			if (instance.image instanceof Sprite)
+				lo_sprite.parent = (Sprite) instance.image;
+
 			ObjectPool.addSprite(lo_sprite);
 			break;
 
@@ -323,19 +335,23 @@ public class ImageScriptEngine {
 			int l_dy = script[instance.scriptPos++] & 0xFF;
 			Sprite l = Sprite.getSprite(Id, instance.image.foregroundColor,
 					instance.image.currentImageLayer + 1);
-			
-			l.setPos(instance.image.getOffsetX() + l_dx, 
-					instance.image.getOffsetY() + l_dy);
+
+			l.setPos(instance.image.getOffsetX() + l_dx, instance.image
+					.getOffsetY()
+					+ l_dy);
 			l.imageState.angle = instance.angle;
-			l.parent = instance.image.sprite;
+
+			if (instance.image instanceof Sprite)
+				l.parent = (Sprite) instance.image;
+
 			ObjectPool.addSprite(l);
 			break;
 
 		// OK
 		case OP_MOVE:
-			if (instance.image.sprite != null)
-				if (instance.image.sprite.flingy != null)
-					instance.image.sprite.flingy
+			if (instance.image instanceof Sprite)
+				if (((Sprite) instance.image).flingy != null)
+					((Sprite) instance.image).flingy
 							.move(script[instance.scriptPos + 1] & 0xFF);
 
 			instance.scriptPos++;
@@ -399,36 +415,34 @@ public class ImageScriptEngine {
 
 		// Attacking control
 		case OP_REPEAT_ATTACK:
-			if (instance.image.sprite != null)
-				if (instance.image.sprite.flingy != null)
-					if (instance.image.sprite.flingy.unit != null)
-						instance.image.sprite.flingy.unit.repeatAttack();
+			if (((Sprite) instance.image).flingy != null)
+				if (((Sprite) instance.image).flingy.unit != null)
+					((Sprite) instance.image).flingy.unit.repeatAttack();
 			break;
 
 		case 0x1b:
 		case OP_ATTACK:
-			if (instance.image.sprite != null)
-				if (instance.image.sprite.flingy != null)
-					if (instance.image.sprite.flingy.unit != null)
-						instance.image.sprite.flingy.unit.attack(-1);
+			if (instance.image instanceof Sprite)
+				if (((Sprite) instance.image).flingy != null)
+					if (((Sprite) instance.image).flingy.unit != null)
+						((Sprite) instance.image).flingy.unit.attack(-1);
+
 			break;
 
 		case OP_ATTACK_WITH:
-			if (instance.image.sprite != null)
-				if (instance.image.sprite.flingy != null)
-					if (instance.image.sprite.flingy.unit != null)
-						instance.image.sprite.flingy.unit
-								.attack(script[instance.scriptPos + 1] & 0xFF);
+			if (((Sprite) instance.image).flingy != null)
+				if (((Sprite) instance.image).flingy.unit != null)
+					((Sprite) instance.image).flingy.unit
+							.attack(script[instance.scriptPos + 1] & 0xFF);
 
 			instance.scriptPos++;
 
 			break;
 
 		case OP_ATTACK_WITH_SOUND:
-			if (instance.image.sprite != null)
-				if (instance.image.sprite.flingy != null)
-					if (instance.image.sprite.flingy.unit != null)
-						instance.image.sprite.flingy.unit.attack(-1);
+			if (((Sprite) instance.image).flingy != null)
+				if (((Sprite) instance.image).flingy.unit != null)
+					((Sprite) instance.image).flingy.unit.attack(-1);
 
 			// Sound control
 		case OP_PLAY_RANDROM_SOUND:// Play random sound

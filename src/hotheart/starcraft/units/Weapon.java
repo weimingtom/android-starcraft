@@ -74,7 +74,7 @@ public final class Weapon {
 			this.moveControl = base.moveControl;
 			this.posX = base.posX;
 			this.posY = base.posY;
-			this.sprite.image.imageState.angle = base.sprite.image.imageState.angle; 
+			this.sprite.imageState.angle = base.sprite.imageState.angle; 
 			destUnit = dest;
 		}
 		public void update()
@@ -96,7 +96,7 @@ public final class Weapon {
 			Flingy f = Flingy.getFlingy(flingyId, TeamColors.COLOR_DEFAULT);
 			f.posX = targetUnit.flingy.posX;
 			f.posY = targetUnit.flingy.posY;
-			f.sprite.image.imageState.angle = targetUnit.flingy.sprite.image.imageState.angle; 
+			f.sprite.imageState.angle = targetUnit.flingy.sprite.imageState.angle; 
 			ObjectPool.addFlingy(f);
 		}
 		else if (behaviour == B_FLY_TO_TARGET)

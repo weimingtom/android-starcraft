@@ -179,7 +179,7 @@ public final class ObjectPool {
     		f.preDraw();
 		
 		for(Sprite s: ObjectPool.sprites)
-    		s.preDraw(s.globalY);
+    		s.preDraw(s.getOffsetY());
    	
     	for(Unit u: units)
     		u.preDraw();

@@ -280,9 +280,11 @@ public class ImageScriptEngine {
 			int sp_dy = script[instance.scriptPos++] & 0xFF;
 			Sprite sp = Sprite.getSprite(sp_Id, instance.image.foregroundColor,
 					Image.MIN_IMAGE_LAYER);
-			sp.globalX = instance.image.sprite.globalX + sp_dx;
-			sp.globalY = instance.image.sprite.globalY + sp_dy;
-			sp.image.imageState.angle = instance.angle;
+			
+			sp.setPos(instance.image.getOffsetX() + sp_dx , 
+					instance.image.getOffsetY() + sp_dy);
+			
+			sp.imageState.angle = instance.angle;
 			sp.parent = instance.image.sprite;
 			ObjectPool.addSprite(sp);
 			break;
@@ -303,9 +305,9 @@ public class ImageScriptEngine {
 			// LoFile lo = GRPImage.getLoData(lo_Id);
 			// byte[] offsets = new byte[2];
 			// lo.getOffsets(0, instance.baseFrame, offsets);
-			lo_sprite.globalX = instance.image.sprite.globalX;
-			lo_sprite.globalY = instance.image.sprite.globalY;
-			lo_sprite.image.imageState.angle = instance.angle;
+			lo_sprite.setPos(instance.image.getOffsetX(), 
+					instance.image.getOffsetY());
+			lo_sprite.imageState.angle = instance.angle;
 			lo_sprite.parent = instance.image.sprite;
 			ObjectPool.addSprite(lo_sprite);
 			break;
@@ -321,9 +323,10 @@ public class ImageScriptEngine {
 			int l_dy = script[instance.scriptPos++] & 0xFF;
 			Sprite l = Sprite.getSprite(Id, instance.image.foregroundColor,
 					instance.image.currentImageLayer + 1);
-			l.globalX = instance.image.sprite.globalX + l_dx;
-			l.globalY = instance.image.sprite.globalY + l_dy;
-			l.image.imageState.angle = instance.angle;
+			
+			l.setPos(instance.image.getOffsetX() + l_dx, 
+					instance.image.getOffsetY() + l_dy);
+			l.imageState.angle = instance.angle;
 			l.parent = instance.image.sprite;
 			ObjectPool.addSprite(l);
 			break;

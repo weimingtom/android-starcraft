@@ -2,6 +2,7 @@ package hotheart.starcraft.system;
 
 import java.util.Random;
 
+import hotheart.starcraft.configure.BuildParameters;
 import hotheart.starcraft.map.Map;
 import hotheart.starcraft.units.ObjectPool;
 import hotheart.starcraft.units.Unit;
@@ -17,7 +18,7 @@ import android.view.VelocityTracker;
 import android.view.View;
 import android.widget.Scroller;
 
-public class UnitView extends View {
+public class GameView extends View {
 
 	Random rnd = new Random();
 	Context cont;
@@ -32,7 +33,7 @@ public class UnitView extends View {
 	Map map;
 	Scroller mScroller;
 
-	public UnitView(Context context) {
+	public GameView(Context context) {
 		super(context);
 		cont = context;
 
@@ -45,8 +46,9 @@ public class UnitView extends View {
 		dx = this.getWidth() / 2;
 		dy = this.getHeight() / 2;
 
-		map = new Map(FileSystemUtils
-				.readAllBytes("/sdcard/starcraft/scenario.chk"));
+		if (BuildParameters.LOAD_MAP)
+			map = new Map(FileSystemUtils
+					.readAllBytes("/sdcard/starcraft/scenario.chk"));
 
 		mScroller = new Scroller(context);
 	}
@@ -83,11 +85,13 @@ public class UnitView extends View {
 		transf.postTranslate(-ofsX % Map.TILE_SIZE, -ofsY % Map.TILE_SIZE);
 		canvas.setMatrix(transf);
 
-		if (drawMap) {
-			map.draw(ofsX / Map.TILE_SIZE, ofsY / Map.TILE_SIZE, ofsX
-					/ Map.TILE_SIZE + this.getWidth() / Map.TILE_SIZE + 2, ofsY
-					/ 32 + this.getHeight() / Map.TILE_SIZE + 2, canvas);
-		}
+		if (BuildParameters.LOAD_MAP)
+			if (drawMap) {
+				map.draw(ofsX / Map.TILE_SIZE, ofsY / Map.TILE_SIZE, ofsX
+						/ Map.TILE_SIZE + this.getWidth() / Map.TILE_SIZE + 2,
+						ofsY / 32 + this.getHeight() / Map.TILE_SIZE + 2,
+						canvas);
+			}
 
 		transf.postTranslate(-ofsX + ofsX % Map.TILE_SIZE, -ofsY + ofsY
 				% Map.TILE_SIZE);

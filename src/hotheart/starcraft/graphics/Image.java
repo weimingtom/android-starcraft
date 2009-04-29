@@ -13,7 +13,7 @@ import hotheart.starcraft.graphics.script.ImageState;
 import hotheart.starcraft.units.ObjectPool;
 import android.graphics.Canvas;
 
-public final class Image {
+public class Image {
 
 	public static final int MAX_IMAGE_LAYER = 10000;
 	public static final int MIN_IMAGE_LAYER = -10000;
@@ -71,7 +71,7 @@ public final class Image {
 	// private static int[] landingDustOverlay;
 	// private static int[] liftOffOverlay;
 
-	public final static void init(byte[] _data) {
+	public static void init(byte[] _data) {
 		StarcraftPalette.initPalette();
 		initBuffers(_data);
 	}
@@ -185,8 +185,8 @@ public final class Image {
 
 	// Offset from main offset
 
-	private int offsetX = 0;
-	private int offsetY = 0;
+	protected int offsetX = 0;
+	protected int offsetY = 0;
 
 	public void setOffset(int dx, int dy) {
 		offsetX = dx;
@@ -210,8 +210,8 @@ public final class Image {
 	}
 
 	// Global positions
-	private int posX = 0;
-	private int posY = 0;
+	protected int posX = 0;
+	protected int posY = 0;
 
 	public void setPos(int dx, int dy) {
 		posX = dx;
@@ -239,13 +239,12 @@ public final class Image {
 
 	public int childCount = 0;
 
-	public final void delete() {
+	public void delete() {
 
 		deleted = true;
 
 		if (childCount == 0) {
 			if (sprite != null) {
-				if (sprite.image == this)
 					sprite.delete();
 			} else if (parentOverlay != null) {
 				parentOverlay.removeChild(this);
@@ -283,7 +282,7 @@ public final class Image {
 			delete();
 	}
 
-	public final void update() {
+	public void update() {
 		if (!deleted)
 			ImageScriptEngine.exec(this.imageState);
 
@@ -305,7 +304,7 @@ public final class Image {
 
 	public int sortIndex = 0;
 
-	public final void preDraw(int dX, int dY, int dSortIndex) {
+	public void preDraw(int dX, int dY, int dSortIndex) {
 		if (!this.imageState.visible)
 			return;
 
@@ -319,7 +318,7 @@ public final class Image {
 				childs[i].preDraw(dX, dY, dSortIndex);
 	}
 
-	public final void drawWithoutChilds(Canvas c) {
+	public void drawWithoutChilds(Canvas c) {
 		if (!imageState.isBlocked)
 			if (parentOverlay != null) {
 				if (imageState.followParent)
@@ -369,7 +368,7 @@ public final class Image {
 		}
 	}
 
-	public final void draw(Canvas c, int dX, int dY) {
+	public void draw(Canvas c, int dX, int dY) {
 		if (!imageState.visible)
 			return;
 

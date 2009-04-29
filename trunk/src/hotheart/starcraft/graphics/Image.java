@@ -301,18 +301,21 @@ public class Image {
 
 	public int sortIndex = 0;
 
-	public void preDraw(int dX, int dY, int dSortIndex) {
+	public void preDraw(int dSortIndex) {
 		if (!this.imageState.visible)
 			return;
 
-		setPos(dX, dY);
+		//setPos(dX, dY);
 
 		sortIndex = dSortIndex;
 		ObjectPool.drawObjects.add(this);
 
 		for (int i = 0; i < childs.length; i++)
 			if (childs[i] != null)
-				childs[i].preDraw(dX, dY, dSortIndex);
+			{
+				childs[i].setPos(this.posX, this.posY);
+				childs[i].preDraw(dSortIndex);
+			}
 	}
 
 	public void drawWithoutChilds(Canvas c) {
@@ -365,7 +368,7 @@ public class Image {
 		}
 	}
 
-	public void draw(Canvas c, int dX, int dY) {
+	public void draw(Canvas c) {
 		if (!imageState.visible)
 			return;
 
@@ -379,9 +382,11 @@ public class Image {
 
 		for (int i = 0; i < childs.length; i++)
 			if (childs[i] != null)
-				childs[i].draw(c, dX, dY);
+			{
+				childs[i].setPos(this.posX, this.posY);
+				childs[i].draw(c);
+			}
 
-		setPos(dX, dY);
 		drawWithoutChilds(c);
 	}
 }

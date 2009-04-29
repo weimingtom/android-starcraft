@@ -292,8 +292,8 @@ public class ImageScriptEngine {
 
 			sp.imageState.angle = instance.angle;
 
-			if (instance.image instanceof Sprite)
-				sp.parent = (Sprite) instance.image;
+//			if (instance.image instanceof Sprite)
+//				sp.parent = (Sprite) instance.image;
 
 			ObjectPool.addSprite(sp);
 			break;
@@ -318,8 +318,8 @@ public class ImageScriptEngine {
 					.getOffsetY());
 			lo_sprite.imageState.angle = instance.angle;
 
-			if (instance.image instanceof Sprite)
-				lo_sprite.parent = (Sprite) instance.image;
+//			if (instance.image instanceof Sprite)
+//				lo_sprite.parent = (Sprite) instance.image;
 
 			ObjectPool.addSprite(lo_sprite);
 			break;
@@ -341,8 +341,8 @@ public class ImageScriptEngine {
 					+ l_dy);
 			l.imageState.angle = instance.angle;
 
-			if (instance.image instanceof Sprite)
-				l.parent = (Sprite) instance.image;
+//			if (instance.image instanceof Sprite)
+//				l.parent = (Sprite) instance.image;
 
 			ObjectPool.addSprite(l);
 			break;

@@ -175,7 +175,8 @@ public final class Unit {
 	public final void draw_selection(Canvas c) {
 		if (selected) {
 			Image circ = SelectionCircles.selCircles[flingy.sprite.selCircle];
-			circ.draw(c, flingy.posX, flingy.posY + flingy.sprite.vertPos);
+			circ.setPos(flingy.posX, flingy.posY + flingy.sprite.vertPos);
+			circ.draw(c);
 		}
 	}
 
@@ -185,7 +186,8 @@ public final class Unit {
 
 		if (selected) {
 			Image circ = SelectionCircles.selCircles[flingy.sprite.selCircle];
-			circ.draw(c, flingy.posX, flingy.posY + flingy.sprite.vertPos);
+			circ.setPos(flingy.posX, flingy.posY + flingy.sprite.vertPos);
+			circ.draw(c);
 		}
 
 		flingy.draw(c);

@@ -2,6 +2,7 @@ package hotheart.starcraft.system;
 
 import hotheart.starcraft.graphics.GRPImage;
 import hotheart.starcraft.graphics.Image;
+import hotheart.starcraft.graphics.SelectionCircles;
 import hotheart.starcraft.graphics.Sprite;
 import hotheart.starcraft.graphics.TeamColors;
 import hotheart.starcraft.graphics.script.ImageScriptEngine;
@@ -31,7 +32,7 @@ public final class MainActivity extends Activity {
 		ImageScriptEngine.init(FileSystemUtils.readAllBytes("/sdcard/starcraft/iscript.bin"));
 		Image.init(FileSystemUtils.readAllBytes("/sdcard/starcraft/images.dat"));
 		Sprite.init(FileSystemUtils.readAllBytes("/sdcard/starcraft/sprites.dat"));
-		Sprite.initCircles();
+		SelectionCircles.initCircles();
 		Flingy.init(FileSystemUtils.readAllBytes("/sdcard/starcraft/flingy.dat"));
 		Unit.init(FileSystemUtils.readAllBytes("/sdcard/starcraft/units.dat"));
 		Weapon.init(FileSystemUtils.readAllBytes("/sdcard/starcraft/weapons.dat"));

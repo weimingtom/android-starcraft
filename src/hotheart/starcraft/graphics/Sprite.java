@@ -6,15 +6,7 @@ import android.graphics.Canvas;
 
 
 public class Sprite {
-	public static int[] selCircleSize = new int[]
-	{
-		22, 32, 46, 62, 72, 94, 110, 122, 146, 224,
-		22, 32, 46, 62, 72, 94, 110, 122, 146, 224
-	};
-	private static final int FIRST_CIRCLE_IMAGE = 561;
-	public static final int DEFAULT_LAYER = 15;
 	
-	public static Image[] selCircles;
 	
 	private static byte[] sprites;
 	private static int count;
@@ -22,14 +14,6 @@ public class Sprite {
 	{
 		sprites = arr;
 		count = (sprites.length - 130*4)/7 + 130;
-	}
-	public static final void initCircles()
-	{
-		selCircles = new Image[20];
-		for(int i = 0; i < 20; i++)
-		{
-			selCircles[i] = Image.getImage(i + FIRST_CIRCLE_IMAGE, TeamColors.COLOR_GREEN, Image.MAX_IMAGE_LAYER);
-		}
 	}
 	//TODO: Add isVisible and isSelectable
 	public static final Sprite getSprite(int id, int color, int layer)

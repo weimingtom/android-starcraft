@@ -159,7 +159,8 @@ public class Image {
 		this.graphicsFuntion = src.graphicsFuntion;
 		this.grp = src.grp;
 		this.imageId = src.imageId;
-		this.imageState = src.imageState;// TODO: Copy this
+		this.imageState = new ImageState(src.imageState);
+		this.imageState.image = this;
 		this.offsetX = src.offsetX;
 		this.offsetY = src.offsetY;
 		this.parentOverlay = src.parentOverlay;
@@ -167,7 +168,6 @@ public class Image {
 		this.posY = src.posY;
 		this.remapping = src.remapping;
 		this.sortIndex = src.sortIndex;
-		this.sprite = src.sprite;// TODO: remove this
 	}
 
 	public int imageId;
@@ -233,7 +233,6 @@ public class Image {
 	public ImageState imageState;
 	// Game Data
 	public Image parentOverlay = null;
-	public Sprite sprite = null;
 
 	public boolean deleted = false;
 
@@ -244,9 +243,7 @@ public class Image {
 		deleted = true;
 
 		if (childCount == 0) {
-			if (sprite != null) {
-					sprite.delete();
-			} else if (parentOverlay != null) {
+			if ( (!(this instanceof Sprite)) && (parentOverlay != null)) {
 				parentOverlay.removeChild(this);
 			}
 		}

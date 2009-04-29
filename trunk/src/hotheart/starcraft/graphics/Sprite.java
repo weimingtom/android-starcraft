@@ -8,7 +8,7 @@ import android.graphics.Canvas;
 public class Sprite extends Image {
 	
 	
-	public Sprite(Image src) {
+	private Sprite(Image src) {
 		super(src);
 		// TODO Auto-generated constructor stub
 	}

@@ -1,6 +1,7 @@
 package hotheart.starcraft.units;
 
 import hotheart.starcraft.graphics.Image;
+import hotheart.starcraft.graphics.SelectionCircles;
 import hotheart.starcraft.graphics.Sprite;
 
 import java.util.ArrayList;
@@ -128,9 +129,9 @@ public final class ObjectPool {
 		{
 			if ( (x-a.flingy.posX)*(x-a.flingy.posX) + (y-a.flingy.posY)*(y-a.flingy.posY) 
 					< 
-					Sprite.selCircleSize[a.flingy.sprite.selCircle]
+					SelectionCircles.selCircleSize[a.flingy.sprite.selCircle]
 					                     *
-					Sprite.selCircleSize[a.flingy.sprite.selCircle]/4)
+					                     SelectionCircles.selCircleSize[a.flingy.sprite.selCircle]/4)
 			{
 				return a;
 			}

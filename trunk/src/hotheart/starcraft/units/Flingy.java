@@ -68,22 +68,20 @@ public class Flingy {
 
 	public final void preDraw()
 	{
-		sprite.globalX = posX;
-		sprite.globalY = posY;
+		sprite.setPos(posX, posY);
 		sprite.preDraw(posY);
 	}
 	public final void  draw(Canvas c) {
-		sprite.globalX = (int) posX;
-		sprite.globalY = (int) posY;
+		sprite.setPos((int) posX, (int) posY);
 		sprite.draw(c);
 	}
 
 	public final void move(int d) {
 		final float dx = (float) Math
-				.cos(((sprite.image.imageState.angle - 90) / 180.0f) * 3.1415f)
+				.cos(((sprite.imageState.angle - 90) / 180.0f) * 3.1415f)
 				* d;
 		final float dy = (float) Math
-				.sin(((sprite.image.imageState.angle - 90) / 180.0f) * 3.1415f)
+				.sin(((sprite.imageState.angle - 90) / 180.0f) * 3.1415f)
 				* d;
 		posX += dx;
 		posY += dy;
@@ -103,7 +101,7 @@ public class Flingy {
 		action = MOVING;
 
 		if (sprite!=null)
-			sprite.image.play(11);
+			sprite.play(11);
 
 		speed = 0;
 	}
@@ -112,7 +110,7 @@ public class Flingy {
 		if (action != MOVING)
 			return;
 
-		sprite.image.play(12);
+		sprite.play(12);
 
 		action = IDLE;
 		speed = 0;
@@ -123,7 +121,7 @@ public class Flingy {
 		final int len_sq = (int) ((posX - dx) * (posX - dx) + (posY - dy)
 				* (posY - dy));
 		
-		int current_angle = sprite.image.imageState.angle;
+		int current_angle = sprite.imageState.angle;
 
 		int delta = (int) (18 * 3.1415 * turnRadius / (topSpeed));
 
@@ -148,7 +146,7 @@ public class Flingy {
 		else
 			current_angle = (current_angle + delta) % 360;
 		
-		sprite.image.imageState.angle = current_angle;
+		sprite.imageState.angle = current_angle;
 	}
 	
 	public void update() {
@@ -214,12 +212,12 @@ public class Flingy {
 		if (attackType == ATTACK_GRND)
 		{
 			currentAttack = action = ATTACK_GRND;
-			sprite.image.play(2);
+			sprite.play(2);
 		}
 		else
 		{
 			currentAttack = action = ATTACK_AIR;
-			sprite.image.play(3);
+			sprite.play(3);
 		}
 		
 	}
@@ -227,12 +225,12 @@ public class Flingy {
 	public void repeatAttack()
 	{
 		action = currentAttack;
-		sprite.image.play(5);
+		sprite.play(5);
 	}
 
 	public void finishAttack()
 	{
-		sprite.image.play(8);
+		sprite.play(8);
 	}
 	
 	public void kill() {
@@ -241,10 +239,10 @@ public class Flingy {
 
 		action = DEATH;
 
-		sprite.image.play(1);
+		sprite.play(1);
 		
-		sprite.globalX = (int)this.posX;
-		sprite.globalY = (int)this.posY;
+		sprite.setPos((int)this.posX, (int)this.posY);
+
 		ObjectPool.addSprite(sprite);
 	}
 }

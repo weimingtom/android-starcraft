@@ -18,7 +18,7 @@ import android.os.Bundle;
 
 
 public final class MainActivity extends Activity {
-	UnitView view;
+	GameView view;
     @Override
     public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -47,7 +47,7 @@ public final class MainActivity extends Activity {
 			ObjectPool.addUnit(Unit.getUnit(0, TeamColors.COLOR_BLUE), 62*32, 62*32);
 		
 
-		view = new UnitView(this);
+		view = new GameView(this);
         setContentView(view);
     }
 }

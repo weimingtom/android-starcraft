@@ -5,12 +5,17 @@ import hotheart.starcraft.units.ObjectPool;
 import android.graphics.Canvas;
 
 
-public class Sprite {
+public class Sprite extends Image {
 	
 	
+	public Sprite(Image src) {
+		super(src);
+		// TODO Auto-generated constructor stub
+	}
+
 	private static byte[] sprites;
 	private static int count;
-	public static final void init(byte[] arr)
+	public static void init(byte[] arr)
 	{
 		sprites = arr;
 		count = (sprites.length - 130*4)/7 + 130;
@@ -33,9 +38,7 @@ public class Sprite {
 		if (id>=130)
 			vertOffset = (sprites[(id - 130) + count*4 + (count-130)*2]&0xFF);
 		
-		Sprite res = new Sprite();
-		res.image = Image.getImage(imageFile, color, layer);
-		res.image.sprite = res;
+		Sprite res = new Sprite(Image.getImage(imageFile, color, layer));
 		res.healthBar = healthBar;
 		res.selCircle = selCircle;
 		res.vertPos = vertOffset;
@@ -43,15 +46,10 @@ public class Sprite {
 		return res;
 	}
 	
-	public Image image = null;
-	
 	public int selCircle = 0;
 	public int healthBar = 6;
 	public int vertPos = 9;
-	
-	public int globalX = 0;
-	public int globalY = 0;
-	
+
 	public int currentImageLayer;
 	
 	public boolean isVisible = true;
@@ -61,23 +59,18 @@ public class Sprite {
 	
 	public Flingy flingy = null;
 	
-	public final void preDraw(int sortIndex)
+	public void preDraw(int sortIndex)
 	{
-    	if (image!=null)
-        	image.preDraw(globalX, globalY, sortIndex);
+		super.preDraw(this.posX, this.posY, sortIndex); // From Image
 	}
 	
-	public final void draw(Canvas c)
+	public void draw(Canvas c)
 	{
-    	if (image!=null)
-    	{
-        	image.draw(c, globalX, globalY);
-    	}
+		super.draw(c, this.posX, this.posY);
 	}
-	public final void update()
+	public void update()
 	{
-		if (image!=null)
-			image.update();
+		super.update();
 	}
 	
 	public void delete()

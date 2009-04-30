@@ -145,24 +145,14 @@ public final class ObjectPool {
 		units.remove(u);
 	}
 
-	public static ArrayList<Sprite> sprites = new ArrayList<Sprite>();
-	public static void addSprite(Sprite s)
+	public static ArrayList<Image> sprites = new ArrayList<Image>();
+	public static void addImage(Image s)
 	{
 		sprites.add(s);
 	}
-	public static void removeSprite(Sprite s)
+	public static void removeImage(Image s)
 	{
 		sprites.remove(s);
-	}
-	
-	public static ArrayList<Flingy> flingys = new ArrayList<Flingy>(); 
-	public static void addFlingy(Flingy f)
-	{
-		flingys.add(f);
-	}
-	public static void removeFlingy(Flingy f)
-	{
-		flingys.remove(f);
 	}
 	
 	public static TreeSet<Image> drawObjects = new TreeSet<Image>();
@@ -171,10 +161,7 @@ public final class ObjectPool {
 	{
 		drawObjects.clear();
 		
-		for(Flingy f: ObjectPool.flingys)
-    		f.preDraw();
-		
-		for(Sprite s: ObjectPool.sprites)
+		for(Image s: ObjectPool.sprites)
     		s.preDraw(s.getOffsetY());
    	
     	for(Unit u: units)
@@ -196,14 +183,9 @@ public final class ObjectPool {
 	{
 		for(Object s: ObjectPool.sprites.toArray())
     	{
-    		((Sprite)s).update();
+    		((Image)s).update();
     	}
 		
-		for(Object u: ObjectPool.flingys.toArray())
-    	{
-    		((Flingy)u).update();
-    	}
-    	
     	for(Object u: ObjectPool.units.toArray())
     	{
     		((Unit)u).update();

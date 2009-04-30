@@ -87,14 +87,14 @@ public final class Weapon {
 			Flingy f = Flingy.getFlingy(flingyId, TeamColors.COLOR_DEFAULT);
 			f.setPos(targetUnit.flingy.getPosX(), targetUnit.flingy.getPosY());
 			f.imageState.angle = targetUnit.flingy.imageState.angle; 
-			ObjectPool.addFlingy(f);
+			ObjectPool.addImage(f);
 		}
 		else if (behaviour == B_FLY_TO_TARGET)
 		{
 			Flingy f = Flingy.getFlingy(flingyId, TeamColors.COLOR_DEFAULT);
 			f.setPos(srsUnit.flingy.getPosX(), srsUnit.flingy.getPosY());
 			
-			ObjectPool.addFlingy(new Missle(targetUnit, f));
+			ObjectPool.addImage(new Missle(targetUnit, f));
 		}
 		
 		targetUnit.hit(damage);

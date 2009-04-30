@@ -63,10 +63,10 @@ public class Sprite extends Image {
 	public boolean isVisible = true;
 	public boolean isSelectable = true;
 
-	public void delete() {
-		super.delete();
+	public void kill() {
+		super.kill();
 
 		// TODO Do something with this!
-		ObjectPool.removeSprite(this);
+		ObjectPool.removeImage(this);
 	}
 }

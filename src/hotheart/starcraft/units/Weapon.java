@@ -73,7 +73,7 @@ public final class Weapon {
 			int len_sq = (destUnit.flingy.getPosX() - this.posX)*(destUnit.flingy.getPosX() - this.posX)+
 					  (destUnit.flingy.getPosY() - this.posY)*(destUnit.flingy.getPosY() - this.posY);
 			if (len_sq<10)
-				this.kill();
+				this.delete();
 			else
 				this.move(destUnit.flingy.getPosX(), destUnit.flingy.getPosY());
 			super.update();

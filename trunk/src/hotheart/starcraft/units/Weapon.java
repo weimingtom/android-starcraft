@@ -65,26 +65,17 @@ public final class Weapon {
 		Unit destUnit;
 		public Missle(Unit dest, Flingy base)
 		{
-			this.sprite = base.sprite;
-			this.sprite.flingy = this;
-			this.topSpeed = base.topSpeed;
-			this.acceleration = base.acceleration;
-			this.haltDistantion = base.haltDistantion;
-			this.turnRadius = base.turnRadius;
-			this.moveControl = base.moveControl;
-			this.posX = base.posX;
-			this.posY = base.posY;
-			this.sprite.imageState.angle = base.sprite.imageState.angle; 
+			super(base);
 			destUnit = dest;
 		}
 		public void update()
 		{
-			int len_sq = (destUnit.flingy.posX - this.posX)*(destUnit.flingy.posX - this.posX)+
-					  (destUnit.flingy.posY - this.posY)*(destUnit.flingy.posY - this.posY);
+			int len_sq = (destUnit.flingy.getPosX() - this.posX)*(destUnit.flingy.getPosX() - this.posX)+
+					  (destUnit.flingy.getPosY() - this.posY)*(destUnit.flingy.getPosY() - this.posY);
 			if (len_sq<10)
 				this.kill();
 			else
-				this.move(destUnit.flingy.posX, destUnit.flingy.posY);
+				this.move(destUnit.flingy.getPosX(), destUnit.flingy.getPosY());
 			super.update();
 		}
 	}
@@ -94,16 +85,14 @@ public final class Weapon {
 		if (behaviour == B_APPEAR_ON_TARGET)
 		{
 			Flingy f = Flingy.getFlingy(flingyId, TeamColors.COLOR_DEFAULT);
-			f.posX = targetUnit.flingy.posX;
-			f.posY = targetUnit.flingy.posY;
-			f.sprite.imageState.angle = targetUnit.flingy.sprite.imageState.angle; 
+			f.setPos(targetUnit.flingy.getPosX(), targetUnit.flingy.getPosY());
+			f.imageState.angle = targetUnit.flingy.imageState.angle; 
 			ObjectPool.addFlingy(f);
 		}
 		else if (behaviour == B_FLY_TO_TARGET)
 		{
 			Flingy f = Flingy.getFlingy(flingyId, TeamColors.COLOR_DEFAULT);
-			f.posX = srsUnit.flingy.posX;
-			f.posY = srsUnit.flingy.posY;
+			f.setPos(srsUnit.flingy.getPosX(), srsUnit.flingy.getPosY());
 			
 			ObjectPool.addFlingy(new Missle(targetUnit, f));
 		}

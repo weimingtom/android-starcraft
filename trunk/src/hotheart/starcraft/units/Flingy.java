@@ -3,7 +3,8 @@ package hotheart.starcraft.units;
 import android.graphics.Canvas;
 import hotheart.starcraft.graphics.Sprite;
 
-public class Flingy {
+public class Flingy extends Sprite {
+
 	public static final int FLINGY_DAT = 0;
 	public static final int MIXED = 1;
 	public static final int ISCRIPT_BIN = 2;
@@ -37,9 +38,9 @@ public class Flingy {
 
 		final int moveControl = (flingy[id + count * 14] & 0xFF);
 
-		final Flingy res = new Flingy();
-		res.sprite = Sprite.getSprite(spriteId, teamColor, 0);
-		res.sprite.flingy = res;
+		final Flingy res = new Flingy(Sprite.getSprite(spriteId, teamColor, 0));
+		//res.sprite = res;
+		//res.sprite.flingy = res;
 		res.topSpeed = speed/120;
 		res.acceleration = accel;
 		res.haltDistantion = haltDist/256;
@@ -48,49 +49,63 @@ public class Flingy {
 		return res;
 	}
 	
+	public Flingy(Flingy src)
+	{
+		super(src);
+		this.topSpeed = src.topSpeed;
+		this.acceleration = src.acceleration;
+		this.haltDistantion = src.haltDistantion;
+		this.turnRadius = src.turnRadius;
+		this.moveControl = src.moveControl;
+		this.unit = src.unit;
+		this.currentAttack = src.currentAttack;
+		this.speed = src.speed;
+		this.action = src.action;
+		this.destX = src.destX;
+		this.destY = src.destY;
+	}
+	
+	private Flingy(Sprite src) {
+		super(src);
+	}
+	
 	public static final int ATTACK_AIR  = 2;
 	public static final int ATTACK_GRND = 3;
 	public static final int IDLE        = 4;
 	public static final int MOVING      = 5;
 	public static final int DEATH       = 6;
 
-	public Sprite sprite;
+	//public Sprite sprite;
 	public int topSpeed;
 	public int acceleration;
 	public int haltDistantion;
 	public int turnRadius;
 	public int moveControl;
 
-	public int posX = 0;
-	public int posY = 0;
-	
 	public Unit unit = null;
-
-	public final void preDraw()
-	{
-		sprite.setPos(posX, posY);
-		sprite.preDraw(posY);
-	}
-	public final void  draw(Canvas c) {
-		sprite.setPos((int) posX, (int) posY);
-		sprite.draw(c);
-	}
-
-	public final void move(int d) {
-		final float dx = (float) Math
-				.cos(((sprite.imageState.angle - 90) / 180.0f) * 3.1415f)
-				* d;
-		final float dy = (float) Math
-				.sin(((sprite.imageState.angle - 90) / 180.0f) * 3.1415f)
-				* d;
-		posX += dx;
-		posY += dy;
-	}
-
+	
+	private int currentAttack = ATTACK_GRND;
+	
 	int speed = 0;
 	int action = IDLE;
 
 	public int destX = 0, destY = 0;
+
+	public final void preDraw()
+	{
+		super.preDraw(posY);
+	}
+
+	public final void move(int d) {
+		final float dx = (float) Math
+				.cos(((imageState.angle - 90) / 180.0f) * 3.1415f)
+				* d;
+		final float dy = (float) Math
+				.sin(((imageState.angle - 90) / 180.0f) * 3.1415f)
+				* d;
+		posX += dx;
+		posY += dy;
+	}
 
 	public final void move(int dx, int dy) {
 		destX = dx;
@@ -100,8 +115,7 @@ public class Flingy {
 			return;
 		action = MOVING;
 
-		if (sprite!=null)
-			sprite.play(11);
+		play(11);
 
 		speed = 0;
 	}
@@ -110,7 +124,7 @@ public class Flingy {
 		if (action != MOVING)
 			return;
 
-		sprite.play(12);
+		play(12);
 
 		action = IDLE;
 		speed = 0;
@@ -121,7 +135,7 @@ public class Flingy {
 		final int len_sq = (int) ((posX - dx) * (posX - dx) + (posY - dy)
 				* (posY - dy));
 		
-		int current_angle = sprite.imageState.angle;
+		int current_angle = imageState.angle;
 
 		int delta = (int) (18 * 3.1415 * turnRadius / (topSpeed));
 
@@ -146,7 +160,7 @@ public class Flingy {
 		else
 			current_angle = (current_angle + delta) % 360;
 		
-		sprite.imageState.angle = current_angle;
+		imageState.angle = current_angle;
 	}
 	
 	public void update() {
@@ -200,10 +214,9 @@ public class Flingy {
 				move(speed);
 			}
 		}
-		sprite.update();
+		super.update();
 	}
 
-	private int currentAttack = ATTACK_GRND;
 	
 	public void attack(int attackType) {
 		if (action == attackType)
@@ -212,12 +225,12 @@ public class Flingy {
 		if (attackType == ATTACK_GRND)
 		{
 			currentAttack = action = ATTACK_GRND;
-			sprite.play(2);
+			play(2);
 		}
 		else
 		{
 			currentAttack = action = ATTACK_AIR;
-			sprite.play(3);
+			play(3);
 		}
 		
 	}
@@ -225,12 +238,12 @@ public class Flingy {
 	public void repeatAttack()
 	{
 		action = currentAttack;
-		sprite.play(5);
+		play(5);
 	}
 
 	public void finishAttack()
 	{
-		sprite.play(8);
+		play(8);
 	}
 	
 	public void kill() {
@@ -239,10 +252,8 @@ public class Flingy {
 
 		action = DEATH;
 
-		sprite.play(1);
+		play(1);
 		
-		sprite.setPos((int)this.posX, (int)this.posY);
-
-		ObjectPool.addSprite(sprite);
+		ObjectPool.addSprite(this);
 	}
 }

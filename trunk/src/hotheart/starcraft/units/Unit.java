@@ -161,21 +161,19 @@ public final class Unit {
 		flingy.preDraw();
 
 		if (subunit1 != null) {
-			subunit1.flingy.posX = flingy.posX;
-			subunit1.flingy.posY = flingy.posY;
+			subunit1.flingy.setPos(flingy.getPosX(), flingy.getPosY());
 			subunit1.preDraw();
 		}
 		if (subunit2 != null) {
-			subunit2.flingy.posX = flingy.posX;
-			subunit2.flingy.posY = flingy.posY;
+			subunit2.flingy.setPos(flingy.getPosX(), flingy.getPosY());
 			subunit2.preDraw();
 		}
 	}
 
 	public final void draw_selection(Canvas c) {
 		if (selected) {
-			Image circ = SelectionCircles.selCircles[flingy.sprite.selCircle];
-			circ.setPos(flingy.posX, flingy.posY + flingy.sprite.vertPos);
+			Image circ = SelectionCircles.selCircles[flingy.selCircle];
+			circ.setPos(flingy.getPosX(), flingy.getPosX() + flingy.vertPos);
 			circ.draw(c);
 		}
 	}
@@ -185,8 +183,8 @@ public final class Unit {
 			return;
 
 		if (selected) {
-			Image circ = SelectionCircles.selCircles[flingy.sprite.selCircle];
-			circ.setPos(flingy.posX, flingy.posY + flingy.sprite.vertPos);
+			Image circ = SelectionCircles.selCircles[flingy.selCircle];
+			circ.setPos(flingy.getPosX(), flingy.getPosY() + flingy.vertPos);
 			circ.draw(c);
 		}
 
@@ -195,31 +193,29 @@ public final class Unit {
 		Paint p = new Paint();
 		p.setColor(Color.GRAY);
 
-		int yPos = flingy.posY
-				+ flingy.sprite.vertPos
-				+ SelectionCircles.selCircleSize[flingy.sprite.selCircle]
+		int yPos = flingy.getPosY()
+				+ flingy.vertPos
+				+ SelectionCircles.selCircleSize[flingy.selCircle]
 				/ 2;
 
-		c.drawRect(flingy.posX - flingy.sprite.healthBar / 2, yPos, flingy.posX
-				+ flingy.sprite.healthBar / 2, yPos + 4, p);
+		c.drawRect(flingy.getPosX() - flingy.healthBar / 2, yPos, flingy.getPosX()
+				+ flingy.healthBar / 2, yPos + 4, p);
 
 		p.setColor(Color.GREEN);
 		if (maxHealth > 0) {
-			int len = (flingy.sprite.healthBar * health) / maxHealth;
+			int len = (flingy.healthBar * health) / maxHealth;
 
-			c.drawRect(flingy.posX - flingy.sprite.healthBar / 2, yPos,
-					flingy.posX - flingy.sprite.healthBar / 2 + len, yPos + 4,
+			c.drawRect(flingy.getPosX() - flingy.healthBar / 2, yPos,
+					flingy.getPosX() - flingy.healthBar / 2 + len, yPos + 4,
 					p);
 		}
 
 		if (subunit1 != null) {
-			subunit1.flingy.posX = flingy.posX;
-			subunit1.flingy.posY = flingy.posY;
+			subunit1.flingy.setPos(flingy.getPosX(), flingy.getPosY());
 			subunit1.draw(c);
 		}
 		if (subunit2 != null) {
-			subunit2.flingy.posX = flingy.posX;
-			subunit2.flingy.posY = flingy.posY;
+			subunit2.flingy.setPos(flingy.getPosX(), flingy.getPosY());
 			subunit2.draw(c);
 		}
 
@@ -236,12 +232,12 @@ public final class Unit {
 		if (action == ACTION_GRND_ATTACK)
 			if (targetUnit != null)
 				if (targetUnit.flingy != null) {
-					dposX = (int) targetUnit.flingy.posX;
-					dposY = (int) targetUnit.flingy.posY;
+					dposX = (int) targetUnit.flingy.getPosX();
+					dposY = (int) targetUnit.flingy.getPosY();
 				}
 
-		return (int) ((dposX - flingy.posX) * (dposX - flingy.posX) + (dposY - flingy.posY)
-				* (dposY - flingy.posY));
+		return (int) ((dposX - flingy.getPosX()) * (dposX - flingy.getPosX()) + (dposY - flingy.getPosY())
+				* (dposY - flingy.getPosY()));
 	}
 
 	public void update() {
@@ -260,13 +256,13 @@ public final class Unit {
 					selWeapon = groundWeapon;
 
 				if (selWeapon != null) {
-					int dposX = (int) targetUnit.flingy.posX;
-					int dposY = (int) targetUnit.flingy.posY;
+					int dposX = (int) targetUnit.flingy.getPosX();
+					int dposY = (int) targetUnit.flingy.getPosY();
 					flingy.rotateTo(dposX, dposY);
 
-					int len_sq = (int) ((dposX - flingy.posX)
-							* (dposX - flingy.posX) + (dposY - flingy.posY)
-							* (dposY - flingy.posY));
+					int len_sq = (int) ((dposX - flingy.getPosX())
+							* (dposX - flingy.getPosX()) + (dposY - flingy.getPosY())
+							* (dposY - flingy.getPosY()));
 
 					if (len_sq <= selWeapon.maxDistance * selWeapon.maxDistance) {
 						if (action == ACTION_GRND_ATTACK)

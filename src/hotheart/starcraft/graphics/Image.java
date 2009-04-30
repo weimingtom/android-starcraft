@@ -246,10 +246,10 @@ public class Image {
 
 	public int childCount = 0;
 
-	public void delete() {
+	public void kill() {
 
 		deleted = true;
-
+		ObjectPool.removeImage(this);
 		if (childCount == 0) {
 			if (parentOverlay != null) {
 				parentOverlay.removeChild(this);
@@ -284,7 +284,7 @@ public class Image {
 				break;
 			}
 		if ((deleted) & (childCount == 0))
-			delete();
+			kill();
 	}
 
 	public void update() {

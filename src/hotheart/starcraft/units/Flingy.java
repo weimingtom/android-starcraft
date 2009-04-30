@@ -1,6 +1,5 @@
 package hotheart.starcraft.units;
 
-import android.graphics.Canvas;
 import hotheart.starcraft.graphics.Sprite;
 
 public class Flingy extends Sprite {
@@ -254,6 +253,6 @@ public class Flingy extends Sprite {
 
 		play(1);
 		
-		ObjectPool.addSprite(this);
+		//super.delete();
 	}
 }

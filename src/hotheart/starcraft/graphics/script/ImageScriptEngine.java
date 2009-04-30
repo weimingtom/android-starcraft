@@ -295,7 +295,7 @@ public class ImageScriptEngine {
 			// if (instance.image instanceof Sprite)
 			// sp.parent = (Sprite) instance.image;
 
-			ObjectPool.addSprite(sp);
+			ObjectPool.addImage(sp);
 			break;
 
 		// Seems to be OK
@@ -321,7 +321,7 @@ public class ImageScriptEngine {
 			// if (instance.image instanceof Sprite)
 			// lo_sprite.parent = (Sprite) instance.image;
 
-			ObjectPool.addSprite(lo_sprite);
+			ObjectPool.addImage(lo_sprite);
 			break;
 
 		// case 0x15:
@@ -344,7 +344,7 @@ public class ImageScriptEngine {
 			// if (instance.image instanceof Sprite)
 			// l.parent = (Sprite) instance.image;
 
-			ObjectPool.addSprite(l);
+			ObjectPool.addImage(l);
 			break;
 
 		// OK
@@ -399,7 +399,7 @@ public class ImageScriptEngine {
 		// OK
 		case 0xff:
 		case OP_END:
-			instance.image.delete();
+			instance.image.kill();
 			break;
 
 		// Not checked

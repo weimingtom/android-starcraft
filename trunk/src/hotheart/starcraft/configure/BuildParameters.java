@@ -16,7 +16,7 @@ public class BuildParameters {
 
 	// Playing sounds. If there no sounds in /starcraft/sounds folder and
 	// PLAY_SOUNDS = true then game will run slower
-	public static final boolean PLAY_SOUNDS = true;
+	public static final boolean PLAY_SOUNDS = false;
 	
 	public static final boolean LOAD_MAP = false;
 	

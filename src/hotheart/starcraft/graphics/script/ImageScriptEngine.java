@@ -207,7 +207,6 @@ public class ImageScriptEngine {
 			overlay.imageState.angle = instance.angle;
 			instance.image.addOverlay(overlay);
 			break;
-
 		// OK
 		case OP_ACT_UNDERLAY:
 			int underlayId = (script[instance.scriptPos++] & 0xFF)
@@ -397,7 +396,6 @@ public class ImageScriptEngine {
 			break;
 
 		// OK
-		case 0xff:
 		case OP_END:
 			instance.image.kill();
 			break;
@@ -466,6 +464,7 @@ public class ImageScriptEngine {
 
 		// 4-byte commands
 		case 0x10:
+			instance.scriptPos+=3;
 
 			// 1-byte commands
 		case 0x24:

@@ -191,7 +191,10 @@ public final class GRPImage{
 		catch(Exception e)
 		{
 			if (BuildParameters.DEBUG_GRP_RENDER_ERROR)
+			{
 				e.printStackTrace();
+				System.err.print("Frame ID:" + Integer.toString(selectedFrame));
+			}
 		}
 	}
 	private final  void draw(int offset, int w, int h,Canvas c, int[] palette)

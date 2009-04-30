@@ -173,7 +173,7 @@ public final class Unit {
 	public final void draw_selection(Canvas c) {
 		if (selected) {
 			Image circ = SelectionCircles.selCircles[flingy.selCircle];
-			circ.setPos(flingy.getPosX(), flingy.getPosX() + flingy.vertPos);
+			circ.setPos(flingy.getPosX(), flingy.getPosY() + flingy.vertPos);
 			circ.draw(c);
 		}
 	}
@@ -309,7 +309,10 @@ public final class Unit {
 	}
 
 	public final void kill() {
+		
 		ObjectPool.removeUnit(this);
+		ObjectPool.addImage(flingy);
+		
 		flingy.kill();
 
 		if (subunit1 != null)

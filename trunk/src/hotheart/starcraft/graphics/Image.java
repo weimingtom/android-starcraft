@@ -181,7 +181,7 @@ public class Image {
 
 	private int graphicsFuntion = 0;
 	private int remapping = 0;
-	private boolean align = true;
+	private boolean align = false;
 
 	// Offset from main offset
 
@@ -246,7 +246,7 @@ public class Image {
 
 	public int childCount = 0;
 
-	public void kill() {
+	public void delete() {
 
 		deleted = true;
 		ObjectPool.removeImage(this);
@@ -284,7 +284,7 @@ public class Image {
 				break;
 			}
 		if ((deleted) & (childCount == 0))
-			kill();
+			delete();
 	}
 
 	public void update() {

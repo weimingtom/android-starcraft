@@ -397,7 +397,7 @@ public class ImageScriptEngine {
 
 		// OK
 		case OP_END:
-			instance.image.kill();
+			instance.image.delete();
 			break;
 
 		// Not checked

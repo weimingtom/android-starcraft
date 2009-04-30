@@ -225,6 +225,14 @@ public class Image {
 	public void setPosY(int dy) {
 		posY = dy;
 	}
+	
+	public int getPosX() {
+		return posX;
+	}
+
+	public int getPosY() {
+		return posY;
+	}
 
 	// Children data
 	public Image[] childs = new Image[20];
@@ -243,7 +251,7 @@ public class Image {
 		deleted = true;
 
 		if (childCount == 0) {
-			if ( (!(this instanceof Sprite)) && (parentOverlay != null)) {
+			if (parentOverlay != null) {
 				parentOverlay.removeChild(this);
 			}
 		}

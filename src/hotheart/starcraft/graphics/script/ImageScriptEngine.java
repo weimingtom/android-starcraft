@@ -4,6 +4,7 @@ import hotheart.starcraft.configure.BuildParameters;
 import hotheart.starcraft.graphics.Image;
 import hotheart.starcraft.graphics.Sprite;
 import hotheart.starcraft.sounds.StarcraftSoundPool;
+import hotheart.starcraft.units.Flingy;
 import hotheart.starcraft.units.ObjectPool;
 
 import java.util.Random;
@@ -165,10 +166,9 @@ public class ImageScriptEngine {
 			int destPos = (script[instance.scriptPos++] & 0xFF)
 					+ ((script[instance.scriptPos++] & 0xFF) << 8);
 
-			if (((Sprite) instance.image).flingy != null)
-				if (((Sprite) instance.image).flingy.unit != null)
-					if (((Sprite) instance.image).flingy.unit
-							.getLenSqToTarget() <= dist * dist)
+			if (instance.image instanceof Flingy)
+				if (((Flingy) instance.image).unit != null)
+					if (((Flingy) instance.image).unit.getLenSqToTarget() <= (dist * dist))
 						instance.scriptPos = destPos;
 
 			break;
@@ -292,8 +292,8 @@ public class ImageScriptEngine {
 
 			sp.imageState.angle = instance.angle;
 
-//			if (instance.image instanceof Sprite)
-//				sp.parent = (Sprite) instance.image;
+			// if (instance.image instanceof Sprite)
+			// sp.parent = (Sprite) instance.image;
 
 			ObjectPool.addSprite(sp);
 			break;
@@ -318,8 +318,8 @@ public class ImageScriptEngine {
 					.getOffsetY());
 			lo_sprite.imageState.angle = instance.angle;
 
-//			if (instance.image instanceof Sprite)
-//				lo_sprite.parent = (Sprite) instance.image;
+			// if (instance.image instanceof Sprite)
+			// lo_sprite.parent = (Sprite) instance.image;
 
 			ObjectPool.addSprite(lo_sprite);
 			break;
@@ -341,18 +341,17 @@ public class ImageScriptEngine {
 					+ l_dy);
 			l.imageState.angle = instance.angle;
 
-//			if (instance.image instanceof Sprite)
-//				l.parent = (Sprite) instance.image;
+			// if (instance.image instanceof Sprite)
+			// l.parent = (Sprite) instance.image;
 
 			ObjectPool.addSprite(l);
 			break;
 
 		// OK
 		case OP_MOVE:
-			if (instance.image instanceof Sprite)
-				if (((Sprite) instance.image).flingy != null)
-					((Sprite) instance.image).flingy
-							.move(script[instance.scriptPos + 1] & 0xFF);
+			if (instance.image instanceof Flingy)
+				((Flingy) instance.image)
+						.move(script[instance.scriptPos + 1] & 0xFF);
 
 			instance.scriptPos++;
 			break;
@@ -415,24 +414,23 @@ public class ImageScriptEngine {
 
 		// Attacking control
 		case OP_REPEAT_ATTACK:
-			if (((Sprite) instance.image).flingy != null)
-				if (((Sprite) instance.image).flingy.unit != null)
-					((Sprite) instance.image).flingy.unit.repeatAttack();
+			if (instance.image instanceof Flingy)
+				if (((Flingy) instance.image).unit != null)
+					((Flingy) instance.image).unit.repeatAttack();
 			break;
 
 		case 0x1b:
 		case OP_ATTACK:
-			if (instance.image instanceof Sprite)
-				if (((Sprite) instance.image).flingy != null)
-					if (((Sprite) instance.image).flingy.unit != null)
-						((Sprite) instance.image).flingy.unit.attack(-1);
+			if (instance.image instanceof Flingy)
+				if (((Flingy) instance.image).unit != null)
+					((Flingy) instance.image).unit.attack(-1);
 
 			break;
 
 		case OP_ATTACK_WITH:
-			if (((Sprite) instance.image).flingy != null)
-				if (((Sprite) instance.image).flingy.unit != null)
-					((Sprite) instance.image).flingy.unit
+			if (instance.image instanceof Flingy)
+				if (((Flingy) instance.image).unit != null)
+					((Flingy) instance.image).unit
 							.attack(script[instance.scriptPos + 1] & 0xFF);
 
 			instance.scriptPos++;
@@ -440,9 +438,9 @@ public class ImageScriptEngine {
 			break;
 
 		case OP_ATTACK_WITH_SOUND:
-			if (((Sprite) instance.image).flingy != null)
-				if (((Sprite) instance.image).flingy.unit != null)
-					((Sprite) instance.image).flingy.unit.attack(-1);
+			if (instance.image instanceof Flingy)
+				if (((Flingy) instance.image).unit != null)
+					((Flingy) instance.image).unit.attack(-1);
 
 			// Sound control
 		case OP_PLAY_RANDROM_SOUND:// Play random sound

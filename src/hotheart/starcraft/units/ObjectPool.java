@@ -60,8 +60,7 @@ public final class ObjectPool {
 				
 				if (PickUnit(nx, ny) == null)
 				{
-					u.flingy.posX = nx;
-					u.flingy.posY = ny;
+					u.flingy.setPos(nx, ny);
 
 					addUnit(u);
 					return;
@@ -76,8 +75,7 @@ public final class ObjectPool {
 				
 				if (PickUnit(nx, ny) == null)
 				{
-					u.flingy.posX = nx;
-					u.flingy.posY = ny;
+					u.flingy.setPos(nx, ny);
 
 					addUnit(u);
 					return;
@@ -94,8 +92,7 @@ public final class ObjectPool {
 //					continue;
 				if (PickUnit(nx, ny) == null)
 				{
-					u.flingy.posX = nx;
-					u.flingy.posY = ny;
+					u.flingy.setPos(nx, ny);
 
 					addUnit(u);
 					return;
@@ -111,8 +108,7 @@ public final class ObjectPool {
 //					continue;
 				if (PickUnit(nx, ny) == null)
 				{
-					u.flingy.posX = nx;
-					u.flingy.posY = ny;
+					u.flingy.setPos(nx, ny);
 
 					addUnit(u);
 					return;
@@ -127,11 +123,11 @@ public final class ObjectPool {
 	{
 		for(Unit a : units)
 		{
-			if ( (x-a.flingy.posX)*(x-a.flingy.posX) + (y-a.flingy.posY)*(y-a.flingy.posY) 
+			if ( (x-a.flingy.getPosX())*(x-a.flingy.getPosX()) + (y-a.flingy.getPosY())*(y-a.flingy.getPosY()) 
 					< 
-					SelectionCircles.selCircleSize[a.flingy.sprite.selCircle]
+					SelectionCircles.selCircleSize[a.flingy.selCircle]
 					                     *
-					                     SelectionCircles.selCircleSize[a.flingy.sprite.selCircle]/4)
+					                     SelectionCircles.selCircleSize[a.flingy.selCircle]/4)
 			{
 				return a;
 			}

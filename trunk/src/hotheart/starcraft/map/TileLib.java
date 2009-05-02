@@ -14,6 +14,7 @@ import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Bitmap.Config;
 import android.util.Log;
+import hotheart.starcraft.configure.FilePaths;
 import hotheart.starcraft.utils.FileSystemUtils;
 
 public class TileLib {
@@ -24,37 +25,36 @@ public class TileLib {
 	public static Bitmap[] miniTiles; // Tiles(8x8)
 
 	public static final void init(int type) {
+		
 		String filePrefix = "";
 
 		// This ids used in scenario.chk
 		switch (type & 0x7) {
 		case 0:
-			filePrefix = "badlands";
+			filePrefix = FilePaths.BADLANDS_PREFIX;
 			break;
 		case 1:
-			filePrefix = "platform";
+			filePrefix = FilePaths.PLATFORM_PREFIX;
 			break;
 		case 2:
-			filePrefix = "install";
+			filePrefix = FilePaths.INSTALL_PREFIX;
 			break;
 		case 3:
-			filePrefix = "ashworld";
+			filePrefix = FilePaths.ASHWORLD_PREFIX;
 			break;
 		case 4:
-			filePrefix = "jungle";
+			filePrefix = FilePaths.JUNGLE_PREFIX;
 			break;
 		case 5:
-			filePrefix = "desert";
+			filePrefix = FilePaths.DESERT_PREFIX;
 			break;
 		case 6:
-			filePrefix = "ice";
+			filePrefix = FilePaths.ICE_PREFIX;
 			break;
 		case 7:
-			filePrefix = "twilight";
+			filePrefix = FilePaths.TWILIGHT_PREFIX;
 			break;
 		}
-
-		filePrefix = "/sdcard/starcraft/tileset/" + filePrefix;
 
 		// Loading palette
 

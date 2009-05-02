@@ -1,6 +1,7 @@
 package hotheart.starcraft.graphics;
 
 import hotheart.starcraft.configure.BuildParameters;
+import hotheart.starcraft.configure.FilePaths;
 import hotheart.starcraft.files.LoFile;
 import hotheart.starcraft.units.ObjectPool;
 import hotheart.starcraft.utils.FileSystemUtils;
@@ -49,7 +50,7 @@ public final class GRPImage {
 			return (LoFile) resources.get((Integer) id);
 		else {
 			LoFile res = new LoFile(FileSystemUtils
-					.readAllBytes("sdcard/starcraft/unit/"
+					.readAllBytes(FilePaths.UNITS_FOLDER
 							+ getFileName(id).replace('\\', '/')));
 			resources.put((Integer) id, res);
 			return res;
@@ -61,7 +62,7 @@ public final class GRPImage {
 			return (GRPImage) resources.get((Integer) id);
 		else {
 			GRPImage res = new GRPImage(FileSystemUtils
-					.readAllBytes("sdcard/starcraft/unit/"
+					.readAllBytes(FilePaths.UNITS_FOLDER
 							+ getFileName(id).replace('\\', '/')), id);
 			resources.put((Integer) id, res);
 			return res;

@@ -4,6 +4,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+import hotheart.starcraft.configure.FilePaths;
 import hotheart.starcraft.graphics.GRPImage;
 import hotheart.starcraft.graphics.Image;
 import hotheart.starcraft.graphics.Sprite;
@@ -33,25 +34,25 @@ public final class MainActivity extends Activity {
 			FileInputStream fs = null;
 			
 			StarcraftSoundPool.init(
-					FileSystemUtils.readAllBytes("/sdcard/starcraft/sfxdata.tbl"),
-					FileSystemUtils.readAllBytes("/sdcard/starcraft/sfxdata.dat"));
+					FileSystemUtils.readAllBytes(FilePaths.SFX_DATA_TBL),
+					FileSystemUtils.readAllBytes(FilePaths.SFX_DATA_DAT));
 			
-			GRPImage.init(FileSystemUtils.readAllBytes("/sdcard/starcraft/images.tbl"));
-			ImageScriptEngine.init(FileSystemUtils.readAllBytes("/sdcard/starcraft/iscript.bin"));
+			GRPImage.init(FileSystemUtils.readAllBytes(FilePaths.IMAGES_TBL));
+			ImageScriptEngine.init(FileSystemUtils.readAllBytes(FilePaths.ISCRIPT_BIN));
 			
 			//Images
-			fs = new FileInputStream("/sdcard/starcraft/images.dat"); 
+			fs = new FileInputStream(FilePaths.IMAGES_DAT); 
 			Image.initImages(fs);
 			fs.close();
 			
 			//Sprite
-			fs = new FileInputStream("/sdcard/starcraft/sprites.dat");
+			fs = new FileInputStream(FilePaths.SPRITES_DAT);
 			Sprite.initSprites(fs);
 			fs.close();
 			
-			Flingy.init(FileSystemUtils.readAllBytes("/sdcard/starcraft/flingy.dat"));
-			Unit.init(FileSystemUtils.readAllBytes("/sdcard/starcraft/units.dat"));
-			Weapon.init(FileSystemUtils.readAllBytes("/sdcard/starcraft/weapons.dat"));
+			Flingy.init(FileSystemUtils.readAllBytes(FilePaths.FLINGY_DAT));
+			Unit.init(FileSystemUtils.readAllBytes(FilePaths.UNITS_DAT));
+			Weapon.init(FileSystemUtils.readAllBytes(FilePaths.WEAPONS_DAT));
 			
 			
 			SelectionCircles.initCircles();

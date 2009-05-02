@@ -173,4 +173,43 @@ public class StarcraftPalette {
 		initEffectPalette();
 	}
 
+	public final static int[] getImagePalette(int graphicsFunction, int remappingFunc,
+			int foregroundColor)
+	{
+		int[] pal = normalPalette;
+		// byte[] pal = redPalette;
+		if (graphicsFunction == 10)
+			pal = shadowPalette;
+		else if (graphicsFunction == 9) {
+			switch (remappingFunc) {
+			case 1:
+				pal = ofirePalette;
+				break;
+			case 2:
+				pal = gfirePalette;
+				break;
+			case 3:
+				pal = bfirePalette;
+				break;
+			case 4:
+				pal = bexplPalette;
+				break;
+			}
+		} else if (graphicsFunction == 13)// WTF?! must be 11
+			pal = selectPalette;
+		else
+			switch (foregroundColor) {
+			case TeamColors.COLOR_RED:
+				pal = redPalette;
+				break;
+			case TeamColors.COLOR_GREEN:
+				pal = greenPalette;
+				break;
+			case TeamColors.COLOR_BLUE:
+				pal = bluePalette;
+				break;
+			}
+		
+		return pal;
+	}
 }

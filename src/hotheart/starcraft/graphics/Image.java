@@ -107,58 +107,62 @@ public class Image {
 		int functionId = drawFunc[id] & 0xFF;
 		int remapping = remappingData[id] & 0xFF;
 
-		Image res = new Image(new GRPContainer(grpId), ImageScriptEngine
-				.createHeader(scriptId), id, layer);
+		StaticImageData data = new StaticImageData(id, new GRPContainer(grpId),
+				ImageScriptEngine.createHeader(scriptId), functionId,
+				remapping, align == 1);
 
-		int[] pal = StarcraftPalette.normalPalette;
-		// byte[] pal = redPalette;
-		if (functionId == 10)
-			pal = StarcraftPalette.shadowPalette;
-		else if (functionId == 9) {
-			switch (remapping) {
-			case 1:
-				pal = StarcraftPalette.ofirePalette;
-				break;
-			case 2:
-				pal = StarcraftPalette.gfirePalette;
-				break;
-			case 3:
-				pal = StarcraftPalette.bfirePalette;
-				break;
-			case 4:
-				pal = StarcraftPalette.bexplPalette;
-				break;
-			}
-		}
+		Image res = new Image(layer, data);
 
-		if (BuildParameters.CACHE_GRP)
-			res.grp.image.makeCache(pal);
-		res.align = align == 1;
-		res.graphicsFuntion = functionId;
-		res.remapping = remapping;
+		// res.align = align == 1;
+		// res.graphicsFuntion = functionId;
+		// res.remapping = remapping;
+
+		// if (BuildParameters.CACHE_GRP) {
+		//		
+		// int[] pal = StarcraftPalette.normalPalette;
+		//			
+		// if (functionId == 10)
+		// pal = StarcraftPalette.shadowPalette;
+		// else if (functionId == 9) {
+		// switch (remapping) {
+		// case 1:
+		// pal = StarcraftPalette.ofirePalette;
+		// break;
+		// case 2:
+		// pal = StarcraftPalette.gfirePalette;
+		// break;
+		// case 3:
+		// pal = StarcraftPalette.bfirePalette;
+		// break;
+		// case 4:
+		// pal = StarcraftPalette.bexplPalette;
+		// break;
+		// }
+		// }
+		//
+		// res.grp.image.makeCache(pal);
+		// }
+
 		res.foregroundColor = color;
 		return res;
 	}
 
-	public Image(GRPContainer ovGRP, ImageScriptHeader ovHeader, int id,
-			int imageLayer) {
-		imageId = id;
-		this.grp = ovGRP;
-		this.imageState = new ImageState(this, ovHeader);
+	public Image(int imageLayer, StaticImageData data) {
+
+		this.imageData = data;
+		this.imageState = new ImageState(this, data.scriptHeader);
+		this.imageId = imageData.imageId;
+		
 		ImageScriptEngine.init(this.imageState);
 		currentImageLayer = imageLayer;
 	}
 
 	public Image(Image src) {
-		this.align = src.align;
 		this.childCount = src.childCount;
 		this.childs = src.childs;
 		this.currentImageLayer = src.currentImageLayer;
 		this.deleted = src.deleted;
 		this.foregroundColor = src.foregroundColor;
-		this.graphicsFuntion = src.graphicsFuntion;
-		this.grp = src.grp;
-		this.imageId = src.imageId;
 		this.imageState = new ImageState(src.imageState);
 		this.imageState.image = this;
 		this.offsetX = src.offsetX;
@@ -166,22 +170,18 @@ public class Image {
 		this.parentOverlay = src.parentOverlay;
 		this.posX = src.posX;
 		this.posY = src.posY;
-		this.remapping = src.remapping;
 		this.sortIndex = src.sortIndex;
+		this.imageData = src.imageData;// Don't copy!
+		this.imageId = src.imageId;
 	}
-
-	public int imageId;
+	
+	public int imageId = 0;
 
 	public int foregroundColor;
 
 	public int currentImageLayer;
 
-	// Graphics data
-	private GRPContainer grp;
-
-	private int graphicsFuntion = 0;
-	private int remapping = 0;
-	private boolean align = false;
+	private StaticImageData imageData;
 
 	// Offset from main offset
 
@@ -225,7 +225,7 @@ public class Image {
 	public void setPosY(int dy) {
 		posY = dy;
 	}
-	
+
 	public int getPosX() {
 		return posX;
 	}
@@ -313,14 +313,13 @@ public class Image {
 		if (!this.imageState.visible)
 			return;
 
-		//setPos(dX, dY);
+		// setPos(dX, dY);
 
 		sortIndex = dSortIndex;
 		ObjectPool.drawObjects.add(this);
 
 		for (int i = 0; i < childs.length; i++)
-			if (childs[i] != null)
-			{
+			if (childs[i] != null) {
 				childs[i].setPos(this.posX, this.posY);
 				childs[i].preDraw(dSortIndex);
 			}
@@ -336,42 +335,12 @@ public class Image {
 			}
 
 		if (!deleted) {
-			int[] pal = StarcraftPalette.normalPalette;
-			// byte[] pal = redPalette;
-			if (graphicsFuntion == 10)
-				pal = StarcraftPalette.shadowPalette;
-			else if (graphicsFuntion == 9) {
-				switch (remapping) {
-				case 1:
-					pal = StarcraftPalette.ofirePalette;
-					break;
-				case 2:
-					pal = StarcraftPalette.gfirePalette;
-					break;
-				case 3:
-					pal = StarcraftPalette.bfirePalette;
-					break;
-				case 4:
-					pal = StarcraftPalette.bexplPalette;
-					break;
-				}
-			} else if (graphicsFuntion == 13)// WTF?! must be 11
-				pal = StarcraftPalette.selectPalette;
-			else
-				switch (foregroundColor) {
-				case TeamColors.COLOR_RED:
-					pal = StarcraftPalette.redPalette;
-					break;
-				case TeamColors.COLOR_GREEN:
-					pal = StarcraftPalette.greenPalette;
-					break;
-				case TeamColors.COLOR_BLUE:
-					pal = StarcraftPalette.bluePalette;
-					break;
-				}
+			int[] pal = StarcraftPalette.getImagePalette(
+					this.imageData.graphicsFuntion, this.imageData.remapping,
+					this.foregroundColor);
 
 			// c, this, pal,
-			grp.draw(posX + offsetX, posY + offsetY, this.align,
+			imageData.grp.draw(posX + offsetX, posY + offsetY, this.imageData.align,
 					imageState.baseFrame, imageState.angle, pal, c);
 		}
 	}
@@ -389,8 +358,7 @@ public class Image {
 			}
 
 		for (int i = 0; i < childs.length; i++)
-			if (childs[i] != null)
-			{
+			if (childs[i] != null) {
 				childs[i].setPos(this.posX, this.posY);
 				childs[i].draw(c);
 			}

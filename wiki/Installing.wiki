@@ -3,7 +3,7 @@
 
 You may use to variants of install:
   * unpacking my archive to your sdcard
-  * unpack from your Starcraft(c) packaged files (*.mpq) and build the data for game
+  * unpack from your Starcraft(c) packaged files (`*`.mpq) and build the data for game
 
 = Install from my archive =
 

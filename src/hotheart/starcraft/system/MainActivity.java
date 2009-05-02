@@ -1,5 +1,9 @@
 package hotheart.starcraft.system;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
 import hotheart.starcraft.graphics.GRPImage;
 import hotheart.starcraft.graphics.Image;
 import hotheart.starcraft.graphics.Sprite;
@@ -25,17 +29,41 @@ public final class MainActivity extends Activity {
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 		setTheme(android.R.style.Theme_Black_NoTitleBar_Fullscreen);
 		
-		GRPImage.init(FileSystemUtils.readAllBytes("/sdcard/starcraft/images.tbl"));
-		StarcraftSoundPool.init(
-				FileSystemUtils.readAllBytes("/sdcard/starcraft/sfxdata.tbl"),
-				FileSystemUtils.readAllBytes("/sdcard/starcraft/sfxdata.dat"));
-		ImageScriptEngine.init(FileSystemUtils.readAllBytes("/sdcard/starcraft/iscript.bin"));
-		Image.init(FileSystemUtils.readAllBytes("/sdcard/starcraft/images.dat"));
-		Sprite.init(FileSystemUtils.readAllBytes("/sdcard/starcraft/sprites.dat"));
-		SelectionCircles.initCircles();
-		Flingy.init(FileSystemUtils.readAllBytes("/sdcard/starcraft/flingy.dat"));
-		Unit.init(FileSystemUtils.readAllBytes("/sdcard/starcraft/units.dat"));
-		Weapon.init(FileSystemUtils.readAllBytes("/sdcard/starcraft/weapons.dat"));
+		try {
+			FileInputStream fs = null;
+			
+			StarcraftSoundPool.init(
+					FileSystemUtils.readAllBytes("/sdcard/starcraft/sfxdata.tbl"),
+					FileSystemUtils.readAllBytes("/sdcard/starcraft/sfxdata.dat"));
+			
+			GRPImage.init(FileSystemUtils.readAllBytes("/sdcard/starcraft/images.tbl"));
+			ImageScriptEngine.init(FileSystemUtils.readAllBytes("/sdcard/starcraft/iscript.bin"));
+			
+			//Images
+			fs = new FileInputStream("/sdcard/starcraft/images.dat"); 
+			Image.initImages(fs);
+			fs.close();
+			
+			//Sprite
+			fs = new FileInputStream("/sdcard/starcraft/sprites.dat");
+			Sprite.initSprites(fs);
+			fs.close();
+			
+			Flingy.init(FileSystemUtils.readAllBytes("/sdcard/starcraft/flingy.dat"));
+			Unit.init(FileSystemUtils.readAllBytes("/sdcard/starcraft/units.dat"));
+			Weapon.init(FileSystemUtils.readAllBytes("/sdcard/starcraft/weapons.dat"));
+			
+			
+			SelectionCircles.initCircles();
+			
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		
 		ObjectPool.init();
 

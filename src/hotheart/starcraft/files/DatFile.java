@@ -1,47 +1,48 @@
 package hotheart.starcraft.files;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+
 public class DatFile {
 	
-	byte[] data = null;
-	int position = 0;
+	FileInputStream is;
 	
-	public DatFile(byte[] pData)
+	public DatFile(FileInputStream _is)
 	{
-		data = pData;
-		position = 0;
+		is = _is;
 	}
 	
-	public final void reset()
+	public final void skip(int offset) throws IOException
 	{
-		position = 0;
+		is.skip(offset);
 	}
 	
-	public final void seekFromCurrentPos(int offset)
-	{
-		position += offset;
-	}
-	
-	public final void seek(int nPos)
-	{
-		position = nPos;
-	}
-	
-	public final byte[] read1ByteData(int size, byte[] buff) {
+	public final byte[] read1ByteData(int size) throws IOException {
 		byte[] res = new byte[size];
 		for (int i = 0; i < size; i++) {
-			res[i] = buff[position++];
+			res[i] = (byte)is.read();
 		}
 		return res;
 	}
 
-	public final int[] read4ByteData(int size, byte[] buff) {
+	public final int[] read4ByteData(int size) throws IOException {
 		int[] res = new int[size];
 
 		for (int i = 0; i < size; i++) {
-			res[i] = (buff[position++] & 0xFF)
-					+ ((buff[position++] & 0xFF) << 8)
-					+ ((buff[position++] & 0xFF) << 16)
-					+ ((buff[position++] & 0xFF) << 24);
+			res[i] = (((byte)is.read()) & 0xFF)
+					+ ((((byte)is.read()) & 0xFF) << 8)
+					+ ((((byte)is.read()) & 0xFF) << 16)
+					+ ((((byte)is.read()) & 0xFF) << 24);
+		}
+		return res;
+	}
+	
+	public final int[] read2ByteData(int size) throws IOException {
+		int[] res = new int[size];
+
+		for (int i = 0; i < size; i++) {
+			res[i] = (((byte)is.read()) & 0xFF)
+					+ ((((byte)is.read()) & 0xFF) << 8);
 		}
 		return res;
 	}

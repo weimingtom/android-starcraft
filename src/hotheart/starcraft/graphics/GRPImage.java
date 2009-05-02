@@ -168,10 +168,10 @@ public final class GRPImage {
 	}
 
 	public final void draw(Canvas c, int[] palette) {
-		
+
 		if (dataOffset.length <= selectedFrame)
-			return; //Wrong data!
-		
+			return; // Wrong data!
+
 		c.save();
 		try {
 

@@ -10,7 +10,7 @@ public class FilePaths {
 	/*
 	 * Units folder
 	 */
-	public static final String UNITS_FOLDER = GAME_FOLDER + "units/";
+	public static final String UNITS_FOLDER = GAME_FOLDER + "unit/";
 
 	/*
 	 * /arr folder

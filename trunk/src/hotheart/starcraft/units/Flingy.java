@@ -11,7 +11,7 @@ public class Flingy extends Sprite {
 	private static byte[] flingy;
 	private static int count;
 
-	public static final void init(byte[] arr) {
+	public static void init(byte[] arr) {
 		flingy = arr;
 		count = arr.length / 15;
 	}
@@ -56,7 +56,6 @@ public class Flingy extends Sprite {
 		this.haltDistantion = src.haltDistantion;
 		this.turnRadius = src.turnRadius;
 		this.moveControl = src.moveControl;
-		this.unit = src.unit;
 		this.currentAttack = src.currentAttack;
 		this.speed = src.speed;
 		this.action = src.action;
@@ -81,8 +80,6 @@ public class Flingy extends Sprite {
 	public int turnRadius;
 	public int moveControl;
 
-	public Unit unit = null;
-	
 	private int currentAttack = ATTACK_GRND;
 	
 	int speed = 0;
@@ -90,7 +87,7 @@ public class Flingy extends Sprite {
 
 	public int destX = 0, destY = 0;
 
-	public final void preDraw()
+	public void preDraw()
 	{
 		super.preDraw(posY);
 	}
@@ -106,7 +103,7 @@ public class Flingy extends Sprite {
 		posY += dy;
 	}
 
-	public final void move(int dx, int dy) {
+	public void move(int dx, int dy) {
 		destX = dx;
 		destY = dy;
 		

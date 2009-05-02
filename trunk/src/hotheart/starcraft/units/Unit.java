@@ -9,7 +9,13 @@ import hotheart.starcraft.sounds.StarcraftSoundPool;
 
 import java.util.Random;
 
-public final class Unit {
+public final class Unit extends Flingy {
+
+	public Unit(Flingy src) {
+		super(src);
+		// TODO Auto-generated constructor stub
+	}
+
 	private static byte[] units;
 	private static int count;
 	private static Random rnd = new Random();
@@ -67,9 +73,8 @@ public final class Unit {
 		int whatSound2 = (units[whatSoundEndOffset + id * 2] & 0xFF)
 				+ ((units[whatSoundEndOffset + id * 2 + 1] & 0xFF) << 8);
 
-		Unit res = new Unit();
-		res.flingy = Flingy.getFlingy(flingyId, teamColor);
-		res.flingy.unit = res;
+		Unit res = new Unit(Flingy.getFlingy(flingyId, teamColor));
+
 		res.teamColor = teamColor;
 		res.health = health;
 		res.maxHealth = health;
@@ -111,7 +116,6 @@ public final class Unit {
 
 	public static final int MAX_GROUND_LEVEL = 11;
 
-	public Flingy flingy;
 	public Weapon groundWeapon;
 	public Weapon airWeapon;
 
@@ -156,92 +160,78 @@ public final class Unit {
 					+ rnd.nextInt(WhatSoundEnd - WhatSoundStart));
 	}
 
-	public final void preDraw() {
-		flingy.preDraw();
+	public void preDraw() {
+		super.preDraw();
 
 		if (subunit1 != null) {
-			subunit1.flingy.setPos(flingy.getPosX(), flingy.getPosY());
+			subunit1.setPos(posX, posY);
 			subunit1.preDraw();
 		}
 		if (subunit2 != null) {
-			subunit2.flingy.setPos(flingy.getPosX(), flingy.getPosY());
+			subunit2.setPos(posX, posY);
 			subunit2.preDraw();
 		}
 	}
 
 	public final void draw_selection(Canvas c) {
 		if (selected) {
-			Image circ = SelectionCircles.selCircles[flingy.selCircle];
-			circ.setPos(flingy.getPosX(), flingy.getPosY() + flingy.vertPos);
+			Image circ = SelectionCircles.selCircles[selCircle];
+			circ.setPos(posX, posY + vertPos);
 			circ.draw(c);
 		}
 	}
 
-	public final void draw(Canvas c) {
-		if (flingy == null)
-			return;
+	public void draw(Canvas c) {
 
-		if (selected) {
-			Image circ = SelectionCircles.selCircles[flingy.selCircle];
-			circ.setPos(flingy.getPosX(), flingy.getPosY() + flingy.vertPos);
-			circ.draw(c);
-		}
+		draw_selection(c);
 
-		flingy.draw(c);
+		super.draw(c);
 
 		Paint p = new Paint();
 		p.setColor(Color.GRAY);
 
-		int yPos = flingy.getPosY()
-				+ flingy.vertPos
-				+ SelectionCircles.selCircleSize[flingy.selCircle]
+		int yPos = posY + vertPos + SelectionCircles.selCircleSize[selCircle]
 				/ 2;
 
-		c.drawRect(flingy.getPosX() - flingy.healthBar / 2, yPos, flingy.getPosX()
-				+ flingy.healthBar / 2, yPos + 4, p);
+		c.drawRect(posX - healthBar / 2, yPos, posX + healthBar / 2, yPos + 4,
+				p);
 
 		p.setColor(Color.GREEN);
 		if (maxHealth > 0) {
-			int len = (flingy.healthBar * health) / maxHealth;
+			int len = (healthBar * health) / maxHealth;
 
-			c.drawRect(flingy.getPosX() - flingy.healthBar / 2, yPos,
-					flingy.getPosX() - flingy.healthBar / 2 + len, yPos + 4,
-					p);
+			c.drawRect(posX - healthBar / 2, yPos, posX - healthBar / 2 + len,
+					yPos + 4, p);
 		}
 
 		if (subunit1 != null) {
-			subunit1.flingy.setPos(flingy.getPosX(), flingy.getPosY());
+			subunit1.setPos(posX, posY);
 			subunit1.draw(c);
 		}
 		if (subunit2 != null) {
-			subunit2.flingy.setPos(flingy.getPosX(), flingy.getPosY());
+			subunit2.setPos(posX, posY);
 			subunit2.draw(c);
 		}
 
 	}
 
-	public final void stop() {
-		flingy.stop();
-	}
-
 	public int getLenSqToTarget() {
-		int dposX = (int) flingy.destX;
-		int dposY = (int) flingy.destX;
+		int dposX = (int) destX;
+		int dposY = (int) destX;
 
 		if (action == ACTION_GRND_ATTACK)
-			if (targetUnit != null)
-				if (targetUnit.flingy != null) {
-					dposX = (int) targetUnit.flingy.getPosX();
-					dposY = (int) targetUnit.flingy.getPosY();
-				}
+			if (targetUnit != null) {
+				dposX = (int) targetUnit.getPosX();
+				dposY = (int) targetUnit.getPosY();
+			}
 
-		return (int) ((dposX - flingy.getPosX()) * (dposX - flingy.getPosX()) + (dposY - flingy.getPosY())
-				* (dposY - flingy.getPosY()));
+		return (int) ((dposX - posX) * (dposX - posX) + (dposY - posY)
+				* (dposY - posY));
 	}
 
 	public void update() {
-		if (flingy != null)
-			flingy.update();
+		super.update();
+		
 		if (subunit1 != null) {
 			subunit1.update();
 		}
@@ -255,19 +245,19 @@ public final class Unit {
 					selWeapon = groundWeapon;
 
 				if (selWeapon != null) {
-					int dposX = (int) targetUnit.flingy.getPosX();
-					int dposY = (int) targetUnit.flingy.getPosY();
-					flingy.rotateTo(dposX, dposY);
+					int dposX = (int) targetUnit.getPosX();
+					int dposY = (int) targetUnit.getPosY();
+					rotateTo(dposX, dposY);
 
-					int len_sq = (int) ((dposX - flingy.getPosX())
-							* (dposX - flingy.getPosX()) + (dposY - flingy.getPosY())
-							* (dposY - flingy.getPosY()));
+					int len_sq = (int) ((dposX - posX)
+							* (dposX - posX) + (dposY - posY)
+							* (dposY - posY));
 
 					if (len_sq <= selWeapon.maxDistance * selWeapon.maxDistance) {
 						if (action == ACTION_GRND_ATTACK)
-							flingy.attack(Flingy.ATTACK_GRND);
+							super.attack(Flingy.ATTACK_GRND);
 						else
-							flingy.attack(Flingy.ATTACK_AIR);
+							super.attack(Flingy.ATTACK_AIR);
 						if (parent != null)
 							parent.stop();
 					} else {
@@ -285,34 +275,38 @@ public final class Unit {
 				else
 					action = ACTION_AIR_ATTACK;
 
-				flingy.repeatAttack();
+				super.repeatAttack();
 			}
 		}
 	}
 
-	private final void moveUnit(int dx, int dy) {
+	private void moveUnit(int dx, int dy) {
 		if (parent != null) {
 			parent.moveUnit(dx, dy);
 		}
 		if (subunit1 != null) {
 			if (subunit1.action != ACTION_GRND_ATTACK)
-				subunit1.flingy.move(dx, dy);
+				subunit1.move(dx, dy);
 		}
-		if (flingy != null)
-			flingy.move(dx, dy);
+		if (subunit2 != null) {
+			if (subunit2.action != ACTION_GRND_ATTACK)
+				subunit2.move(dx, dy);
+		}
+		
+		super.move(dx, dy);
 	}
 
-	public final void move(int dx, int dy) {
+	public void move(int dx, int dy) {
 		action = ACTION_MOVE;
 		moveUnit(dx, dy);
 	}
 
-	public final void kill() {
-		
+	public void kill() {
+
 		ObjectPool.removeUnit(this);
-		ObjectPool.addImage(flingy);
-		
-		flingy.kill();
+		ObjectPool.addImage(this);
+
+		super.kill();
 
 		if (subunit1 != null)
 			subunit1.kill();
@@ -335,9 +329,9 @@ public final class Unit {
 		targetUnit = unit;
 
 		if (action == ACTION_GRND_ATTACK)
-			flingy.attack(Flingy.ATTACK_GRND);
+			super.attack(Flingy.ATTACK_GRND);
 		else
-			flingy.attack(Flingy.ATTACK_AIR);
+			super.attack(Flingy.ATTACK_AIR);
 
 	}
 
@@ -352,7 +346,7 @@ public final class Unit {
 		if (targetUnit != null) {
 			if (selWeapon.attack(this, targetUnit)) {
 				targetUnit = null;
-				flingy.stop();
+				stop();
 
 				if (subunit1 != null)
 					subunit1.stop();
@@ -363,17 +357,14 @@ public final class Unit {
 			finishAttack();
 	}
 
-	public final void finishAttack() {
-		flingy.finishAttack();
-	}
-
-	public final void repeatAttack() {
+	public void repeatAttack() {
 		repeatTime = 0;
 		if (action == ACTION_GRND_ATTACK)
 			action = ACTION_REPEAT_GRND_ATTACK;
 		else
 			action = ACTION_REPEAT_AIR_ATTACK;
-
+		
+		//super.repeatAttack();
 	}
 
 	public final void hit(int points) {

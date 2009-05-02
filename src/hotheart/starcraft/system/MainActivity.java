@@ -40,13 +40,13 @@ public final class MainActivity extends Activity {
 		ObjectPool.init();
 
 		
-//		for(int i = 0; i < 5; i++)
-//			ObjectPool.addUnit(Unit.getUnit(0, TeamColors.COLOR_RED), 66*32, 66*32);
-//		
-//		for(int i = 0; i < 5; i++)
-//			ObjectPool.addUnit(Unit.getUnit(0, TeamColors.COLOR_BLUE), 62*32, 62*32);
+		for(int i = 0; i < 5; i++)
+			ObjectPool.addUnit(Unit.getUnit(0, TeamColors.COLOR_RED), 66*32, 66*32);
 		
-		ObjectPool.addUnit(Unit.getUnit(0, TeamColors.COLOR_BLUE), 62*32, 62*32);
+		for(int i = 0; i < 5; i++)
+			ObjectPool.addUnit(Unit.getUnit(0, TeamColors.COLOR_BLUE), 62*32, 62*32);
+		
+//		ObjectPool.addUnit(Unit.getUnit(66, TeamColors.COLOR_BLUE), 62*32, 62*32);
 
 		view = new GameView(this);
         setContentView(view);

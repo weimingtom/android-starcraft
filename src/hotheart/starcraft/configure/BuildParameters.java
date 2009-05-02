@@ -12,7 +12,7 @@ public class BuildParameters {
 	public static final boolean DEBUG_GRP_RENDER_ERROR = true;
 
 	// Cache GRP as Bitmap
-	public static final boolean CACHE_GRP = false;
+	public static final boolean CACHE_GRP = true;
 
 	// Playing sounds. If there no sounds in /starcraft/sounds folder and
 	// PLAY_SOUNDS = true then game will run slower

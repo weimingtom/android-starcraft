@@ -1,7 +1,5 @@
 package hotheart.starcraft.units;
 
-import hotheart.starcraft.graphics.Image;
-import hotheart.starcraft.graphics.Sprite;
 import hotheart.starcraft.graphics.TeamColors;
 
 public final class Weapon {

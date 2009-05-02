@@ -1,0 +1,25 @@
+#labels Featured,Phase-Deploy
+= Introduction =
+
+You may use to variants of install:
+  * unpacking my archive to your sdcard
+  * unpack from your Starcraft(c) packaged files (*.mpq) and build the data for game
+
+= Install from my archive =
+
+You may get everything is on the page in my blog: [http://stepa.name/starcraft-files/]
+
+Get an archive and unpack starcraft.7z to /sdcard/starcraft folder and everything must work =)
+
+= Install from original Starcraft (c) =
+
+  # Get WinMPQ or MPQEditor for unpackink Starcraft(c) MPQ archives
+  # Unpack BrooDat.mpq, Patch_rt.mpq, StarDat.mpg to different folders (i unpacked it to "BrooDat.mpq", "Patch_rt.mpq" and "StarDat.mpg" folders)
+  # Make a temp folder "temp"
+  # Copy "StarDat.mpg/arr/*", "StarDat.mpg/unit/*", "StarDat.mpg/tileset/*", "StarDat.mpg/scripts/*" to the "temp/arr", "temp/unit" and "temp/scripts" folders.
+  # Do the same thing with files of BrooDat archive with replacing existing files
+  # Do the same thing with files of Patch_rt archive with replacing existing files
+  # Now choose map to load into the game
+  # Open this with [1] tools and get scenario.chk file from it.
+  # Put it to temp folder
+  # Copy temp folder to /sdcard/starcraft

@@ -1,4 +1,7 @@
-package hotheart.starcraft.graphics;
+package hotheart.starcraft.graphics.utils;
+
+import hotheart.starcraft.graphics.Image;
+import hotheart.starcraft.graphics.TeamColors;
 
 public class SelectionCircles {
 	public static int[] selCircleSize = new int[] { 22, 32, 46, 62, 72, 94,

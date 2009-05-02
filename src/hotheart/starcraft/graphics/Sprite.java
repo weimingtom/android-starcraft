@@ -8,7 +8,6 @@ public class Sprite extends Image {
 		this.selCircle = src.selCircle;
 		this.healthBar = src.healthBar;
 		this.vertPos = src.vertPos;
-		this.currentImageLayer = src.currentImageLayer;
 		this.isVisible = src.isVisible;
 		this.isSelectable = src.isSelectable;
 	}
@@ -46,15 +45,12 @@ public class Sprite extends Image {
 		res.healthBar = healthBar;
 		res.selCircle = selCircle;
 		res.vertPos = vertOffset;
-		res.currentImageLayer = layer;
 		return res;
 	}
 
 	public int selCircle = 0;
 	public int healthBar = 6;
 	public int vertPos = 9;
-
-	public int currentImageLayer;
 
 	public boolean isVisible = true;
 	public boolean isSelectable = true;

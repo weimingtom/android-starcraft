@@ -16,7 +16,7 @@ Get an archive and unpack starcraft.7z to /sdcard/starcraft folder and everythin
   # Get WinMPQ or MPQEditor for unpackink Starcraft(c) MPQ archives
   # Unpack BrooDat.mpq, Patch_rt.mpq, StarDat.mpg to different folders (i unpacked it to "BrooDat.mpq", "Patch_rt.mpq" and "StarDat.mpg" folders)
   # Make a temp folder "temp"
-  # Copy "StarDat.mpg/arr/*", "StarDat.mpg/unit/*", "StarDat.mpg/tileset/*", "StarDat.mpg/scripts/*" to the "temp/arr", "temp/unit" and "temp/scripts" folders.
+  # Copy "StarDat.mpg/arr/`*`", "StarDat.mpg/unit/`*`", "StarDat.mpg/tileset/`*`", "StarDat.mpg/scripts/*" to the "temp/arr", "temp/unit" and "temp/scripts" folders.
   # Do the same thing with files of BrooDat archive with replacing existing files
   # Do the same thing with files of Patch_rt archive with replacing existing files
   # Now choose map to load into the game

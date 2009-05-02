@@ -1,6 +1,5 @@
 package hotheart.starcraft.graphics;
 
-import hotheart.starcraft.configure.BuildParameters;
 import hotheart.starcraft.configure.FilePaths;
 
 import java.io.FileInputStream;

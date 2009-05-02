@@ -8,6 +8,7 @@ package hotheart.starcraft.graphics;
 import java.io.FileInputStream;
 import java.io.IOException;
 
+import hotheart.starcraft.configure.BuildParameters;
 import hotheart.starcraft.files.DatFile;
 import hotheart.starcraft.graphics.script.ImageScriptEngine;
 import hotheart.starcraft.graphics.script.ImageState;
@@ -118,31 +119,31 @@ public class Image {
 		// res.graphicsFuntion = functionId;
 		// res.remapping = remapping;
 
-		// if (BuildParameters.CACHE_GRP) {
-		//		
-		// int[] pal = StarcraftPalette.normalPalette;
-		//			
-		// if (functionId == 10)
-		// pal = StarcraftPalette.shadowPalette;
-		// else if (functionId == 9) {
-		// switch (remapping) {
-		// case 1:
-		// pal = StarcraftPalette.ofirePalette;
-		// break;
-		// case 2:
-		// pal = StarcraftPalette.gfirePalette;
-		// break;
-		// case 3:
-		// pal = StarcraftPalette.bfirePalette;
-		// break;
-		// case 4:
-		// pal = StarcraftPalette.bexplPalette;
-		// break;
-		// }
-		// }
-		//
-		// res.grp.image.makeCache(pal);
-		// }
+		if (BuildParameters.CACHE_GRP) {
+
+			int[] pal = StarcraftPalette.normalPalette;
+
+			if (functionId == 10)
+				pal = StarcraftPalette.shadowPalette;
+			else if (functionId == 9) {
+				switch (remapping) {
+				case 1:
+					pal = StarcraftPalette.ofirePalette;
+					break;
+				case 2:
+					pal = StarcraftPalette.gfirePalette;
+					break;
+				case 3:
+					pal = StarcraftPalette.bfirePalette;
+					break;
+				case 4:
+					pal = StarcraftPalette.bexplPalette;
+					break;
+				}
+			}
+
+			res.imageData.grp.image.makeCache(pal);
+		}
 
 		res.foregroundColor = color;
 		return res;
@@ -153,7 +154,7 @@ public class Image {
 		this.imageData = data;
 		this.imageState = new ImageState(this, data.scriptHeader);
 		this.imageId = imageData.imageId;
-		
+
 		ImageScriptEngine.init(this.imageState);
 		currentImageLayer = imageLayer;
 	}
@@ -175,7 +176,7 @@ public class Image {
 		this.imageData = src.imageData;// Don't copy!
 		this.imageId = src.imageId;
 	}
-	
+
 	public int imageId = 0;
 
 	public int foregroundColor;
@@ -340,8 +341,9 @@ public class Image {
 					this.foregroundColor);
 
 			// c, this, pal,
-			imageData.grp.draw(posX + offsetX, posY + offsetY, this.imageData.align,
-					imageState.baseFrame, imageState.angle, pal, c);
+			imageData.grp.draw(posX + offsetX, posY + offsetY,
+					this.imageData.align, imageState.baseFrame,
+					imageState.angle, pal, c);
 		}
 	}
 

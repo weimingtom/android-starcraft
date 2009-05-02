@@ -17,12 +17,9 @@ import hotheart.starcraft.utils.FileSystemUtils;
 import hotheart.starcraft.weapons.Weapon;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.Context;
 
 public class SystemInitializer {
 

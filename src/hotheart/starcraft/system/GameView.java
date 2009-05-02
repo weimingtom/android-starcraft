@@ -3,11 +3,9 @@ package hotheart.starcraft.system;
 import java.util.Random;
 
 import hotheart.starcraft.configure.BuildParameters;
-import hotheart.starcraft.configure.FilePaths;
 import hotheart.starcraft.map.Map;
 import hotheart.starcraft.units.ObjectPool;
 import hotheart.starcraft.units.Unit;
-import hotheart.starcraft.utils.FileSystemUtils;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -34,7 +32,7 @@ public class GameView extends View {
 	Map map;
 	Scroller mScroller;
 
-	public GameView(Context context) {
+	public GameView(Context context, Map mp) {
 		super(context);
 		cont = context;
 
@@ -47,8 +45,7 @@ public class GameView extends View {
 		dx = this.getWidth() / 2;
 		dy = this.getHeight() / 2;
 
-		if (BuildParameters.LOAD_MAP)
-			map = new Map(FileSystemUtils.readAllBytes(FilePaths.SCENARIO_CHK));
+		map = mp;
 
 		mScroller = new Scroller(context);
 	}

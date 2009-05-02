@@ -5,6 +5,9 @@
  */
 package hotheart.starcraft.graphics;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+
 import hotheart.starcraft.files.DatFile;
 import hotheart.starcraft.graphics.script.ImageScriptEngine;
 import hotheart.starcraft.graphics.script.ImageState;
@@ -69,25 +72,25 @@ public class Image {
 	// private static int[] landingDustOverlay;
 	// private static int[] liftOffOverlay;
 
-	public static void init(byte[] _data) {
+	public static void initImages(FileInputStream _is) throws IOException {
 		StarcraftPalette.initPalette();
-		initBuffers(_data);
+		initBuffers(_is);
 	}
 
-	final static void initBuffers(byte[] buff) {
-		DatFile file = new DatFile(buff);
-		grpFileId = file.read4ByteData(COUNT, buff);
-		gfxTurns = file.read1ByteData(COUNT, buff);
+	private static void initBuffers(FileInputStream _is) throws IOException {
+		DatFile file = new DatFile(_is);
+		grpFileId = file.read4ByteData(COUNT);
+		gfxTurns = file.read1ByteData(COUNT);
 
 		// Seek unused sections
-		file.seekFromCurrentPos(COUNT * 3);
+		file.skip(COUNT * 3);
 		// clickable = file.read1ByteData(COUNT, buff);
 		// useFullISCript = file.read1ByteData(COUNT, buff);
 		// drawIfCloacked = file.read1ByteData(COUNT, buff);
 
-		drawFunc = file.read1ByteData(COUNT, buff);
-		remappingData = file.read1ByteData(COUNT, buff);
-		iScriptId = file.read4ByteData(COUNT, buff);
+		drawFunc = file.read1ByteData(COUNT);
+		remappingData = file.read1ByteData(COUNT);
+		iScriptId = file.read4ByteData(COUNT);
 
 		// Unused sections
 		// shieldOverlay = file.read4ByteData(COUNT, buff);

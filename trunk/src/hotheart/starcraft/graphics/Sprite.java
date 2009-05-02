@@ -1,5 +1,10 @@
 package hotheart.starcraft.graphics;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+
+import hotheart.starcraft.files.DatFile;
+
 public class Sprite extends Image {
 
 	public Sprite(Sprite src) {
@@ -17,30 +22,44 @@ public class Sprite extends Image {
 		super(src);
 	}
 
-	private static byte[] sprites;
-	private static int count;
+	private static int[] imageFiles;
+	private static byte[] healthBars;
+	private static byte[] selCircleImage;
+	private static byte[] selCircleOffset;
 
-	public static void init(byte[] arr) {
-		sprites = arr;
-		count = (sprites.length - 130 * 4) / 7 + 130;
+	private static final int COUNT = 517;
+	private static final int UNSELECTABLE_COUNT = 130;
+
+	public static void initSprites(FileInputStream _is) throws IOException {
+		initBuffers(_is);
+	}
+
+	private static void initBuffers(FileInputStream _is) throws IOException {
+		DatFile reader = new DatFile(_is);
+		imageFiles = reader.read2ByteData(COUNT);
+		healthBars = reader.read1ByteData(COUNT - UNSELECTABLE_COUNT);
+		reader.skip(COUNT);// Unknown
+		reader.skip(COUNT);// Is Visible
+		selCircleImage = reader.read1ByteData(COUNT - UNSELECTABLE_COUNT);
+		selCircleOffset = reader.read1ByteData(COUNT - UNSELECTABLE_COUNT);
 	}
 
 	// TODO: Add isVisible and isSelectable
 	public static final Sprite getSprite(int id, int color, int layer) {
-		int imageFile = (sprites[id * 2] & 0xFF)
-				+ ((sprites[id * 2 + 1] & 0xFF) << 8);
+
+		int imageFile = imageFiles[id];
 
 		int healthBar = 0;
-		if (id >= 130)
-			healthBar = (sprites[(id - 130) + count * 2] & 0xFF);
+		if (id >= UNSELECTABLE_COUNT)
+			healthBar = healthBars[id - UNSELECTABLE_COUNT] & 0xFF;
 
 		int selCircle = 0;
-		if (id >= 130)
-			selCircle = (sprites[(id - 130) + count * 4 + (count - 130) * 1] & 0xFF);
+		if (id >= UNSELECTABLE_COUNT)
+			selCircle = selCircleImage[id - UNSELECTABLE_COUNT] & 0xFF;
 
 		int vertOffset = 0;
-		if (id >= 130)
-			vertOffset = (sprites[(id - 130) + count * 4 + (count - 130) * 2] & 0xFF);
+		if (id >= UNSELECTABLE_COUNT)
+			vertOffset = selCircleOffset[id - UNSELECTABLE_COUNT] & 0xFF;
 
 		Sprite res = new Sprite(Image.getImage(imageFile, color, layer));
 		res.healthBar = healthBar;
@@ -53,10 +72,10 @@ public class Sprite extends Image {
 	public int selCircle = 0;
 	public int healthBar = 6;
 	public int vertPos = 9;
-	
+
 	public int currentImageLayer;
 
 	public boolean isVisible = true;
 	public boolean isSelectable = true;
-	
+
 }

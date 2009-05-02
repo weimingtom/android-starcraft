@@ -105,7 +105,7 @@ public class Image {
 		int functionId = drawFunc[id] & 0xFF;
 		int remapping = remappingData[id] & 0xFF;
 
-		StaticImageData data = new StaticImageData(id, new GRPContainer(grpId),
+		ImageStaticData data = new ImageStaticData(id, new GRPContainer(grpId),
 				ImageScriptEngine.createHeader(scriptId), functionId,
 				remapping, align == 1);
 
@@ -145,7 +145,7 @@ public class Image {
 		return res;
 	}
 
-	public Image(int imageLayer, StaticImageData data) {
+	public Image(int imageLayer, ImageStaticData data) {
 
 		this.imageData = data;
 		this.imageState = new ImageState(this, data.scriptHeader);
@@ -179,7 +179,7 @@ public class Image {
 
 	public int currentImageLayer;
 
-	private StaticImageData imageData;
+	private ImageStaticData imageData;
 
 	// Offset from main offset
 

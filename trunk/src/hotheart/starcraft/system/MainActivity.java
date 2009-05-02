@@ -2,10 +2,10 @@ package hotheart.starcraft.system;
 
 import hotheart.starcraft.graphics.GRPImage;
 import hotheart.starcraft.graphics.Image;
-import hotheart.starcraft.graphics.SelectionCircles;
 import hotheart.starcraft.graphics.Sprite;
 import hotheart.starcraft.graphics.TeamColors;
 import hotheart.starcraft.graphics.script.ImageScriptEngine;
+import hotheart.starcraft.graphics.utils.SelectionCircles;
 import hotheart.starcraft.sounds.StarcraftSoundPool;
 import hotheart.starcraft.units.Flingy;
 import hotheart.starcraft.units.ObjectPool;

@@ -2,9 +2,9 @@ package hotheart.starcraft.graphics;
 
 import hotheart.starcraft.graphics.script.ImageScriptHeader;
 
-public class StaticImageData
+public class ImageStaticData
 {
-	public StaticImageData(int _imageId, 
+	public ImageStaticData(int _imageId, 
 			GRPContainer _grp,
 			ImageScriptHeader _scriptHeader,
 			int _graphicsFuntion,

@@ -6,6 +6,7 @@ import hotheart.starcraft.graphics.Sprite;
 import hotheart.starcraft.sounds.StarcraftSoundPool;
 import hotheart.starcraft.units.Flingy;
 import hotheart.starcraft.units.ObjectPool;
+import hotheart.starcraft.units.Unit;
 
 import java.util.Random;
 
@@ -166,10 +167,9 @@ public class ImageScriptEngine {
 			int destPos = (script[instance.scriptPos++] & 0xFF)
 					+ ((script[instance.scriptPos++] & 0xFF) << 8);
 
-			if (instance.image instanceof Flingy)
-				if (((Flingy) instance.image).unit != null)
-					if (((Flingy) instance.image).unit.getLenSqToTarget() <= (dist * dist))
-						instance.scriptPos = destPos;
+			if (instance.image instanceof Unit)
+				if (((Unit) instance.image).getLenSqToTarget() <= (dist * dist))
+					instance.scriptPos = destPos;
 
 			break;
 		// OK
@@ -412,33 +412,29 @@ public class ImageScriptEngine {
 
 		// Attacking control
 		case OP_REPEAT_ATTACK:
-			if (instance.image instanceof Flingy)
-				if (((Flingy) instance.image).unit != null)
-					((Flingy) instance.image).unit.repeatAttack();
+			if (instance.image instanceof Unit)
+				((Unit) instance.image).repeatAttack();
 			break;
 
 		case 0x1b:
 		case OP_ATTACK:
-			if (instance.image instanceof Flingy)
-				if (((Flingy) instance.image).unit != null)
-					((Flingy) instance.image).unit.attack(-1);
+			if (instance.image instanceof Unit)
+				((Unit) instance.image).attack(-1);
 
 			break;
 
 		case OP_ATTACK_WITH:
-			if (instance.image instanceof Flingy)
-				if (((Flingy) instance.image).unit != null)
-					((Flingy) instance.image).unit
-							.attack(script[instance.scriptPos + 1] & 0xFF);
+			if (instance.image instanceof Unit)
+				((Unit) instance.image)
+						.attack(script[instance.scriptPos + 1] & 0xFF);
 
 			instance.scriptPos++;
 
 			break;
 
 		case OP_ATTACK_WITH_SOUND:
-			if (instance.image instanceof Flingy)
-				if (((Flingy) instance.image).unit != null)
-					((Flingy) instance.image).unit.attack(-1);
+			if (instance.image instanceof Unit)
+				((Unit) instance.image).attack(-1);
 
 			// Sound control
 		case OP_PLAY_RANDROM_SOUND:// Play random sound
@@ -464,7 +460,7 @@ public class ImageScriptEngine {
 
 		// 4-byte commands
 		case 0x10:
-			instance.scriptPos+=3;
+			instance.scriptPos += 3;
 
 			// 1-byte commands
 		case 0x24:

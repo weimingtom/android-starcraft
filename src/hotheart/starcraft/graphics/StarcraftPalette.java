@@ -1,6 +1,7 @@
 package hotheart.starcraft.graphics;
 
 import hotheart.starcraft.configure.BuildParameters;
+import hotheart.starcraft.configure.FilePaths;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -9,18 +10,6 @@ import java.io.IOException;
 import android.graphics.Color;
 
 public class StarcraftPalette {
-
-	// Files of palettes
-	private static final String DEFAULT_PALETTE_FILE = BuildParameters.GAME_FOLDER
-			+ "units.pal";
-	private static final String ORANGE_FIRE_PALETTE_FILE = BuildParameters.GAME_FOLDER
-			+ "ofire.pal";
-	private static final String BLUE_FIRE_PALETTE_FILE = BuildParameters.GAME_FOLDER
-			+ "blue.pal";
-	private static final String GREEN_FIRE_PALETTE_FILE = BuildParameters.GAME_FOLDER
-			+ "gfire.pal";
-	private static final String BLUE_EXPLOSION_PALETTE_FILE = BuildParameters.GAME_FOLDER
-			+ "bexpl.pal";
 
 	/*
 	 * Palettes
@@ -82,7 +71,7 @@ public class StarcraftPalette {
 		// palettes
 		if (normalPalette == null)
 			try {
-				FileInputStream is = new FileInputStream(DEFAULT_PALETTE_FILE);
+				FileInputStream is = new FileInputStream(FilePaths.DEFAULT_PAL);
 				byte[] tmp = new byte[is.available()];
 				is.read(tmp);
 				is.close();
@@ -154,13 +143,13 @@ public class StarcraftPalette {
 	private static final void initEffectPalette() {
 
 		if (ofirePalette == null)
-			ofirePalette = loadEffectPaletteFromFile(ORANGE_FIRE_PALETTE_FILE);
+			ofirePalette = loadEffectPaletteFromFile(FilePaths.ORANGE_FIRE_PAL);
 		if (gfirePalette == null)
-			gfirePalette = loadEffectPaletteFromFile(GREEN_FIRE_PALETTE_FILE);
+			gfirePalette = loadEffectPaletteFromFile(FilePaths.GREEN_FIRE_PAL);
 		if (bfirePalette == null)
-			bfirePalette = loadEffectPaletteFromFile(BLUE_FIRE_PALETTE_FILE);
+			bfirePalette = loadEffectPaletteFromFile(FilePaths.BLUE_FIRE_PAL);
 		if (bexplPalette == null)
-			bexplPalette = loadEffectPaletteFromFile(BLUE_EXPLOSION_PALETTE_FILE);
+			bexplPalette = loadEffectPaletteFromFile(FilePaths.BLUE_EXP_PAL);
 
 	}
 

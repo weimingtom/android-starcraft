@@ -3,6 +3,7 @@ package hotheart.starcraft.system;
 import java.util.Random;
 
 import hotheart.starcraft.configure.BuildParameters;
+import hotheart.starcraft.configure.FilePaths;
 import hotheart.starcraft.map.Map;
 import hotheart.starcraft.units.ObjectPool;
 import hotheart.starcraft.units.Unit;
@@ -47,8 +48,7 @@ public class GameView extends View {
 		dy = this.getHeight() / 2;
 
 		if (BuildParameters.LOAD_MAP)
-			map = new Map(FileSystemUtils
-					.readAllBytes("/sdcard/starcraft/scenario.chk"));
+			map = new Map(FileSystemUtils.readAllBytes(FilePaths.SCENARIO_CHK));
 
 		mScroller = new Scroller(context);
 	}

@@ -1,6 +1,9 @@
-package hotheart.starcraft.units;
+package hotheart.starcraft.weapons;
 
 import hotheart.starcraft.graphics.TeamColors;
+import hotheart.starcraft.units.Flingy;
+import hotheart.starcraft.units.ObjectPool;
+import hotheart.starcraft.units.Unit;
 
 public final class Weapon {
 	

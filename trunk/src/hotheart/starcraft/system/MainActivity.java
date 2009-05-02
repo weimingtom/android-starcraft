@@ -14,8 +14,8 @@ import hotheart.starcraft.sounds.StarcraftSoundPool;
 import hotheart.starcraft.units.Flingy;
 import hotheart.starcraft.units.ObjectPool;
 import hotheart.starcraft.units.Unit;
-import hotheart.starcraft.units.Weapon;
 import hotheart.starcraft.utils.FileSystemUtils;
+import hotheart.starcraft.weapons.Weapon;
 import android.app.Activity;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
@@ -69,10 +69,10 @@ public final class MainActivity extends Activity {
 
 		
 		for(int i = 0; i < 1; i++)
-			ObjectPool.addUnit(Unit.getUnit(0, TeamColors.COLOR_RED), 66*32, 66*32);
+			ObjectPool.addUnit(Unit.getUnit(3, TeamColors.COLOR_RED), 66*32, 66*32);
 		
 		for(int i = 0; i < 1; i++)
-			ObjectPool.addUnit(Unit.getUnit(0, TeamColors.COLOR_BLUE), 62*32, 62*32);
+			ObjectPool.addUnit(Unit.getUnit(3, TeamColors.COLOR_BLUE), 62*32, 62*32);
 		
 //		ObjectPool.addUnit(Unit.getUnit(66, TeamColors.COLOR_BLUE), 62*32, 62*32);
 

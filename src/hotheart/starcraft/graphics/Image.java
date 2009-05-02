@@ -310,19 +310,18 @@ public class Image {
 
 	public int sortIndex = 0;
 
-	public void preDraw(int dSortIndex) {
+	public void preDraw() {
 		if (!this.imageState.visible)
 			return;
 
 		// setPos(dX, dY);
 
-		sortIndex = dSortIndex;
 		ObjectPool.drawObjects.add(this);
 
 		for (int i = 0; i < childs.length; i++)
 			if (childs[i] != null) {
 				childs[i].setPos(this.posX, this.posY);
-				childs[i].preDraw(dSortIndex);
+				childs[i].preDraw();
 			}
 	}
 

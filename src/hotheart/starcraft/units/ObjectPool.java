@@ -161,7 +161,7 @@ public final class ObjectPool {
 		drawObjects.clear();
 		
 		for(Image s: ObjectPool.sprites)
-    		s.preDraw(s.getOffsetY());
+    		s.preDraw();
    	
     	for(Unit u: units)
     		u.preDraw();

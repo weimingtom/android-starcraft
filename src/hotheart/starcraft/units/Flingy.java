@@ -38,8 +38,7 @@ public class Flingy extends Sprite {
 		final int moveControl = (flingy[id + count * 14] & 0xFF);
 
 		final Flingy res = new Flingy(Sprite.getSprite(spriteId, teamColor, 0));
-		//res.sprite = res;
-		//res.sprite.flingy = res;
+		
 		res.topSpeed = speed/120;
 		res.acceleration = accel;
 		res.haltDistantion = haltDist/256;
@@ -86,11 +85,6 @@ public class Flingy extends Sprite {
 	int action = IDLE;
 
 	public int destX = 0, destY = 0;
-
-	public void preDraw()
-	{
-		super.preDraw(posY);
-	}
 
 	public final void move(int d) {
 		final float dx = (float) Math

@@ -6,6 +6,7 @@ import android.graphics.Paint;
 import hotheart.starcraft.graphics.Image;
 import hotheart.starcraft.graphics.utils.SelectionCircles;
 import hotheart.starcraft.sounds.StarcraftSoundPool;
+import hotheart.starcraft.weapons.Weapon;
 
 import java.util.Random;
 
@@ -182,10 +183,10 @@ public final class Unit extends Flingy {
 	}
 
 	public void draw(Canvas c) {
+		
+		super.draw(c);
 
 		draw_selection(c);
-
-		super.draw(c);
 
 		Paint p = new Paint();
 		p.setColor(Color.GRAY);
@@ -275,15 +276,14 @@ public final class Unit extends Flingy {
 				else
 					action = ACTION_AIR_ATTACK;
 
+				// Play repeat attack animation
 				super.repeatAttack();
 			}
 		}
 	}
 
 	private void moveUnit(int dx, int dy) {
-		if (parent != null) {
-			parent.moveUnit(dx, dy);
-		}
+
 		if (subunit1 != null) {
 			if (subunit1.action != ACTION_GRND_ATTACK)
 				subunit1.move(dx, dy);

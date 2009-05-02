@@ -5,7 +5,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import hotheart.starcraft.graphics.Image;
 import hotheart.starcraft.graphics.SelectionCircles;
-import hotheart.starcraft.graphics.Sprite;
 import hotheart.starcraft.sounds.StarcraftSoundPool;
 
 import java.util.Random;

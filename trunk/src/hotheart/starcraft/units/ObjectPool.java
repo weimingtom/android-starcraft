@@ -2,7 +2,6 @@ package hotheart.starcraft.units;
 
 import hotheart.starcraft.graphics.Image;
 import hotheart.starcraft.graphics.SelectionCircles;
-import hotheart.starcraft.graphics.Sprite;
 
 import java.util.ArrayList;
 import java.util.Comparator;

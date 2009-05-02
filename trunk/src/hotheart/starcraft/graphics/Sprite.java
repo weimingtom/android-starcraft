@@ -1,9 +1,5 @@
 package hotheart.starcraft.graphics;
 
-import hotheart.starcraft.units.Flingy;
-import hotheart.starcraft.units.ObjectPool;
-import android.graphics.Canvas;
-
 public class Sprite extends Image {
 
 	public Sprite(Sprite src) {

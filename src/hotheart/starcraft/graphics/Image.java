@@ -18,7 +18,7 @@ import android.graphics.Canvas;
 public class Image {
 
 	public static final int MAX_IMAGE_LAYER = 10000;
-	public static final int MIN_IMAGE_LAYER = -10000;
+	public static final int MIN_IMAGE_LAYER = 0;
 
 	/*
 	 * File format: File is list of arrays(Stupid eclipse brokes formatting)

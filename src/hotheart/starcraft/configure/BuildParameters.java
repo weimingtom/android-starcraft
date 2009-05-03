@@ -6,7 +6,7 @@ public class BuildParameters {
 	public static final boolean DEBUG = false;
 
 	// Debug iScript engine and writes message if opcode not implemented
-	public static final boolean DEBUG_OPCODE = true;
+	public static final boolean DEBUG_OPCODE = false;
 
 	// Displaying errors in GRP rendering
 	public static final boolean DEBUG_GRP_RENDER_ERROR = true;

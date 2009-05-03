@@ -175,7 +175,10 @@ public final class ObjectPool {
     		i.drawWithoutChilds(c);
 		
     	for(Unit u: units)
+    	{
     		u.draw_selection(c);
+    		u.draw_healths(c);
+    	}
 	}
 
 	public static void update()

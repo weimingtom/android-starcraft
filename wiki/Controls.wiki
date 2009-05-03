@@ -1,0 +1,7 @@
+#labels Phase-Support
+= Controls for test builds =
+
+M - turn on/off map rendering
+T - turn scrolling/selection
+L - lock selceltion
+A - turn attacking/moving for selected unit

@@ -181,13 +181,9 @@ public final class Unit extends Flingy {
 			circ.draw(c);
 		}
 	}
-
-	public void draw(Canvas c) {
-		
-		super.draw(c);
-
-		draw_selection(c);
-
+	
+	public final void draw_healths(Canvas c)
+	{
 		Paint p = new Paint();
 		p.setColor(Color.GRAY);
 
@@ -205,6 +201,15 @@ public final class Unit extends Flingy {
 					yPos + 4, p);
 		}
 
+	}
+
+	public void draw(Canvas c) {
+		
+		super.draw(c);
+
+		draw_selection(c);
+		draw_healths(c);
+		
 		if (subunit1 != null) {
 			subunit1.setPos(posX, posY);
 			subunit1.draw(c);

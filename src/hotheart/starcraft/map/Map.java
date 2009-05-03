@@ -205,24 +205,24 @@ public class Map {
 			redrawCache();
 			allIsLoaded = false;
 		}
-//		for (int i = x1; i <= x2; i++)
-//			for (int j = y1; j <= y2; j++) {
-//				if ((i - r_x1 >= 0) && (j - r_y1 >= 0)
-//						&& (i - r_x1 < TILE_CACHE_SIZE)
-//						&& (j - r_y1 < TILE_CACHE_SIZE)) {
-//					
-//				 while (!cachedTiles[(i - r_x1) + (j - r_y1)* TILE_CACHE_SIZE].isLoaded)
-//				 {
-//					allIsLoaded = false;
-//					try {
-//						Thread.sleep(10);
-//					} catch (InterruptedException e) {
-//						// TODO Auto-generated catch block
-//						e.printStackTrace();
-//					}
-//				 }
-//				}
-//			}
+		for (int i = x1; i <= x2; i++)
+			for (int j = y1; j <= y2; j++) {
+				if ((i - r_x1 >= 0) && (j - r_y1 >= 0)
+						&& (i - r_x1 < TILE_CACHE_SIZE)
+						&& (j - r_y1 < TILE_CACHE_SIZE)) {
+					
+				 while (!cachedTiles[(i - r_x1) + (j - r_y1)* TILE_CACHE_SIZE].isLoaded)
+				 {
+					allIsLoaded = false;
+					try {
+						Thread.sleep(10);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				 }
+				}
+			}
 		
 		c.drawBitmap(mapImage, -(x1 - r_x1)*TILE_SIZE, -(y1 - r_y1)*TILE_SIZE, new Paint());
 		

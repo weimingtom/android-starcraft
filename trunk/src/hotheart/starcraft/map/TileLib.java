@@ -104,7 +104,6 @@ public class TileLib {
 		int vx4Id = (CV5[cv5id * 52 + 20 + cv5SubId * 2] & 0xFF)
 				+ ((CV5[cv5id * 52 + 20 + cv5SubId * 2 + 1] & 0xFF) << 8);
 
-		Log.d("Draw tile", "Tile vx4id:" + vx4Id);
 		drawMegaTile(x, y, vx4Id, c);
 	}
 

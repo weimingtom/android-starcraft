@@ -285,8 +285,8 @@ public class ImageScriptEngine {
 			Sprite sp = Sprite.getSprite(sp_Id, instance.image.foregroundColor,
 					Image.MIN_IMAGE_LAYER);
 
-			sp.setPos(instance.image.getOffsetX() + sp_dx, instance.image
-					.getOffsetY()
+			sp.setPos(instance.image.getPosX() + sp_dx, instance.image
+					.getPosY()
 					+ sp_dy);
 
 			sp.imageState.angle = instance.angle;

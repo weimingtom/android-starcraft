@@ -150,15 +150,15 @@ public final class Unit extends Flingy {
 	}
 
 	public final void sayYes() {
-		if (YesSoundStart > 0)
-			StarcraftSoundPool.playSound(YesSoundStart
-					+ rnd.nextInt(YesSoundEnd - YesSoundStart));
+//		if (YesSoundStart > 0)
+//			StarcraftSoundPool.playSound(YesSoundStart
+//					+ rnd.nextInt(YesSoundEnd - YesSoundStart));
 	}
 
 	public final void sayWhat() {
-		if (WhatSoundStart > 0)
-			StarcraftSoundPool.playSound(WhatSoundStart
-					+ rnd.nextInt(WhatSoundEnd - WhatSoundStart));
+//		if (WhatSoundStart > 0)
+//			StarcraftSoundPool.playSound(WhatSoundStart
+//					+ rnd.nextInt(WhatSoundEnd - WhatSoundStart));
 	}
 
 	public void preDraw() {

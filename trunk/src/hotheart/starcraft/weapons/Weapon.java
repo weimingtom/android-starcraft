@@ -71,6 +71,9 @@ public final class Weapon {
 		}
 		public void update()
 		{
+			if ((destUnit.health < 0)|| (destUnit.deleted))
+				this.delete();
+			
 			int len_sq = (destUnit.getPosX() - this.posX)*(destUnit.getPosX() - this.posX)+
 					  (destUnit.getPosY() - this.posY)*(destUnit.getPosY() - this.posY);
 			if (len_sq<10)

@@ -142,7 +142,8 @@ public class Image {
 				}
 			}
 
-			res.imageData.grp.image.makeCache(pal);
+			//res.imageData.grp.image.makeCache(pal);
+			res.imageData.grp.image.makeCache(StarcraftPalette.blendedPalette);
 		}
 
 		res.foregroundColor = color;

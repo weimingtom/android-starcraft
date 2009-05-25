@@ -9,11 +9,20 @@ import hotheart.starcraft.utils.FileSystemUtils;
 import java.io.ByteArrayInputStream;
 import java.util.TreeMap;
 
+import android.graphics.AvoidXfermode;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.ColorMatrix;
+import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
+import android.graphics.PorterDuffXfermode;
 import android.graphics.Bitmap.Config;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 
 public final class GRPImage {
 
@@ -199,6 +208,8 @@ public final class GRPImage {
 	private final void draw(int offset, int w, int h, Canvas c, int[] palette) {
 		ObjectPool.drawCount++;
 
+		Paint p = new Paint();
+
 		if (bitmaps == null) {
 			int index;
 			int j;
@@ -237,13 +248,47 @@ public final class GRPImage {
 					}
 				}
 			}
-			Paint p = new Paint();
 
 			c.drawBitmap(buffer, 0, w, 0, 0, w, h, true, p);
 		} else {
-			Paint p = new Paint();
 
+			PorterDuffColorFilter filter = new PorterDuffColorFilter(Color.RED,
+					android.graphics.PorterDuff.Mode.DST_ATOP);
+			// p.setColorFilter(filter);
+
+			// p.setXfermode(new AvoidXfermode(255, 255,
+			// AvoidXfermode.Mode.AVOID));
+			// paint.setXfermode(null);
+
+			// c.setDrawFilter(filter);
+
+			//			
+			// Drawable dr = new BitmapDrawable(bitmaps[selectedFrame]);
+			// dr.setColorFilter(filter);
+			// dr.setBounds(0,0,bitmaps[selectedFrame].getWidth(),bitmaps[selectedFrame].getHeight());
+			// dr.draw(c);
+
+			int color = Color.BLUE;
+			p.setColor(color);
+			//p.setColorFilter(filter)
+			
+			ColorMatrix cm = new ColorMatrix();
+			cm.set(new float[] {
+	                   0, 0, 0, 0, Color.red(color),
+	                   0, 0, 0, 0, Color.green(color),
+	                   0, 0, 0, 0, Color.blue(color),
+	                   0, 0, 0, 1000, 0 });
+			p.setColorFilter(new ColorMatrixColorFilter(cm)); 
 			c.drawBitmap(bitmaps[selectedFrame], 0, 0, p);
+			p.setColorFilter(null);
+			c.drawBitmap(bitmaps[selectedFrame], 0, 0, p);
+			
+			//p.setXfermode(new AvoidXfermode(0, 0, AvoidXfermode.Mode.TARGET));
+			
+			//c.drawRect(0, 0, w, h, p);
+			
+
+			p.setXfermode(null);
 		}
 	}
 }

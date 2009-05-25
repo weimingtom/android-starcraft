@@ -24,10 +24,10 @@ public final class ObjectPool {
 				if (arg0 == arg1)
 					return 0;
 				if (arg0.currentImageLayer == Image.MIN_IMAGE_LAYER)
-					return -1;
+					return 1;
 				
 				if (arg1.currentImageLayer == Image.MIN_IMAGE_LAYER)
-					return 1;
+					return -1;
 				
 				if (arg0.sortIndex < arg1.sortIndex)
 					return 1;

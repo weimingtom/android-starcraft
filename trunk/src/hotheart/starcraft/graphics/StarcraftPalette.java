@@ -17,6 +17,8 @@ public class StarcraftPalette {
 	// Default palette
 	public static int[] normalPalette;
 
+	public static int[] blendedPalette;
+
 	// Team palettes
 	public static int[] redPalette;
 	public static int[] greenPalette;
@@ -40,7 +42,7 @@ public class StarcraftPalette {
 	// Indexes for replacing some colors to team colors
 	private static final short[] indexes = { 8, 9, 10, 11, 12, 13, 14, 15 };
 	// Alpha values for replacing some colors to team colors
-	private static final float[] alpha = { 255.0f / 255.0f, 222.0f / 255.0f,
+	private static final float[] alpha = { 254.0f / 255.0f, 222.0f / 255.0f,
 			189.0f / 255.0f, 156.0f / 255.0f, 124.0f / 255.0f, 91.0f / 255.0f,
 			58.0f / 255.0f, 25.0f / 255.0f };
 
@@ -79,6 +81,20 @@ public class StarcraftPalette {
 				for (int i = 0; i < 256; i++) {
 					normalPalette[i] = (255 << 24) + (tmp[i * 3] << 16)
 							+ (tmp[i * 3 + 1] << 8) + tmp[i * 3 + 2];
+				}
+
+				blendedPalette = new int[256];
+				for (int i = 0; i < 256; i++) {
+					blendedPalette[i] = normalPalette[i];
+				}
+
+				for (int i = 0; i < indexes.length; i++) {
+					int A = (int) (255 * alpha[i]);
+					int R = (int) (255 * alpha[i]);
+					int G = (int) (255 * alpha[i]);
+					int B = (int) (255 * alpha[i]);
+					blendedPalette[indexes[i]] = (A << 24) + (R << 16)
+							+ (G << 8) + B;
 				}
 			} catch (FileNotFoundException e1) {
 				e1.printStackTrace();
@@ -161,9 +177,8 @@ public class StarcraftPalette {
 		initEffectPalette();
 	}
 
-	public final static int[] getImagePalette(int graphicsFunction, int remappingFunc,
-			int foregroundColor)
-	{
+	public final static int[] getImagePalette(int graphicsFunction,
+			int remappingFunc, int foregroundColor) {
 		int[] pal = normalPalette;
 		// byte[] pal = redPalette;
 		if (graphicsFunction == 10)
@@ -197,7 +212,7 @@ public class StarcraftPalette {
 				pal = bluePalette;
 				break;
 			}
-		
+
 		return pal;
 	}
 }

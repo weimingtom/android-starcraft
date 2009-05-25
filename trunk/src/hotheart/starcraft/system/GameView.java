@@ -75,7 +75,7 @@ public class GameView extends View {
 		// ofsX = mScroller.getCurrX();
 		// ofsY = mScroller.getCurrY();
 
-		canvas.drawARGB(255, 255, 255, 255);
+		canvas.drawARGB(255, 67, 216, 248);
 
 		canvas.save();
 		Matrix transf = canvas.getMatrix();

@@ -89,7 +89,7 @@ public class StarcraftPalette {
 				}
 
 				for (int i = 0; i < indexes.length; i++) {
-					int A = (int) (255 * alpha[i]);
+					int A = (int) (255 - 255 * alpha[i]);
 					int R = (int) (255 * alpha[i]);
 					int G = (int) (255 * alpha[i]);
 					int B = (int) (255 * alpha[i]);

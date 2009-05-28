@@ -5,7 +5,7 @@
       android:versionName="1.0.0">
     <application android:icon="@drawable/starcraft" android:debuggable="true"  
     android:label="@string/app_name">
-        <activity android:name=".MainActivity"
+        <activity android:name=".GameActivity"
                   android:label="HotStarcraft" android:configChanges="orientation|keyboardHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

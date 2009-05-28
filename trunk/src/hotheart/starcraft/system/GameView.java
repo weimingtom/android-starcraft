@@ -53,6 +53,12 @@ public class GameView extends View {
 	public void setMap(Map mp) {
 		map = mp;
 	}
+	
+	public void killSelectedUnit()
+	{
+		if (selUnit != null)
+			selUnit.kill();
+	}
 
 	int count = 0;
 	int FPS = 0;
@@ -176,7 +182,7 @@ public class GameView extends View {
 		invalidate();
 	}
 
-	boolean mapMove = true;
+	public boolean mapMove = true;
 	int oldX = -1;
 	int oldY = -1;
 	VelocityTracker mVelocityTracker;
@@ -280,8 +286,7 @@ public class GameView extends View {
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		switch (keyCode) {
 		case KeyEvent.KEYCODE_Q:
-			if (selUnit != null)
-				selUnit.kill();
+			killSelectedUnit();
 			break;
 		case KeyEvent.KEYCODE_H:
 			if (selUnit != null)
@@ -289,7 +294,7 @@ public class GameView extends View {
 			break;
 
 		case KeyEvent.KEYCODE_L:
-			fixed = !fixed;
+			fixed = !fixed;	
 			break;
 		case KeyEvent.KEYCODE_A:
 			selectingTarget = !selectingTarget;

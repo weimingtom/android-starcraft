@@ -119,36 +119,6 @@ public class SystemInitializer {
 			ObjectPool.addUnit(Unit.getUnit(1, TeamColors.COLOR_BLUE),
 					66 * 32, 66 * 32);
 			
-//			ObjectPool.addUnit(Unit.getUnit(1, TeamColors.COLOR_RED),
-//					62 * 32, 66 * 32);
-			
-//			ObjectPool.addUnit(Unit.getUnit(3, TeamColors.COLOR_RED),
-//					62 * 32, 66 * 32);
-			
-			//Zergs
-			
-//			ObjectPool.addUnit(Unit.getUnit(38, TeamColors.COLOR_GREEN),
-//					66 * 32, 62 * 32);
-//			
-//			ObjectPool.addUnit(Unit.getUnit(37, TeamColors.COLOR_GREEN),
-//					66 * 32, 62 * 32);
-			
-//			ObjectPool.addUnit(Unit.getUnit(39, TeamColors.COLOR_GREEN),
-//					66 * 32, 62 * 32);
-			
-			//Protoss
-			
-			
-//			ObjectPool.addUnit(Unit.getUnit(66, TeamColors.COLOR_BLUE),
-//					66 * 32, 66 * 32);
-//			
-//			ObjectPool.addUnit(Unit.getUnit(61, TeamColors.COLOR_BLUE),
-//					66 * 32, 6 * 32);
-			
-//			ObjectPool.addUnit(Unit.getUnit(68, TeamColors.COLOR_BLUE),
-//			66 * 32, 66 * 32);
-
-			
 			showMessage("Loading map");
 
 			if (BuildParameters.LOAD_MAP)

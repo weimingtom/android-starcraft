@@ -1,2 +1,0 @@
-arm-none-linux-gnueabi-gcc -ID:\Android\AndroidJNI\jdk_include\ -ID:\Android\AndroidJNI\jdk_include\linux -fpic -c tilelib.c -o D:\CompileTemp\tilelib.o
-arm-none-linux-gnueabi-ld -TD:\GCC\arm-none-linux-gnueabi\lib\ldscripts\armelf_linux_eabi.xsc -shared -o D:\CompileTemp\tilelib.so D:\CompileTemp\tilelib.o

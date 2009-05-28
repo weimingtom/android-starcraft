@@ -51,7 +51,7 @@ public class ArrayGrpImage extends AbstractGrpRender {
 		}
 	}
 
-	public final void draw(int frameId,Canvas c, int[] palette) {
+	public final void draw(int frameId, Canvas c, int[] palette) {
 
 		if (dataOffset.length <= frameId)
 			return; // Wrong data!
@@ -63,14 +63,13 @@ public class ArrayGrpImage extends AbstractGrpRender {
 			matr.preTranslate(xOffset[frameId], yOffset[frameId]);
 			c.setMatrix(matr);
 
-			draw(dataOffset[frameId], w[frameId], h[frameId],
-					c, palette);
+			draw(dataOffset[frameId], w[frameId], h[frameId], c, palette);
 
 		} catch (Exception e) {
 			if (BuildParameters.DEBUG_GRP_RENDER_ERROR) {
 
-				System.err
-						.print("GRPId: " + OldGrpImage.getFileName(grpId) + "\n");
+				System.err.print("GRPId: "
+						+ GrpRenderFactory.getFileName(grpId) + "\n");
 				System.err.print("Frame ID:" + Integer.toString(frameId)
 						+ " of " + dataOffset.length + "\n");
 				e.printStackTrace();

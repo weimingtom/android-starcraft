@@ -17,6 +17,8 @@ public class BitmapGrpImage extends AbstractGrpRender {
 	@Override
 	public void draw(Canvas c, int frameId, int function, int remapping,
 			int teamColor) {
+		if (dataOffset.length <= frameId)
+			return; // Wrong data!
 
 		c.save();
 		try {
@@ -60,7 +62,8 @@ public class BitmapGrpImage extends AbstractGrpRender {
 		} catch (Exception e) {
 			if (BuildParameters.DEBUG_GRP_RENDER_ERROR) {
 
-				System.err.print("GRPId: " + OldGrpImage.getFileName(grpId) + "\n");
+				System.err.print("GRPId: "
+						+ GrpRenderFactory.getFileName(grpId) + "\n");
 				System.err.print("Frame ID:" + Integer.toString(frameId)
 						+ " of " + dataOffset.length + "\n");
 				e.printStackTrace();

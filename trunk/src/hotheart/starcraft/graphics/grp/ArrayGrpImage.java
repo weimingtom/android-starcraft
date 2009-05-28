@@ -12,25 +12,19 @@ public class ArrayGrpImage extends AbstractGrpRender {
 	@Override
 	public void draw(Canvas c, int frameId, int function, int remapping,
 			int teamColor) {
-		this.selectedFrame = frameId;
 		int[] pal = StarcraftPalette.getImagePalette(function, remapping,
 				teamColor);
-		this.draw(c, pal);
+		this.draw(frameId, c, pal);
 	}
 
 	public static int[] buffer = new int[512 * 512];
 
 	byte[] image;
-
-	public int selectedFrame = 0;
 	public int count;
-
-	public int id = 0;
-
 	private int[] w, h, dataOffset, xOffset, yOffset;
 
 	public ArrayGrpImage(byte[] _image, int grpid) {
-		this.id = grpid;
+		this.grpId = grpid;
 		image = _image;
 		count = (image[0] & 0xFF) + ((image[1] & 0xFF) << 8);
 		width = (image[2] & 0xFF) + ((image[3] & 0xFF) << 8);
@@ -57,27 +51,27 @@ public class ArrayGrpImage extends AbstractGrpRender {
 		}
 	}
 
-	public final void draw(Canvas c, int[] palette) {
+	public final void draw(int frameId,Canvas c, int[] palette) {
 
-		if (dataOffset.length <= selectedFrame)
+		if (dataOffset.length <= frameId)
 			return; // Wrong data!
 
 		c.save();
 		try {
 
 			Matrix matr = c.getMatrix();
-			matr.preTranslate(xOffset[selectedFrame], yOffset[selectedFrame]);
+			matr.preTranslate(xOffset[frameId], yOffset[frameId]);
 			c.setMatrix(matr);
 
-			draw(dataOffset[selectedFrame], w[selectedFrame], h[selectedFrame],
+			draw(dataOffset[frameId], w[frameId], h[frameId],
 					c, palette);
 
 		} catch (Exception e) {
 			if (BuildParameters.DEBUG_GRP_RENDER_ERROR) {
 
 				System.err
-						.print("GRPId: " + OldGrpImage.getFileName(id) + "\n");
-				System.err.print("Frame ID:" + Integer.toString(selectedFrame)
+						.print("GRPId: " + OldGrpImage.getFileName(grpId) + "\n");
+				System.err.print("Frame ID:" + Integer.toString(frameId)
 						+ " of " + dataOffset.length + "\n");
 				e.printStackTrace();
 			}

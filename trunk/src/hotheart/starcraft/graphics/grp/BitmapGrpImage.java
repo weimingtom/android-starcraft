@@ -2,6 +2,7 @@ package hotheart.starcraft.graphics.grp;
 
 import hotheart.starcraft.configure.BuildParameters;
 import hotheart.starcraft.graphics.StarcraftPalette;
+import hotheart.starcraft.graphics.TeamColors;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -17,7 +18,7 @@ public class BitmapGrpImage extends AbstractGrpRender {
 	@Override
 	public void draw(Canvas c, int frameId, int function, int remapping,
 			int teamColor) {
-		if (dataOffset.length <= frameId)
+		if (count <= frameId)
 			return; // Wrong data!
 
 		c.save();
@@ -57,7 +58,31 @@ public class BitmapGrpImage extends AbstractGrpRender {
 			// p.setColorFilter(new ColorMatrixColorFilter(cm));
 			// c.drawBitmap(bitmaps[frameId], 0, 0, p);
 			// p.setColorFilter(null);
-			c.drawBitmap(bitmaps[frameId], 0, 0, new Paint());
+
+			// c.drawBitmap(bitmaps[frameId], 0, 0, new Paint());
+
+			if (function == 10) {
+				draw_Shadow(c, frameId);
+				// pal = shadowPalette;
+				// else if (function == 9) {
+				// switch (remappingFunc) {
+				// case 1:
+				// pal = ofirePalette;
+				// break;
+				// case 2:
+				// pal = gfirePalette;
+				// break;
+				// case 3:
+				// pal = bfirePalette;
+				// break;
+				// case 4:
+				// pal = bexplPalette;
+				// break;
+				// }
+			} else if (function == 13)// WTF?! must be 11
+				this.draw_Selection(c, frameId);
+			else
+				this.draw_TeamColor(c, frameId, teamColor);
 
 		} catch (Exception e) {
 			if (BuildParameters.DEBUG_GRP_RENDER_ERROR) {
@@ -79,7 +104,60 @@ public class BitmapGrpImage extends AbstractGrpRender {
 		// p.setXfermode(null);
 	}
 
-	public int count;
+	private void draw_Shadow(Canvas c, int frameId) {
+		Paint p = new Paint();
+		ColorMatrix cm = new ColorMatrix();
+		cm.set(new float[] { 0, 0, 0, 0, 0.75f, 0, 0, 0, 0, 0.75f, 0, 0, 0, 0,
+				0.75f, 0, 0, 0, 0.25f, 0 });
+
+		p.setColorFilter(new ColorMatrixColorFilter(cm));
+		c.drawBitmap(bitmaps[frameId], 0, 0, p);
+	}
+
+	private void draw_Selection(Canvas c, int frameId) {
+		Paint p = new Paint();
+		ColorMatrix cm = new ColorMatrix();
+		cm.set(new float[] { 
+				0, 0, 0, 0, 0, 
+				0, 0, 0, 0, 255,
+				0, 0, 0, 0, 0, 
+				0, 0, 0, 1, 0 });
+
+		p.setColorFilter(new ColorMatrixColorFilter(cm));
+		c.drawBitmap(bitmaps[frameId], 0, 0, p);
+	}
+
+	private void draw_TeamColor(Canvas c, int frameId, int colorIndex) {
+		Paint p = new Paint();
+		int real_color = Color.BLACK;
+		p.setColor(real_color);
+
+		switch (colorIndex) {
+		case TeamColors.COLOR_RED:
+			real_color = Color.RED;
+			break;
+		case TeamColors.COLOR_GREEN:
+			real_color = Color.GREEN;
+			break;
+		case TeamColors.COLOR_BLUE:
+			real_color = Color.BLUE;
+			break;
+		}
+
+		ColorMatrix cm = new ColorMatrix();
+		cm.set(new float[] 
+		                 { 0, 0, 0, 0, 	Color.red(real_color),
+						   0, 0, 0, 0,	Color.green(real_color), 
+						   0, 0, 0, 0,  Color.blue(real_color), 
+						   0, 0, 0, 1000, 0 }
+		);
+		p.setColorFilter(new ColorMatrixColorFilter(cm));
+		c.drawBitmap(bitmaps[frameId], 0, 0, p);
+		p.setColorFilter(null);
+		c.drawBitmap(bitmaps[frameId], 0, 0, p);
+	}
+
+	private int count;
 	private int[] w, h, dataOffset, xOffset, yOffset;
 	Bitmap[] bitmaps;
 

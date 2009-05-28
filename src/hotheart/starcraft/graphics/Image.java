@@ -10,6 +10,7 @@ import java.io.IOException;
 
 import hotheart.starcraft.configure.BuildParameters;
 import hotheart.starcraft.files.DatFile;
+import hotheart.starcraft.graphics.grp.GrpRenderFactory;
 import hotheart.starcraft.graphics.script.ImageScriptEngine;
 import hotheart.starcraft.graphics.script.ImageState;
 import hotheart.starcraft.units.ObjectPool;
@@ -109,9 +110,9 @@ public class Image {
 		int functionId = drawFunc[id] & 0xFF;
 		int remapping = remappingData[id] & 0xFF;
 
-		ImageStaticData data = new ImageStaticData(id, new GRPContainer(grpId),
-				ImageScriptEngine.createHeader(scriptId), functionId,
-				remapping, align == 1);
+		ImageStaticData data = new ImageStaticData(id, GrpRenderFactory
+				.getGraphics(grpId), ImageScriptEngine.createHeader(scriptId),
+				functionId, remapping, align == 1);
 
 		Image res = new Image(layer, data);
 
@@ -142,8 +143,8 @@ public class Image {
 				}
 			}
 
-			//res.imageData.grp.image.makeCache(pal);
-			res.imageData.grp.image.makeCache(StarcraftPalette.blendedPalette);
+			// res.imageData.grp.image.makeCache(pal);
+			// res.imageData.grp.image.makeCache(StarcraftPalette.blendedPalette);
 		}
 
 		res.foregroundColor = color;
@@ -337,14 +338,10 @@ public class Image {
 			}
 
 		if (!deleted) {
-			int[] pal = StarcraftPalette.getImagePalette(
-					this.imageData.graphicsFuntion, this.imageData.remapping,
-					this.foregroundColor);
-
-			// c, this, pal,
 			imageData.grp.draw(posX + offsetX, posY + offsetY,
 					this.imageData.align, imageState.baseFrame,
-					imageState.angle, pal, c);
+					imageState.angle, this.imageData.graphicsFuntion,
+					this.imageData.remapping, this.foregroundColor, c);
 		}
 	}
 

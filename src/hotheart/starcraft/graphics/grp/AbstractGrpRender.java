@@ -1,4 +1,4 @@
-package hotheart.starcraft.graphics;
+package hotheart.starcraft.graphics.grp;
 
 import hotheart.starcraft.configure.BuildParameters;
 import android.graphics.Canvas;
@@ -6,31 +6,27 @@ import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 
-public final class GRPContainer{
-	public GRPImage image;
-	public int grpId;
-
-	public GRPContainer(int spriteId)
-	{
-		grpId = spriteId;
-		image = GRPImage.getGraphics(spriteId);
-	}
+public abstract class AbstractGrpRender {
 	
-	public final void draw(int dX, int dY, boolean align, int baseFrame, int angle, int[] palette, Canvas c) {
-		if (image == null)
-			return;
-
+	public int width = 0;
+	public int height = 0;
+	public int grpId;
+	
+	
+	public abstract void draw(Canvas c, int frameId, int function, int remapping, int teamColor);
+		
+	public final void draw(int dX, int dY, boolean align, int baseFrame, int angle, int function, int remapping, int teamColor, Canvas c) {
 		if (!align)
 		{
-			drawSCFrame(c, baseFrame, palette, dX, dY);
+			drawSCFrame(c, baseFrame,  function, remapping, teamColor, dX, dY);
 		}
 		else
 		{
-			drawSCFrame(c, angle, baseFrame, baseFrame + 16, palette, dX, dY);
+			drawSCFrame(c, angle, baseFrame, baseFrame + 16,  function, remapping, teamColor, dX, dY);
 		}
 	}
 
-	protected final void drawSCFrame(Canvas c, int angle, int tileStart, int tileEnd, int[] palette, int dX, int dY)
+	protected final void drawSCFrame(Canvas c, int angle, int tileStart, int tileEnd,  int function, int remapping, int teamColor, int dX, int dY)
 	{
 		int TilesCount = tileEnd - tileStart + 1;
 		
@@ -56,21 +52,21 @@ public final class GRPContainer{
 		c.save();
     	
     	Matrix matr = c.getMatrix();
-    	matr.preTranslate(-image.width/2 + dX, -image.height/2 + dY);
+    	matr.preTranslate(-width/2 + dX, -height/2 + dY);
     	
     	if (mirrorImage)
     	{
     		//TilesCount - 1, because we use maxTileIndex
     		selIndex = (TilesCount - 1)  - selIndex;
-    		matr.preTranslate(image.width, 0);
+    		matr.preTranslate(width, 0);
     		//Because image is out of screen because of mirroring
     		matr.preScale(-1, 1);
     	}
     	
     	c.setMatrix(matr);
     	
-    	image.selectedFrame = tileStart + selIndex;
-    	image.draw(c, palette);
+    	//image.selectedFrame = tileStart + selIndex;
+    	draw(c,  tileStart + selIndex,  function, remapping, teamColor);
     	
     	c.restore();
     	
@@ -85,15 +81,14 @@ public final class GRPContainer{
     	
     	
 	}
-	protected final void drawSCFrame(Canvas c, int tile, int[] palette, int dX, int dY)
+	protected final void drawSCFrame(Canvas c, int tile,  int function, int remapping, int teamColor, int dX, int dY)
 	{
 		c.save();
 		Matrix matr = c.getMatrix();
-    	matr.preTranslate(-image.width/2 + dX, -image.height/2 + dY);
+    	matr.preTranslate(-width/2 + dX, -height/2 + dY);
     	c.setMatrix(matr);
-    	image.selectedFrame = tile;
-    	image.draw(c, palette);
+    	//image.selectedFrame = tile;
+    	draw(c, tile, function, remapping, teamColor);
 		c.restore();
 	}
-
 }

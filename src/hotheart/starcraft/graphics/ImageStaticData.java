@@ -1,11 +1,12 @@
 package hotheart.starcraft.graphics;
 
+import hotheart.starcraft.graphics.grp.AbstractGrpRender;
 import hotheart.starcraft.graphics.script.ImageScriptHeader;
 
 public class ImageStaticData
 {
 	public ImageStaticData(int _imageId, 
-			GRPContainer _grp,
+			AbstractGrpRender _grp,
 			ImageScriptHeader _scriptHeader,
 			int _graphicsFuntion,
 			int _remapping,
@@ -20,7 +21,7 @@ public class ImageStaticData
 	}
 	
 	public int imageId;
-	public GRPContainer grp;
+	public AbstractGrpRender grp;
 	
 	public ImageScriptHeader scriptHeader;
 	

@@ -310,7 +310,7 @@ public class ImageScriptEngine {
 			Sprite lo_sprite = Sprite.getSprite(x15_Id,
 					instance.image.foregroundColor,
 					instance.image.currentImageLayer + 1);
-			// LoFile lo = GRPImage.getLoData(lo_Id);
+			// LoFile lo = OldGrpImage.getLoData(lo_Id);
 			// byte[] offsets = new byte[2];
 			// lo.getOffsets(0, instance.baseFrame, offsets);
 			lo_sprite.setPos(instance.image.getOffsetX(), instance.image

@@ -21,40 +21,6 @@ public class Image {
 	public static final int MAX_IMAGE_LAYER = 10000;
 	public static final int MIN_IMAGE_LAYER = 0;
 
-	/*
-	 * File format: File is list of arrays(Stupid eclipse brokes formatting)
-	 * 
-	 * [HEADER] Varcount=14 InputEntrycount=999 OutputEntrycount=999
-	 * 
-	 * [FORMAT] 0Name=GRP File 0Size=4
-	 * 
-	 * 1Name=Gfx Turns 1Size=1
-	 * 
-	 * 2Name=Clickable 2Size=1
-	 * 
-	 * 3Name=Use Full Iscript 3Size=1
-	 * 
-	 * 4Name=Draw If Cloaked 4Size=1
-	 * 
-	 * 5Name=Draw Function 5Size=1
-	 * 
-	 * 6Name=Remapping 6Size=1
-	 * 
-	 * 7Name=Iscript ID 7Size=4
-	 * 
-	 * 8Name=Shield Overlay 8Size=4
-	 * 
-	 * 9Name=Attack Overlay 9Size=4
-	 * 
-	 * 10Name=Damage Overlay 10Size=4
-	 * 
-	 * 11Name=Special Overlay 11Size=4
-	 * 
-	 * 12Name=Landing Dust Overlay 12Size=4
-	 * 
-	 * 13Name=Lift-Off Overlay 13Size=4
-	 */
-
 	// Data from images.dat file
 	private static final int COUNT = 999;
 

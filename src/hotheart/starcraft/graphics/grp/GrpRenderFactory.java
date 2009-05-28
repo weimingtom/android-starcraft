@@ -58,7 +58,7 @@ public class GrpRenderFactory {
 		if (resources.containsKey((Integer) id))
 			return (AbstractGrpRender) resources.get((Integer) id);
 		else {
-			AbstractGrpRender res = new ArrayGrpImage(readWholeImage(id), id);
+			AbstractGrpRender res = new BitmapGrpImage(readWholeImage(id), id);
 			resources.put((Integer) id, res);
 			return res;
 		}

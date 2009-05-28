@@ -1,6 +1,7 @@
 package hotheart.starcraft.graphics.grp;
 
 import hotheart.starcraft.configure.BuildParameters;
+import hotheart.starcraft.graphics.RenderFunction;
 import hotheart.starcraft.graphics.StarcraftPalette;
 import hotheart.starcraft.graphics.TeamColors;
 import android.graphics.Bitmap;
@@ -10,7 +11,6 @@ import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Matrix;
 import android.graphics.Paint;
-import android.graphics.PorterDuffColorFilter;
 import android.graphics.Bitmap.Config;
 
 public class BitmapGrpImage extends AbstractGrpRender {
@@ -28,61 +28,14 @@ public class BitmapGrpImage extends AbstractGrpRender {
 			matr.preTranslate(xOffset[frameId], yOffset[frameId]);
 			c.setMatrix(matr);
 
-			// PorterDuffColorFilter filter = new
-			// PorterDuffColorFilter(Color.RED,
-			// android.graphics.PorterDuff.Mode.DST_ATOP);
-			// p.setColorFilter(filter);
-
-			// p.setXfermode(new AvoidXfermode(255, 255,
-			// AvoidXfermode.Mode.AVOID));
-			// paint.setXfermode(null);
-
-			// c.setDrawFilter(filter);
-
-			//			
-			// Drawable dr = new BitmapDrawable(bitmaps[selectedFrame]);
-			// dr.setColorFilter(filter);
-			// dr.setBounds(0,0,bitmaps[selectedFrame].getWidth(),bitmaps[selectedFrame].getHeight());
-			// dr.draw(c);
-
-			// int color = Color.BLUE;
-			// p.setColor(color);
-			// //p.setColorFilter(filter)
-			//		
-			// ColorMatrix cm = new ColorMatrix();
-			// cm.set(new float[] {
-			// 0, 0, 0, 0, Color.red(color),
-			// 0, 0, 0, 0, Color.green(color),
-			// 0, 0, 0, 0, Color.blue(color),
-			// 0, 0, 0, 1000, 0 });
-			// p.setColorFilter(new ColorMatrixColorFilter(cm));
-			// c.drawBitmap(bitmaps[frameId], 0, 0, p);
-			// p.setColorFilter(null);
-
-			// c.drawBitmap(bitmaps[frameId], 0, 0, new Paint());
-
-			if (function == 10) {
+			if (function == RenderFunction.SHADOW) 
 				draw_Shadow(c, frameId);
-				// pal = shadowPalette;
-				// else if (function == 9) {
-				// switch (remappingFunc) {
-				// case 1:
-				// pal = ofirePalette;
-				// break;
-				// case 2:
-				// pal = gfirePalette;
-				// break;
-				// case 3:
-				// pal = bfirePalette;
-				// break;
-				// case 4:
-				// pal = bexplPalette;
-				// break;
-				// }
-			} else if (function == 13)// WTF?! must be 11
-				this.draw_Selection(c, frameId);
+			else if (function == RenderFunction.REMAPPING)
+				draw_Simple(c, frameId);
+			else if (function == RenderFunction.SELECTION)
+				draw_Selection(c, frameId);
 			else
-				this.draw_TeamColor(c, frameId, teamColor);
+				draw_TeamColor(c, frameId, teamColor);
 
 		} catch (Exception e) {
 			if (BuildParameters.DEBUG_GRP_RENDER_ERROR) {
@@ -96,12 +49,11 @@ public class BitmapGrpImage extends AbstractGrpRender {
 		}
 
 		c.restore();
-
-		// p.setXfermode(new AvoidXfermode(0, 0, AvoidXfermode.Mode.TARGET));
-
-		// c.drawRect(0, 0, w, h, p);
-
-		// p.setXfermode(null);
+	}
+	
+	private void draw_Simple(Canvas c, int frameId) {
+		Paint p = new Paint();
+		c.drawBitmap(bitmaps[frameId], 0, 0, p);
 	}
 
 	private void draw_Shadow(Canvas c, int frameId) {

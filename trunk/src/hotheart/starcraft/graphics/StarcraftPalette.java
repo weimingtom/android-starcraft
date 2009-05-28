@@ -181,24 +181,24 @@ public class StarcraftPalette {
 			int remappingFunc, int foregroundColor) {
 		int[] pal = normalPalette;
 		// byte[] pal = redPalette;
-		if (graphicsFunction == 10)
+		if (graphicsFunction == RenderFunction.SHADOW)
 			pal = shadowPalette;
-		else if (graphicsFunction == 9) {
+		else if (graphicsFunction == RenderFunction.REMAPPING) {
 			switch (remappingFunc) {
-			case 1:
+			case RenderFunction.R_ORANGE_FIRE:
 				pal = ofirePalette;
 				break;
-			case 2:
+			case RenderFunction.R_GREEN_FIRE:
 				pal = gfirePalette;
 				break;
-			case 3:
+			case RenderFunction.R_BLUE_FIRE:
 				pal = bfirePalette;
 				break;
-			case 4:
+			case RenderFunction.R_BLUE_EXPLOSION:
 				pal = bexplPalette;
 				break;
 			}
-		} else if (graphicsFunction == 13)// WTF?! must be 11
+		} else if (graphicsFunction == RenderFunction.SELECTION)
 			pal = selectPalette;
 		else
 			switch (foregroundColor) {

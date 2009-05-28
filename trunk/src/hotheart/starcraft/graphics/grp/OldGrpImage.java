@@ -1,4 +1,4 @@
-package hotheart.starcraft.graphics;
+package hotheart.starcraft.graphics.grp;
 
 import hotheart.starcraft.configure.BuildParameters;
 import hotheart.starcraft.configure.FilePaths;
@@ -24,7 +24,7 @@ import android.graphics.Bitmap.Config;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 
-public final class GRPImage {
+public final class OldGrpImage {
 
 	private static TreeMap<Integer, Object> resources = new TreeMap<Integer, Object>();
 
@@ -66,11 +66,11 @@ public final class GRPImage {
 		}
 	}
 
-	public final static GRPImage getGraphics(int id) {
+	public final static OldGrpImage getGraphics(int id) {
 		if (resources.containsKey((Integer) id))
-			return (GRPImage) resources.get((Integer) id);
+			return (OldGrpImage) resources.get((Integer) id);
 		else {
-			GRPImage res = new GRPImage(FileSystemUtils
+			OldGrpImage res = new OldGrpImage(FileSystemUtils
 					.readAllBytes(FilePaths.UNITS_FOLDER
 							+ getFileName(id).replace('\\', '/')), id);
 			resources.put((Integer) id, res);
@@ -91,7 +91,7 @@ public final class GRPImage {
 
 	private int[] w, h, dataOffset, xOffset, yOffset;
 
-	public GRPImage(byte[] _image, int grpid) {
+	public OldGrpImage(byte[] _image, int grpid) {
 		this.id = grpid;
 		image = _image;
 		count = (image[0] & 0xFF) + ((image[1] & 0xFF) << 8);
@@ -195,7 +195,7 @@ public final class GRPImage {
 		} catch (Exception e) {
 			if (BuildParameters.DEBUG_GRP_RENDER_ERROR) {
 
-				System.err.print("GRPId: " + GRPImage.getFileName(id) + "\n");
+				System.err.print("GRPId: " + OldGrpImage.getFileName(id) + "\n");
 				System.err.print("Frame ID:" + Integer.toString(selectedFrame)
 						+ " of " + dataOffset.length + "\n");
 				e.printStackTrace();

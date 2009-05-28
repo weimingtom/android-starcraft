@@ -2,10 +2,11 @@ package hotheart.starcraft.system;
 
 import hotheart.starcraft.configure.BuildParameters;
 import hotheart.starcraft.configure.FilePaths;
-import hotheart.starcraft.graphics.GRPImage;
 import hotheart.starcraft.graphics.Image;
 import hotheart.starcraft.graphics.Sprite;
 import hotheart.starcraft.graphics.TeamColors;
+import hotheart.starcraft.graphics.grp.GrpRenderFactory;
+import hotheart.starcraft.graphics.grp.OldGrpImage;
 import hotheart.starcraft.graphics.script.ImageScriptEngine;
 import hotheart.starcraft.graphics.utils.SelectionCircles;
 import hotheart.starcraft.map.Map;
@@ -70,7 +71,7 @@ public class SystemInitializer {
 					.readAllBytes(FilePaths.SFX_DATA_DAT));
 
 			showMessage("GRP library");
-			GRPImage.init(FileSystemUtils.readAllBytes(FilePaths.IMAGES_TBL));
+			GrpRenderFactory.init(FileSystemUtils.readAllBytes(FilePaths.IMAGES_TBL));
 
 			showMessage("Init script engine");
 			ImageScriptEngine.init(FileSystemUtils

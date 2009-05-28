@@ -11,6 +11,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.util.AttributeSet;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
@@ -32,8 +33,9 @@ public class GameView extends View {
 	Map map;
 	Scroller mScroller;
 
-	public GameView(Context context, Map mp) {
-		super(context);
+	public GameView(Context context, AttributeSet attrs) {
+		super(context, attrs);
+
 		cont = context;
 
 		startTime = System.currentTimeMillis();
@@ -45,9 +47,11 @@ public class GameView extends View {
 		dx = this.getWidth() / 2;
 		dy = this.getHeight() / 2;
 
-		map = mp;
-
 		mScroller = new Scroller(context);
+	}
+
+	public void setMap(Map mp) {
+		map = mp;
 	}
 
 	int count = 0;
@@ -84,10 +88,11 @@ public class GameView extends View {
 
 		if (BuildParameters.LOAD_MAP)
 			if (drawMap) {
-				map.draw(ofsX / Map.TILE_SIZE, ofsY / Map.TILE_SIZE, ofsX
-						/ Map.TILE_SIZE + this.getWidth() / Map.TILE_SIZE + 2,
-						ofsY / 32 + this.getHeight() / Map.TILE_SIZE + 2,
-						canvas);
+				if (map != null)
+					map.draw(ofsX / Map.TILE_SIZE, ofsY / Map.TILE_SIZE, ofsX
+							/ Map.TILE_SIZE + this.getWidth() / Map.TILE_SIZE
+							+ 2, ofsY / 32 + this.getHeight() / Map.TILE_SIZE
+							+ 2, canvas);
 			}
 
 		transf.postTranslate(-ofsX + ofsX % Map.TILE_SIZE, -ofsY + ofsY

@@ -117,7 +117,7 @@ public class Map {
 	private Canvas mapImageCanvas= new Canvas(mapImage);
 	
 	private static final int CACHE_SIZE_DELTA = 6;
-	private static final int TILE_CACHE_SIZE = 25;
+	private static final int TILE_CACHE_SIZE = 20;
 	public static final int TILE_SIZE = 32;
 
 	private MapTile[] cachedTiles = new MapTile[TILE_CACHE_SIZE

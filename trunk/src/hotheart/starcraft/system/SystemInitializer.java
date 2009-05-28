@@ -6,7 +6,6 @@ import hotheart.starcraft.graphics.Image;
 import hotheart.starcraft.graphics.Sprite;
 import hotheart.starcraft.graphics.TeamColors;
 import hotheart.starcraft.graphics.grp.GrpRenderFactory;
-import hotheart.starcraft.graphics.grp.OldGrpImage;
 import hotheart.starcraft.graphics.script.ImageScriptEngine;
 import hotheart.starcraft.graphics.utils.SelectionCircles;
 import hotheart.starcraft.map.Map;

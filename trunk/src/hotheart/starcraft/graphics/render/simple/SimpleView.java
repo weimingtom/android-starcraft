@@ -1,10 +1,12 @@
-package hotheart.starcraft.system;
+package hotheart.starcraft.graphics.render.simple;
 
+import java.io.FileNotFoundException;
 import java.util.Random;
 
 import hotheart.starcraft.configure.BuildParameters;
 import hotheart.starcraft.map.Map;
-import hotheart.starcraft.units.ObjectPool;
+import hotheart.starcraft.map.TileLib;
+import hotheart.starcraft.system.ObjectPool;
 import hotheart.starcraft.units.Unit;
 import android.content.Context;
 import android.graphics.Canvas;
@@ -18,7 +20,7 @@ import android.view.VelocityTracker;
 import android.view.View;
 import android.widget.Scroller;
 
-public class GameView extends View {
+public class SimpleView extends View {
 
 	Random rnd = new Random();
 	Context cont;
@@ -33,7 +35,8 @@ public class GameView extends View {
 	Map map;
 	Scroller mScroller;
 
-	public GameView(Context context, AttributeSet attrs) {
+
+	public SimpleView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 
 		cont = context;
@@ -53,9 +56,8 @@ public class GameView extends View {
 	public void setMap(Map mp) {
 		map = mp;
 	}
-	
-	public void killSelectedUnit()
-	{
+
+	public void killSelectedUnit() {
 		if (selUnit != null)
 			selUnit.kill();
 	}
@@ -67,7 +69,7 @@ public class GameView extends View {
 
 	boolean drawMap = true;
 
-	int ofsX = 56 * 32, ofsY = 60 * 32;
+	float ofsX = 56 * 32, ofsY = 60 * 32;
 
 	@Override
 	protected void onDraw(Canvas canvas) {
@@ -89,22 +91,24 @@ public class GameView extends View {
 
 		canvas.save();
 		Matrix transf = canvas.getMatrix();
-		transf.postTranslate(-ofsX % Map.TILE_SIZE, -ofsY % Map.TILE_SIZE);
+		transf.postTranslate(-ofsX % TileLib.TILE_SIZE, -ofsY
+				% TileLib.TILE_SIZE);
 		canvas.setMatrix(transf);
 
 		if (BuildParameters.LOAD_MAP)
 			if (drawMap) {
 				if (map != null)
-					map.draw(ofsX / Map.TILE_SIZE, ofsY / Map.TILE_SIZE, ofsX
-							/ Map.TILE_SIZE + this.getWidth() / Map.TILE_SIZE
-							+ 2, ofsY / 32 + this.getHeight() / Map.TILE_SIZE
-							+ 2, canvas);
+					map.draw((int)ofsX / TileLib.TILE_SIZE,
+							(int)ofsY / TileLib.TILE_SIZE, (int)ofsX / TileLib.TILE_SIZE
+									+ this.getWidth() / TileLib.TILE_SIZE + 2,
+									(int)ofsY / 32 + this.getHeight() / TileLib.TILE_SIZE
+									+ 2, canvas);
 			}
 
-		transf.postTranslate(-ofsX + ofsX % Map.TILE_SIZE, -ofsY + ofsY
-				% Map.TILE_SIZE);
-		dx = -ofsX;
-		dy = -ofsY;
+		transf.postTranslate(-ofsX + ofsX % TileLib.TILE_SIZE, -ofsY + ofsY
+				% TileLib.TILE_SIZE);
+		dx = -(int)ofsX;
+		dy = -(int)ofsY;
 
 		canvas.setMatrix(transf);
 
@@ -142,24 +146,6 @@ public class GameView extends View {
 		p.setColor(Color.RED);
 		canvas.drawText("FPS: " + FPS, 10, 20, p);
 
-		Runtime rt = Runtime.getRuntime();
-		long total = rt.totalMemory(); /*
-										 * Всего памяти, в обычной Java SE - это
-										 * параметр -Xmx при старте приложения
-										 */
-		long free = rt.freeMemory(); /* Свободно памяти */
-		long used = total - free; /* Занято приложением */
-
-		canvas.drawText("Memory: " + used / (1024 * 1024.0f) + " of " + total
-				/ (1024 * 1024.0f), 10, 20 + 16 * 2, p);
-
-		canvas.drawText("Draw count:" + ObjectPool.drawCount, 10, 20 + 16, p);
-
-		canvas.drawText("preDraw time:" + preDrawTime, 10, 20 + 16 * 3, p);
-		canvas.drawText("draw time:" + drawTime, 10, 20 + 16 * 4, p);
-
-		// canvas.drawText("Memory: " +
-		// Debug.getThreadAllocSize()/(1024.0f*1024.0f), 10, 36, p);
 		if (selectingTarget) {
 			canvas.drawText("Select target", 10, 20 + 16 * 5, p);
 		}
@@ -167,17 +153,7 @@ public class GameView extends View {
 			p.setColor(Color.GREEN);
 			canvas.drawText("Fixed", 10, 20 + 16 * 6, p);
 		}
-		// if (System.currentTimeMillis() - frTime < 20)
-		// {
-		// try {
-		// long delta = 20 - (System.currentTimeMillis() - frTime);
-		// if (delta>0)
-		// Thread.sleep(delta);
-		// } catch (InterruptedException e) {
-		// // TODO Auto-generated catch block
-		// e.printStackTrace();
-		// }
-		// }
+
 		frTime = System.currentTimeMillis();
 		invalidate();
 	}
@@ -294,7 +270,7 @@ public class GameView extends View {
 			break;
 
 		case KeyEvent.KEYCODE_L:
-			fixed = !fixed;	
+			fixed = !fixed;
 			break;
 		case KeyEvent.KEYCODE_A:
 			selectingTarget = !selectingTarget;

@@ -1,6 +1,6 @@
 package hotheart.starcraft.graphics;
 
-import hotheart.starcraft.graphics.grp.AbstractGrpRender;
+import hotheart.starcraft.graphics.render.AbstractGrpRender;
 import hotheart.starcraft.graphics.script.ImageScriptHeader;
 
 public class ImageStaticData

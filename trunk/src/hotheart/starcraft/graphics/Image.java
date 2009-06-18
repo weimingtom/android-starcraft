@@ -10,10 +10,10 @@ import java.io.IOException;
 
 import hotheart.starcraft.configure.BuildParameters;
 import hotheart.starcraft.files.DatFile;
-import hotheart.starcraft.graphics.grp.GrpRenderFactory;
+import hotheart.starcraft.graphics.render.GrpRenderFactory;
 import hotheart.starcraft.graphics.script.ImageScriptEngine;
 import hotheart.starcraft.graphics.script.ImageState;
-import hotheart.starcraft.units.ObjectPool;
+import hotheart.starcraft.system.ObjectPool;
 import android.graphics.Canvas;
 
 public class Image {

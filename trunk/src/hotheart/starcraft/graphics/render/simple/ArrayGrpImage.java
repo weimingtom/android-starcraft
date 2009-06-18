@@ -1,8 +1,10 @@
-package hotheart.starcraft.graphics.grp;
+package hotheart.starcraft.graphics.render.simple;
 
 import hotheart.starcraft.configure.BuildParameters;
 import hotheart.starcraft.graphics.StarcraftPalette;
-import hotheart.starcraft.units.ObjectPool;
+import hotheart.starcraft.graphics.render.AbstractGrpRender;
+import hotheart.starcraft.graphics.render.GrpRenderFactory;
+import hotheart.starcraft.system.ObjectPool;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;

@@ -18,6 +18,9 @@ import hotheart.starcraft.configure.FilePaths;
 import hotheart.starcraft.utils.FileSystemUtils;
 
 public class TileLib {
+	
+	public static final int TILE_SIZE = 32;
+	
 	public static int[] palette;// Palette - generated from WPE file
 	public static byte[] CV5; // Descriptions of sprites
 	public static byte[] VR4; // Tiles(8x8)
@@ -150,8 +153,11 @@ public class TileLib {
 		int offset = id * 64;
 		for (int i = 0; i < 64; i++)
 			tmpBuf[i] = palette[VR4[offset + i] & 0xFF];
-
+		transform.preConcat(c.getMatrix());
+		c.save();
+		c.setMatrix(transform);
 		c.drawBitmap(tmpBuf, 0, 8, 0, 0, 8, 8, false, p);
+		c.restore();
 		
 		// miniTiles[id] = Bitmap.createBitmap(tmpBuf, 8, 8,
 		// Config.RGB_565);

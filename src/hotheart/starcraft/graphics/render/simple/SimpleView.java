@@ -1,24 +1,16 @@
 package hotheart.starcraft.graphics.render.simple;
 
-import java.io.FileNotFoundException;
-import java.util.Random;
-
 import hotheart.starcraft.configure.BuildParameters;
+import hotheart.starcraft.core.GameContext;
+import hotheart.starcraft.core.StarcraftCore;
 import hotheart.starcraft.map.Map;
 import hotheart.starcraft.map.TileLib;
-import hotheart.starcraft.system.ObjectPool;
-import hotheart.starcraft.units.Unit;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
-import android.util.AttributeSet;
-import android.view.KeyEvent;
-import android.view.MotionEvent;
-import android.view.VelocityTracker;
 import android.view.View;
-import android.widget.Scroller;
 
 public class SimpleView extends View {
 	
@@ -52,7 +44,6 @@ public class SimpleView extends View {
 	@Override
 	protected void onDraw(Canvas canvas) {
 		render.canvas = canvas;
-		render.begin();
 		
 		canvas.drawARGB(255, 67, 216, 248);
 
@@ -77,14 +68,13 @@ public class SimpleView extends View {
 
 		canvas.setMatrix(transf);
 
-		ObjectPool.preDraw();
-		ObjectPool.draw_fast();
-
+		StarcraftCore.context.draw();
+		
 		canvas.restore();
 		
-		render.end();
+		
 
-		ObjectPool.update();
+		StarcraftCore.context.update();
 
 		frameCount++;
 		if (System.currentTimeMillis() - startTime > 1000) {

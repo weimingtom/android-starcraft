@@ -1,10 +1,11 @@
 package hotheart.starcraft.graphics.script;
 
 import hotheart.starcraft.configure.BuildParameters;
+import hotheart.starcraft.core.GameContext;
+import hotheart.starcraft.core.StarcraftCore;
 import hotheart.starcraft.graphics.Image;
 import hotheart.starcraft.graphics.Sprite;
 import hotheart.starcraft.sounds.StarcraftSoundPool;
-import hotheart.starcraft.system.ObjectPool;
 import hotheart.starcraft.units.Flingy;
 import hotheart.starcraft.units.Unit;
 
@@ -294,7 +295,7 @@ public class ImageScriptEngine {
 			// if (instance.image instanceof Sprite)
 			// sp.parent = (Sprite) instance.image;
 
-			ObjectPool.addImage(sp);
+			StarcraftCore.context.addImage(sp);
 			break;
 
 		// Seems to be OK
@@ -320,7 +321,7 @@ public class ImageScriptEngine {
 			// if (instance.image instanceof Sprite)
 			// lo_sprite.parent = (Sprite) instance.image;
 
-			ObjectPool.addImage(lo_sprite);
+			StarcraftCore.context.addImage(lo_sprite);
 			break;
 
 		// case 0x15:
@@ -343,7 +344,7 @@ public class ImageScriptEngine {
 			// if (instance.image instanceof Sprite)
 			// l.parent = (Sprite) instance.image;
 
-			ObjectPool.addImage(l);
+			StarcraftCore.context.addImage(l);
 			break;
 
 		// OK

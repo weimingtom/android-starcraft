@@ -1,19 +1,22 @@
-package hotheart.starcraft.system;
+package hotheart.starcraft.core;
 
 import hotheart.starcraft.graphics.Image;
+import hotheart.starcraft.graphics.render.Render;
 import hotheart.starcraft.graphics.utils.SelectionCircles;
+import hotheart.starcraft.map.Map;
 import hotheart.starcraft.units.Unit;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Random;
 import java.util.TreeSet;
-import android.graphics.Canvas;
 
-public final class ObjectPool {
-	public static Random rnd;
-	public static int drawCount;
-	public static void init()
+public final class GameContext {
+	public Random rnd;
+	public int drawCount;
+	public static Map map = null;
+	
+	public GameContext()
 	{
 		rnd = new Random();
 		drawCount = 0;
@@ -43,9 +46,9 @@ public final class ObjectPool {
 		});
 	}
 		
-	public static ArrayList<Unit> units;
+	public ArrayList<Unit> units;
 	
-	public static void addUnit(Unit u, int x, int y)
+	public void addUnit(Unit u, int x, int y)
 	{
 		int R = 0;
 		//int objR = Sprite.selCircleSize[u.flingy.sprite.selCircle];
@@ -119,7 +122,7 @@ public final class ObjectPool {
 		}
 	}
 	
-	public static Unit PickUnit(int x, int y)
+	public Unit PickUnit(int x, int y)
 	{
 		for(Unit a : units)
 		{
@@ -135,44 +138,43 @@ public final class ObjectPool {
 		return null;
 	}
 	
-	public static void addUnit(Unit u)
+	public void addUnit(Unit u)
 	{
 		units.add(u);
 	}
-	
-	public static void removeUnit(Unit u)
+	public void removeUnit(Unit u)
 	{
 		units.remove(u);
 	}
 
-	public static ArrayList<Image> sprites = new ArrayList<Image>();
-	public static void addImage(Image s)
+	public ArrayList<Image> sprites = new ArrayList<Image>();
+	public void addImage(Image s)
 	{
 		sprites.add(s);
 	}
-	public static void removeImage(Image s)
+	public void removeImage(Image s)
 	{
 		sprites.remove(s);
 	}
 	
-	public static TreeSet<Image> drawObjects = new TreeSet<Image>();
+	public TreeSet<Image> drawObjects = new TreeSet<Image>();
 	
-	public static void preDraw()
+	public void buildTree()
 	{
 		drawObjects.clear();
 		
-		for(Image s: ObjectPool.sprites)
-    		s.preDraw();
+		for(Image s: sprites)
+    		s.buildTree();
    	
     	for(Unit u: units)
-    		u.preDraw();
+    		u.buildTree();
 	}
 	
-	public static void draw_fast()
+	public void drawTree()
 	{
 		drawCount = 0;
 		
-		for(Image i: ObjectPool.drawObjects)
+		for(Image i: drawObjects)
     		i.drawWithoutChilds();
 		
     	for(Unit u: units)
@@ -182,19 +184,28 @@ public final class ObjectPool {
     	}
 	}
 
-	public static void update()
+	public void update()
 	{
-		for(Object s: ObjectPool.sprites.toArray())
+		for(Object s: sprites.toArray())
     	{
     		((Image)s).update();
     	}
 		
-    	for(Object u: ObjectPool.units.toArray())
+    	for(Object u: units.toArray())
     	{
     		((Unit)u).update();
     	}
 	}
 
+	public void draw()
+	{
+		buildTree();
+		
+		Render render = StarcraftCore.render;
+		render.begin();
+		drawTree();
+		render.end();
+	}
 	
 }
 

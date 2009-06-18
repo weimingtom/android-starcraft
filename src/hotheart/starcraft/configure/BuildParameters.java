@@ -18,7 +18,7 @@ public class BuildParameters {
 	// PLAY_SOUNDS = true then game will run slower
 	public static final boolean PLAY_SOUNDS = false;
 	
-	public static final boolean LOAD_MAP = true;
+	public static final boolean LOAD_MAP = false;
 	
 	public static final String GAME_FOLDER = "/sdcard/starcraft/";
 }

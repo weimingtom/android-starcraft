@@ -1,5 +1,6 @@
 package hotheart.starcraft.system;
 
+import hotheart.starcraft.core.StarcraftCore;
 import hotheart.starcraft.graphics.render.Render;
 import hotheart.starcraft.graphics.render.ViewController;
 import hotheart.starcraft.graphics.render.simple.SimpleRender;
@@ -34,7 +35,7 @@ public final class GameActivity extends Activity {
 	}
 
 	ViewController createContentView() {
-		ViewController cont = Render.defaultRender.createViewController(this);
+		ViewController cont = StarcraftCore.render.getController(this);
 
 		RelativeLayout rl = new RelativeLayout(this);
 		rl.addView(cont.getView());
@@ -58,12 +59,11 @@ public final class GameActivity extends Activity {
 
 		unactiveFilter = new ColorMatrixColorFilter(cm);
 
-		final SystemInitializer initializer = new SystemInitializer(this);
 		final Activity currentActivity = this;
 
 		new Thread() {
 			public void run() {
-				final boolean result = initializer.init();
+				final boolean result = StarcraftCore.init(currentActivity);
 				runOnUiThread(new Runnable() {
 					public void run() {
 						if (result) {
@@ -149,7 +149,7 @@ public final class GameActivity extends Activity {
 							new AlertDialog.Builder(currentActivity)
 									.setMessage(
 											"Error in initialization: "
-													+ initializer.state)
+													+ StarcraftCore.state)
 									.setNeutralButton(
 											"Close",
 											new DialogInterface.OnClickListener() {

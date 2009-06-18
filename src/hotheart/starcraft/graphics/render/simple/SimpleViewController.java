@@ -21,7 +21,7 @@ public class SimpleViewController extends ViewController {
 	}
 
 	@Override
-	public void setPosXY(int x, int y) {
+	protected void _setPosXY(int x, int y) {
 		view.ofsX = x;
 		view.ofsY = y;
 	}

@@ -8,7 +8,8 @@ import hotheart.starcraft.graphics.render.ViewController;
 
 public class SimpleRender extends Render {
 
-	public Canvas canvas;
+	public Canvas canvas = null;
+	private SimpleViewController contr = null;
 
 	@Override
 	public void begin() {
@@ -24,7 +25,8 @@ public class SimpleRender extends Render {
 	}
 
 	@Override
-	protected ViewController _createViewController(Context c) {
-		return new SimpleViewController(c, this);
+	protected ViewController createViewController(Context c) {
+		contr = new SimpleViewController(c, this);
+		return contr;
 	}
 }

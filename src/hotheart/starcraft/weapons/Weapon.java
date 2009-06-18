@@ -1,7 +1,8 @@
 package hotheart.starcraft.weapons;
 
+import hotheart.starcraft.core.GameContext;
+import hotheart.starcraft.core.StarcraftCore;
 import hotheart.starcraft.graphics.TeamColors;
-import hotheart.starcraft.system.ObjectPool;
 import hotheart.starcraft.units.Flingy;
 import hotheart.starcraft.units.Unit;
 
@@ -91,14 +92,14 @@ public final class Weapon {
 			Flingy f = Flingy.getFlingy(flingyId, TeamColors.COLOR_DEFAULT);
 			f.setPos(targetUnit.getPosX(), targetUnit.getPosY());
 			f.imageState.angle = targetUnit.imageState.angle; 
-			ObjectPool.addImage(f);
+			StarcraftCore.context.addImage(f);
 		}
 		else if (behaviour == B_FLY_TO_TARGET)
 		{
 			Flingy f = Flingy.getFlingy(flingyId, TeamColors.COLOR_DEFAULT);
 			f.setPos(srsUnit.getPosX(), srsUnit.getPosY());
 			
-			ObjectPool.addImage(new Missle(targetUnit, f));
+			StarcraftCore.context.addImage(new Missle(targetUnit, f));
 		}
 		
 		targetUnit.hit(damage);

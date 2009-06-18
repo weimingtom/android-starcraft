@@ -1,8 +1,9 @@
 package hotheart.starcraft.graphics.render.simple;
 
 import hotheart.starcraft.configure.BuildParameters;
+import hotheart.starcraft.core.GameContext;
+import hotheart.starcraft.core.StarcraftCore;
 import hotheart.starcraft.graphics.StarcraftPalette;
-import hotheart.starcraft.system.ObjectPool;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
@@ -80,7 +81,7 @@ public class ArrayGrpImage extends GrpRender {
 	}
 
 	private final void draw(int offset, int w, int h, Canvas c, int[] palette) {
-		ObjectPool.drawCount++;
+		StarcraftCore.context.drawCount++;
 
 		Paint p = new Paint();
 

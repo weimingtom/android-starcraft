@@ -1,5 +1,7 @@
 package hotheart.starcraft.system;
 
+import hotheart.starcraft.graphics.render.AbstractRender;
+import hotheart.starcraft.graphics.render.simple.SimpleView;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -14,15 +16,17 @@ import android.widget.Button;
 import android.widget.ImageButton;
 
 public final class GameActivity extends Activity {
-	GameView view;
+	SimpleView view;
 	ColorMatrixColorFilter activeFilter;
 	ColorMatrixColorFilter unactiveFilter;
+	AbstractRender render;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 		setTheme(android.R.style.Theme_Black_NoTitleBar_Fullscreen);
+		
 		init();
 	}
 
@@ -51,7 +55,7 @@ public final class GameActivity extends Activity {
 						if (result) {
 
 							setContentView(R.layout.map);
-							view = (GameView) findViewById(R.id.GameView);
+							view = (SimpleView) findViewById(R.id.GameView);
 							view.setMap(initializer.map);
 
 							final ImageButton kill = (ImageButton) findViewById(R.id.killButton);

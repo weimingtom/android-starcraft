@@ -1,4 +1,4 @@
-package hotheart.starcraft.graphics.grp;
+package hotheart.starcraft.graphics.render;
 
 import hotheart.starcraft.configure.BuildParameters;
 import android.graphics.Canvas;

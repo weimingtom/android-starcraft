@@ -1,9 +1,11 @@
-package hotheart.starcraft.graphics.grp;
+package hotheart.starcraft.graphics.render.simple;
 
 import hotheart.starcraft.configure.BuildParameters;
 import hotheart.starcraft.graphics.RenderFunction;
 import hotheart.starcraft.graphics.StarcraftPalette;
 import hotheart.starcraft.graphics.TeamColors;
+import hotheart.starcraft.graphics.render.AbstractGrpRender;
+import hotheart.starcraft.graphics.render.GrpRenderFactory;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;

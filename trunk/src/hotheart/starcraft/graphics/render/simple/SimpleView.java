@@ -36,8 +36,8 @@ public class SimpleView extends View {
 	Scroller mScroller;
 
 
-	public SimpleView(Context context, AttributeSet attrs) {
-		super(context, attrs);
+	public SimpleView(Context context) {
+		super(context);
 
 		cont = context;
 
@@ -158,71 +158,12 @@ public class SimpleView extends View {
 		invalidate();
 	}
 
-	public boolean mapMove = true;
 	int oldX = -1;
 	int oldY = -1;
-	VelocityTracker mVelocityTracker;
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
-		if (mapMove) {
-			// int action = event.getAction();
-			// switch (action) {
-			// case MotionEvent.ACTION_DOWN: {
-			// mVelocityTracker = VelocityTracker.obtain();
-			// oldX = (int) event.getX();
-			// oldY = (int) event.getY();
-			// return true;
-			// }
-			// case MotionEvent.ACTION_MOVE: {
-			// mVelocityTracker.addMovement(event);
-			//
-			// int deltaX = (int) (oldX - event.getX());
-			// int deltaY = (int) (oldY - event.getY());
-			// oldX = (int) event.getX();
-			// oldY = (int) event.getY();
-			//
-			// mScroller.startScroll(dx, dy, -deltaX, -deltaY, 0);
-			// return true;
-			// }
-			// case MotionEvent.ACTION_UP: {
-			// mVelocityTracker.addMovement(event);
-			//
-			// mVelocityTracker.computeCurrentVelocity(1000);
-			//
-			// int vx = (int) mVelocityTracker.getXVelocity();
-			// int vy = (int) mVelocityTracker.getYVelocity();
-			//
-			// vx = vx * 3 / 4;
-			// vy = vy * 3 / 4;
-			//
-			// mScroller.fling(dx, dy, vx, vy, 0, 0, map.width*32,
-			// map.height*32);
-			//
-			// mVelocityTracker.recycle();
-			//
-			// return true;
-			// }
-			//
-			// }
-
-			if (event.getAction() == MotionEvent.ACTION_DOWN) {
-				oldX = (int) event.getX();
-				oldY = (int) event.getY();
-			} else if (event.getAction() == MotionEvent.ACTION_MOVE) {
-				try {
-					int dx = (int) (oldX - event.getX());
-					int dy = (int) (oldY - event.getY());
-
-					oldX = (int) event.getX();
-					oldY = (int) event.getY();
-
-					ofsX += dx;
-					ofsY += dy;
-				} catch (Exception e) {
-				}
-			}
-		} else if (!fixed) {
+		if (!fixed) {
 			if (selUnit != null)
 				selUnit.selected = false;
 
@@ -258,36 +199,36 @@ public class SimpleView extends View {
 
 		return true;
 	}
-
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		switch (keyCode) {
-		case KeyEvent.KEYCODE_Q:
-			killSelectedUnit();
-			break;
-		case KeyEvent.KEYCODE_H:
-			if (selUnit != null)
-				selUnit.hit(10);
-			break;
-
-		case KeyEvent.KEYCODE_L:
-			fixed = !fixed;
-			break;
-		case KeyEvent.KEYCODE_A:
-			selectingTarget = !selectingTarget;
-			break;
-		case KeyEvent.KEYCODE_M:
-			drawMap = !drawMap;
-			break;
-		case KeyEvent.KEYCODE_T:
-			mapMove = !mapMove;
-			break;
-		}
-
-		return true;
-	}
-
-	public boolean onKeyUp(int keyCode, KeyEvent event) {
-		return false;
-	}
+//
+//	public boolean onKeyDown(int keyCode, KeyEvent event) {
+//		switch (keyCode) {
+//		case KeyEvent.KEYCODE_Q:
+//			killSelectedUnit();
+//			break;
+//		case KeyEvent.KEYCODE_H:
+//			if (selUnit != null)
+//				selUnit.hit(10);
+//			break;
+//
+//		case KeyEvent.KEYCODE_L:
+//			fixed = !fixed;
+//			break;
+//		case KeyEvent.KEYCODE_A:
+//			selectingTarget = !selectingTarget;
+//			break;
+//		case KeyEvent.KEYCODE_M:
+//			drawMap = !drawMap;
+//			break;
+//		case KeyEvent.KEYCODE_T:
+//			mapMove = !mapMove;
+//			break;
+//		}
+//
+//		return true;
+//	}
+//
+//	public boolean onKeyUp(int keyCode, KeyEvent event) {
+//		return false;
+//	}
 
 }

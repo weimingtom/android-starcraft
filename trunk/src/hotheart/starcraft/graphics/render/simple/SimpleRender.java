@@ -1,7 +1,8 @@
 package hotheart.starcraft.graphics.render.simple;
 
-import android.view.View;
+import android.content.Context;
 import hotheart.starcraft.graphics.render.AbstractRender;
+import hotheart.starcraft.graphics.render.ViewController;
 
 public class SimpleRender extends AbstractRender {
 
@@ -16,8 +17,8 @@ public class SimpleRender extends AbstractRender {
 	}
 
 	@Override
-	public View createView() {
-		return null;
+	protected ViewController _createViewController(Context c) {
+		return new SimpleViewController(c);
 	}
 
 	@Override

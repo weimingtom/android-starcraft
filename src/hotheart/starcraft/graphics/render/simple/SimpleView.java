@@ -78,7 +78,7 @@ public class SimpleView extends View {
 		canvas.setMatrix(transf);
 
 		ObjectPool.preDraw();
-		ObjectPool.draw_fast(canvas);
+		ObjectPool.draw_fast();
 
 		canvas.restore();
 		

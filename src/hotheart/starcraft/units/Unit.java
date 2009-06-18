@@ -175,41 +175,43 @@ public final class Unit extends Flingy {
 		}
 	}
 
-	public final void draw_selection(Canvas c) {
+	public final void draw_selection() {
 		if (selected) {
 			Image circ = SelectionCircles.selCircles[selCircle];
 			circ.setPos(posX, posY + vertPos);
-			circ.draw(c);
+			circ.draw();
 		}
 	}
 	
-	public final void draw_healths(Canvas c)
+	public final void draw_healths()
 	{
-		Paint p = new Paint();
-		p.setColor(Color.GRAY);
-
-		int yPos = posY + vertPos + SelectionCircles.selCircleSize[selCircle]
-				/ 2;
-
-		c.drawRect(posX - healthBar / 2, yPos, posX + healthBar / 2, yPos + 4,
-				p);
-
-		p.setColor(Color.GREEN);
-		if (maxHealth > 0) {
-			int len = (healthBar * health) / maxHealth;
-
-			c.drawRect(posX - healthBar / 2, yPos, posX - healthBar / 2 + len,
-					yPos + 4, p);
-		}
+		// TODO: FIX Health bar
+		
+//		Paint p = new Paint();
+//		p.setColor(Color.GRAY);
+//
+//		int yPos = posY + vertPos + SelectionCircles.selCircleSize[selCircle]
+//				/ 2;
+//
+//		c.drawRect(posX - healthBar / 2, yPos, posX + healthBar / 2, yPos + 4,
+//				p);
+//
+//		p.setColor(Color.GREEN);
+//		if (maxHealth > 0) {
+//			int len = (healthBar * health) / maxHealth;
+//
+//			c.drawRect(posX - healthBar / 2, yPos, posX - healthBar / 2 + len,
+//					yPos + 4, p);
+//		}
 
 	}
 
 	public void draw(Canvas c) {
 		
-		super.draw(c);
+		super.draw();
 
-		draw_selection(c);
-		draw_healths(c);
+		draw_selection();
+		draw_healths();
 		
 		if (subunit1 != null) {
 			subunit1.setPos(posX, posY);

@@ -1,4 +1,4 @@
-package hotheart.starcraft.graphics.render;
+package hotheart.starcraft.graphics.render.simple;
 
 import hotheart.starcraft.configure.BuildParameters;
 import android.graphics.Canvas;
@@ -6,7 +6,7 @@ import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 
-public abstract class AbstractGrpRender {
+public abstract class GrpRender {
 	
 	public int width = 0;
 	public int height = 0;

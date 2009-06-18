@@ -6,11 +6,14 @@ import android.view.View;
 
 public abstract class ViewController implements View.OnTouchListener {
 	
+	protected abstract View _getView();
+	public abstract void setPosXY(int x, int y);
+	public abstract void setMap(Map map);
+	
 	private int mx = 56 * 32, my = 56 * 32;
 	private boolean isScrolling = false;
 	
 	View cached = null;
-	protected abstract View _getView();
 	public View getView()
 	{
 		if (cached == null)
@@ -20,6 +23,15 @@ public abstract class ViewController implements View.OnTouchListener {
 			setPosXY(mx, my);
 		}
 		return cached;
+	}
+
+	public boolean isMapScroll()
+	{
+		return isScrolling;
+	}
+	public void setMapScrollingState(boolean isScroll)
+	{
+		this.isScrolling = isScroll;
 	}
 	
 	int oldX = 0, oldY = 0;
@@ -48,18 +60,4 @@ public abstract class ViewController implements View.OnTouchListener {
 		}
 		return true;
 	}
-	
-	public abstract void setPosXY(int x, int y);
-	public abstract void setMap(Map map);
-	
-	public boolean isMapScroll()
-	{
-		return isScrolling;
-	}
-	public void setMapScrollingState(boolean isScroll)
-	{
-		this.isScrolling = isScroll;
-	}
-	
-	
 }

@@ -1,10 +1,8 @@
-package hotheart.starcraft.graphics.render;
+package hotheart.starcraft.graphics.render.simple;
 
 import hotheart.starcraft.configure.BuildParameters;
 import hotheart.starcraft.configure.FilePaths;
 import hotheart.starcraft.files.LoFile;
-import hotheart.starcraft.graphics.render.simple.ArrayGrpImage;
-import hotheart.starcraft.graphics.render.simple.BitmapGrpImage;
 import hotheart.starcraft.utils.FileSystemUtils;
 
 import java.io.ByteArrayInputStream;
@@ -57,11 +55,11 @@ public class GrpRenderFactory {
 		}
 	}
 
-	public final static AbstractGrpRender getGraphics(int id) {
+	public final static GrpRender getGraphics(int id) {
 		if (resources.containsKey((Integer) id))
-			return (AbstractGrpRender) resources.get((Integer) id);
+			return (GrpRender) resources.get((Integer) id);
 		else {
-			AbstractGrpRender res;
+			GrpRender res;
 			if (BuildParameters.CACHE_GRP)
 				res = new BitmapGrpImage(readWholeImage(id), id);
 			else

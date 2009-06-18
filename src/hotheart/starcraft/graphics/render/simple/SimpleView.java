@@ -22,6 +22,8 @@ import android.widget.Scroller;
 
 public class SimpleView extends View {
 	
+	SimpleRender render;
+	
 	Map map;
 	int ofsX = 56 * 32, ofsY = 60 * 32;
 	
@@ -30,14 +32,17 @@ public class SimpleView extends View {
 	int frameCount = 0;
 	int FPS = 0;
 	long startTime;
-
-	public SimpleView(Context context) {
+	
+	public SimpleView(Context context, SimpleRender r) {
 		super(context);
+		
+		render = r;
 
 		startTime = System.currentTimeMillis();
 
 		setFocusableInTouchMode(true);
 		requestFocus();
+		
 	}
 
 	public void setMap(Map mp) {
@@ -46,10 +51,13 @@ public class SimpleView extends View {
 
 	@Override
 	protected void onDraw(Canvas canvas) {
-
+		render.canvas = canvas;
+		render.begin();
+		
 		canvas.drawARGB(255, 67, 216, 248);
 
 		canvas.save();
+		
 		Matrix transf = canvas.getMatrix();
 		transf.postTranslate(-ofsX % TileLib.TILE_SIZE, -ofsY
 				% TileLib.TILE_SIZE);
@@ -70,10 +78,11 @@ public class SimpleView extends View {
 		canvas.setMatrix(transf);
 
 		ObjectPool.preDraw();
-
 		ObjectPool.draw_fast(canvas);
 
 		canvas.restore();
+		
+		render.end();
 
 		ObjectPool.update();
 

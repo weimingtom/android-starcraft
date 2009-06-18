@@ -10,7 +10,8 @@ import java.io.IOException;
 
 import hotheart.starcraft.configure.BuildParameters;
 import hotheart.starcraft.files.DatFile;
-import hotheart.starcraft.graphics.render.GrpRenderFactory;
+import hotheart.starcraft.graphics.render.Render;
+import hotheart.starcraft.graphics.render.simple.GrpRenderFactory;
 import hotheart.starcraft.graphics.script.ImageScriptEngine;
 import hotheart.starcraft.graphics.script.ImageState;
 import hotheart.starcraft.system.ObjectPool;
@@ -76,8 +77,8 @@ public class Image {
 		int functionId = drawFunc[id] & 0xFF;
 		int remapping = remappingData[id] & 0xFF;
 
-		ImageStaticData data = new ImageStaticData(id, GrpRenderFactory
-				.getGraphics(grpId), ImageScriptEngine.createHeader(scriptId),
+		ImageStaticData data = new ImageStaticData(id, Render.defaultRender
+				.createObject(grpId), ImageScriptEngine.createHeader(scriptId),
 				functionId, remapping, align == 1);
 
 		Image res = new Image(layer, data);
@@ -304,10 +305,10 @@ public class Image {
 			}
 
 		if (!deleted) {
-			imageData.grp.draw(posX + offsetX, posY + offsetY,
+			imageData.renderImage.draw(posX + offsetX, posY + offsetY,
 					this.imageData.align, imageState.baseFrame,
 					imageState.angle, this.imageData.graphicsFuntion,
-					this.imageData.remapping, this.foregroundColor, c);
+					this.imageData.remapping, this.foregroundColor);
 		}
 	}
 

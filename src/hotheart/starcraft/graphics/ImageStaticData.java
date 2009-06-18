@@ -1,19 +1,20 @@
 package hotheart.starcraft.graphics;
 
-import hotheart.starcraft.graphics.render.AbstractGrpRender;
+import hotheart.starcraft.graphics.render.RenderImage;
+import hotheart.starcraft.graphics.render.simple.GrpRender;
 import hotheart.starcraft.graphics.script.ImageScriptHeader;
 
 public class ImageStaticData
 {
 	public ImageStaticData(int _imageId, 
-			AbstractGrpRender _grp,
+			RenderImage _renderImage,
 			ImageScriptHeader _scriptHeader,
 			int _graphicsFuntion,
 			int _remapping,
 			boolean _align)
 	{
 		imageId = _imageId;
-		grp = _grp;
+		renderImage = _renderImage;
 		scriptHeader = _scriptHeader;
 		graphicsFuntion = _graphicsFuntion;
 		remapping = _remapping;
@@ -21,7 +22,7 @@ public class ImageStaticData
 	}
 	
 	public int imageId;
-	public AbstractGrpRender grp;
+	public RenderImage renderImage;
 	
 	public ImageScriptHeader scriptHeader;
 	

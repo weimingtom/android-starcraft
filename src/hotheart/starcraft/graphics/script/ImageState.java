@@ -36,7 +36,7 @@ public class ImageState {
 	public boolean isPaused = false;
 	public int returnLine = 0;
 
-	// Image rendering parameters
+	// RenderImage rendering parameters
 	public int baseFrame = 0;
 	public boolean visible = true;
 

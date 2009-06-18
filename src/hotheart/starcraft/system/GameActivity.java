@@ -82,23 +82,23 @@ public final class GameActivity extends Activity {
 //								}
 //							});
 //
-//							final ImageButton move = (ImageButton) findViewById(R.id.moveButton);
-//
-//							if (view.mapMove)
-//								move.setColorFilter(activeFilter);
-//							else
-//								move.setColorFilter(unactiveFilter);
-//
-//							move.setOnClickListener(new OnClickListener() {
-//								public void onClick(View v) {
-//									view.mapMove = !view.mapMove;
-//
-//									if (view.mapMove)
-//										move.setColorFilter(activeFilter);
-//									else
-//										move.setColorFilter(unactiveFilter);
-//								}
-//							});
+							final ImageButton move = (ImageButton) findViewById(R.id.moveButton);
+
+							if (controller.isMapScroll())
+								move.setColorFilter(activeFilter);
+							else
+								move.setColorFilter(unactiveFilter);
+
+							move.setOnClickListener(new OnClickListener() {
+								public void onClick(View v) {
+									controller.setMapScrollingState(!controller.isMapScroll());
+
+									if (controller.isMapScroll())
+										move.setColorFilter(activeFilter);
+									else
+										move.setColorFilter(unactiveFilter);
+								}
+							});
 //
 //							final ImageButton fixSelection = (ImageButton) findViewById(R.id.fixButton);
 //

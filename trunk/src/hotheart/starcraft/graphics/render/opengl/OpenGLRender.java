@@ -10,6 +10,9 @@ import hotheart.starcraft.graphics.render.ViewController;
 public class OpenGLRender extends Render {
 
 	public GL10 gl;
+
+	public OpenGLViewController controller = null;
+
 	@Override
 	public void begin() {
 	}
@@ -21,7 +24,8 @@ public class OpenGLRender extends Render {
 
 	@Override
 	protected ViewController createViewController(Context c) {
-		return new OpenGLViewController(c, this);
+		controller = new OpenGLViewController(c, this);
+		return controller;
 	}
 
 	@Override

@@ -295,7 +295,7 @@ public class Image {
 			}
 	}
 
-	public void drawWithoutChilds(Canvas c) {
+	public void drawWithoutChilds() {
 		if (!imageState.isBlocked)
 			if (parentOverlay != null) {
 				if (imageState.followParent)
@@ -312,7 +312,7 @@ public class Image {
 		}
 	}
 
-	public void draw(Canvas c) {
+	public void draw() {
 		if (!imageState.visible)
 			return;
 
@@ -327,9 +327,9 @@ public class Image {
 		for (int i = 0; i < childs.length; i++)
 			if (childs[i] != null) {
 				childs[i].setPos(this.posX, this.posY);
-				childs[i].draw(c);
+				childs[i].draw();
 			}
 
-		drawWithoutChilds(c);
+		drawWithoutChilds();
 	}
 }

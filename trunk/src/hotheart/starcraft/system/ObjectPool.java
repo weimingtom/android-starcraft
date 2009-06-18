@@ -168,17 +168,17 @@ public final class ObjectPool {
     		u.preDraw();
 	}
 	
-	public static void draw_fast(Canvas c)
+	public static void draw_fast()
 	{
 		drawCount = 0;
 		
 		for(Image i: ObjectPool.drawObjects)
-    		i.drawWithoutChilds(c);
+    		i.drawWithoutChilds();
 		
     	for(Unit u: units)
     	{
-    		u.draw_selection(c);
-    		u.draw_healths(c);
+    		u.draw_selection();
+    		u.draw_healths();
     	}
 	}
 

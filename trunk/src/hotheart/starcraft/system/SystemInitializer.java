@@ -5,7 +5,9 @@ import hotheart.starcraft.configure.FilePaths;
 import hotheart.starcraft.graphics.Image;
 import hotheart.starcraft.graphics.Sprite;
 import hotheart.starcraft.graphics.TeamColors;
-import hotheart.starcraft.graphics.render.GrpRenderFactory;
+import hotheart.starcraft.graphics.render.Render;
+import hotheart.starcraft.graphics.render.simple.GrpRenderFactory;
+import hotheart.starcraft.graphics.render.simple.SimpleRender;
 import hotheart.starcraft.graphics.script.ImageScriptEngine;
 import hotheart.starcraft.graphics.utils.SelectionCircles;
 import hotheart.starcraft.map.Map;
@@ -60,6 +62,9 @@ public class SystemInitializer {
 
 	public boolean init() {
 		try {
+			
+			Render.defaultRender = new SimpleRender();
+			ObjectPool.init();
 
 			FileInputStream fs = null;
 
@@ -96,7 +101,6 @@ public class SystemInitializer {
 
 			SelectionCircles.initCircles();
 
-			ObjectPool.init();
 
 			showMessage("Creating units");
 

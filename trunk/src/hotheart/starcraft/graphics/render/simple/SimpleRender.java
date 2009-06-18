@@ -1,31 +1,30 @@
 package hotheart.starcraft.graphics.render.simple;
 
 import android.content.Context;
-import hotheart.starcraft.graphics.render.AbstractRender;
+import android.graphics.Canvas;
+import hotheart.starcraft.graphics.render.RenderImage;
+import hotheart.starcraft.graphics.render.Render;
 import hotheart.starcraft.graphics.render.ViewController;
 
-public class SimpleRender extends AbstractRender {
+public class SimpleRender extends Render {
+
+	public Canvas canvas;
 
 	@Override
-	public Object begin() {
-		return null;
+	public void begin() {
 	}
 
 	@Override
-	public Object createObject(int grpId) {
-		return null;
+	public void end() {
+	}
+
+	@Override
+	public RenderImage createObject(int grpId) {
+		return new SimpleRenderImage(this, GrpRenderFactory.getGraphics(grpId));
 	}
 
 	@Override
 	protected ViewController _createViewController(Context c) {
-		return new SimpleViewController(c);
-	}
-
-	@Override
-	public void destroyObject(Object object) {
-	}
-
-	@Override
-	public void end(Object state) {
+		return new SimpleViewController(c, this);
 	}
 }

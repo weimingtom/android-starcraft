@@ -1,6 +1,6 @@
 package hotheart.starcraft.system;
 
-import hotheart.starcraft.graphics.render.AbstractRender;
+import hotheart.starcraft.graphics.render.Render;
 import hotheart.starcraft.graphics.render.ViewController;
 import hotheart.starcraft.graphics.render.simple.SimpleRender;
 import hotheart.starcraft.graphics.render.simple.SimpleView;
@@ -24,26 +24,23 @@ public final class GameActivity extends Activity {
 	ViewController controller;
 	ColorMatrixColorFilter activeFilter;
 	ColorMatrixColorFilter unactiveFilter;
-	AbstractRender render;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 		setTheme(android.R.style.Theme_Black_NoTitleBar_Fullscreen);
-		render = new SimpleRender();
 		init();
 	}
-	
-	ViewController createContentView()
-	{
-		ViewController cont = render.createViewController(this);
-		
+
+	ViewController createContentView() {
+		ViewController cont = Render.defaultRender.createViewController(this);
+
 		RelativeLayout rl = new RelativeLayout(this);
 		rl.addView(cont.getView());
 		rl.addView(LayoutInflater.from(this).inflate(R.layout.gameui, null));
 		setContentView(rl);
-		
+
 		return cont;
 	}
 
@@ -72,16 +69,17 @@ public final class GameActivity extends Activity {
 						if (result) {
 
 							controller = createContentView();
-							//view = (SimpleView) findViewById(R.id.GameView);
-//							view.setMap(initializer.map);
+							// view = (SimpleView) findViewById(R.id.GameView);
+							// view.setMap(initializer.map);
 
-//							final ImageButton kill = (ImageButton) findViewById(R.id.killButton);
-//							kill.setOnClickListener(new OnClickListener() {
-//								public void onClick(View v) {
-//									view.killSelectedUnit();
-//								}
-//							});
-//
+							// final ImageButton kill = (ImageButton)
+							// findViewById(R.id.killButton);
+							// kill.setOnClickListener(new OnClickListener() {
+							// public void onClick(View v) {
+							// view.killSelectedUnit();
+							// }
+							// });
+							//
 							final ImageButton move = (ImageButton) findViewById(R.id.moveButton);
 
 							if (controller.isMapScroll())
@@ -91,7 +89,8 @@ public final class GameActivity extends Activity {
 
 							move.setOnClickListener(new OnClickListener() {
 								public void onClick(View v) {
-									controller.setMapScrollingState(!controller.isMapScroll());
+									controller.setMapScrollingState(!controller
+											.isMapScroll());
 
 									if (controller.isMapScroll())
 										move.setColorFilter(activeFilter);
@@ -99,48 +98,50 @@ public final class GameActivity extends Activity {
 										move.setColorFilter(unactiveFilter);
 								}
 							});
-//
-//							final ImageButton fixSelection = (ImageButton) findViewById(R.id.fixButton);
-//
-//							if (view.fixed)
-//								fixSelection.setColorFilter(activeFilter);
-//							else
-//								fixSelection.setColorFilter(unactiveFilter);
-//
-//							fixSelection
-//									.setOnClickListener(new OnClickListener() {
-//										public void onClick(View v) {
-//											view.fixed = !view.fixed;
-//
-//											if (view.fixed)
-//												fixSelection
-//														.setColorFilter(activeFilter);
-//											else
-//												fixSelection
-//														.setColorFilter(unactiveFilter);
-//										}
-//									});
-//
-//							final ImageButton attack = (ImageButton) findViewById(R.id.attackButton);
-//
-//							if (view.selectingTarget)
-//								attack.setColorFilter(activeFilter);
-//							else
-//								attack.setColorFilter(unactiveFilter);
-//
-//							attack
-//									.setOnClickListener(new OnClickListener() {
-//										public void onClick(View v) {
-//											view.selectingTarget = !view.selectingTarget;
-//
-//											if (view.selectingTarget)
-//												attack
-//														.setColorFilter(activeFilter);
-//											else
-//												attack
-//														.setColorFilter(unactiveFilter);
-//										}
-//									});
+							//
+							// final ImageButton fixSelection = (ImageButton)
+							// findViewById(R.id.fixButton);
+							//
+							// if (view.fixed)
+							// fixSelection.setColorFilter(activeFilter);
+							// else
+							// fixSelection.setColorFilter(unactiveFilter);
+							//
+							// fixSelection
+							// .setOnClickListener(new OnClickListener() {
+							// public void onClick(View v) {
+							// view.fixed = !view.fixed;
+							//
+							// if (view.fixed)
+							// fixSelection
+							// .setColorFilter(activeFilter);
+							// else
+							// fixSelection
+							// .setColorFilter(unactiveFilter);
+							// }
+							// });
+							//
+							// final ImageButton attack = (ImageButton)
+							// findViewById(R.id.attackButton);
+							//
+							// if (view.selectingTarget)
+							// attack.setColorFilter(activeFilter);
+							// else
+							// attack.setColorFilter(unactiveFilter);
+							//
+							// attack
+							// .setOnClickListener(new OnClickListener() {
+							// public void onClick(View v) {
+							// view.selectingTarget = !view.selectingTarget;
+							//
+							// if (view.selectingTarget)
+							// attack
+							// .setColorFilter(activeFilter);
+							// else
+							// attack
+							// .setColorFilter(unactiveFilter);
+							// }
+							// });
 
 						} else // ERROR
 						{

@@ -8,9 +8,11 @@ import hotheart.starcraft.map.Map;
 public class SimpleViewController extends ViewController {
 
 	SimpleView view;
-	public SimpleViewController(Context c)
+	SimpleRender render;
+	public SimpleViewController(Context c, SimpleRender r)
 	{
-		view = new SimpleView(c);
+		view = new SimpleView(c, r);
+		render = r;
 	}
 	
 	@Override

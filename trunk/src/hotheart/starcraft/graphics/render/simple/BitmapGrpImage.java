@@ -4,8 +4,6 @@ import hotheart.starcraft.configure.BuildParameters;
 import hotheart.starcraft.graphics.RenderFunction;
 import hotheart.starcraft.graphics.StarcraftPalette;
 import hotheart.starcraft.graphics.TeamColors;
-import hotheart.starcraft.graphics.render.AbstractGrpRender;
-import hotheart.starcraft.graphics.render.GrpRenderFactory;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -15,7 +13,7 @@ import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Bitmap.Config;
 
-public class BitmapGrpImage extends AbstractGrpRender {
+public class BitmapGrpImage extends GrpRender {
 
 	@Override
 	public void draw(Canvas c, int frameId, int function, int remapping,

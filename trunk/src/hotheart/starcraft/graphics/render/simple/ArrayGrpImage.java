@@ -2,14 +2,12 @@ package hotheart.starcraft.graphics.render.simple;
 
 import hotheart.starcraft.configure.BuildParameters;
 import hotheart.starcraft.graphics.StarcraftPalette;
-import hotheart.starcraft.graphics.render.AbstractGrpRender;
-import hotheart.starcraft.graphics.render.GrpRenderFactory;
 import hotheart.starcraft.system.ObjectPool;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 
-public class ArrayGrpImage extends AbstractGrpRender {
+public class ArrayGrpImage extends GrpRender {
 
 	@Override
 	public void draw(Canvas c, int frameId, int function, int remapping,

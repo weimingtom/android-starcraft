@@ -3,12 +3,13 @@ package hotheart.starcraft.graphics.render;
 import android.content.Context;
 import android.view.View;
 
-public abstract class AbstractRender {
+public abstract class Render {
 	
-	public static AbstractRender defaultRender = null;  
+	public static Render defaultRender = null;  
 	
-	public abstract Object begin();
-	public abstract void end(Object state);
+	public abstract void begin();
+
+	public abstract void end();
 	
 	private ViewController cached = null;
 	protected abstract ViewController _createViewController(Context c);
@@ -20,6 +21,5 @@ public abstract class AbstractRender {
 		return cached;
 	}
 	
-	public abstract Object createObject(int grpId);
-	public abstract void destroyObject(Object object);
+	public abstract RenderImage createObject(int grpId);
 }

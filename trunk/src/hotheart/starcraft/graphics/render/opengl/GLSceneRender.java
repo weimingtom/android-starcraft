@@ -18,9 +18,13 @@ import android.opengl.GLSurfaceView;
 public class GLSceneRender implements GLSurfaceView.Renderer {
 	OpenGLRender render;
 
-	int[] coords = { 20, 10, 20, 0, 0, 0, 0, 10 };
+	int[] coords = { 
+			200, 100,
+			200, 0,
+			0, 0,
+			0, 100};
 
-	int[] colors = { Color.RED, Color.BLACK, Color.BLUE, Color.GREEN };
+	int[] colors = { Color.RED, Color.BLUE, Color.WHITE, Color.WHITE };
 
 	byte[] vertex_strip = { 1, 0, 2, 3 };
 
@@ -38,7 +42,7 @@ public class GLSceneRender implements GLSurfaceView.Renderer {
 		mVertexBuffer.position(0);
 
 		ByteBuffer cbb = ByteBuffer.allocateDirect(colors.length * 4);
-		cbb.order(ByteOrder.nativeOrder());
+		cbb.order(ByteOrder.BIG_ENDIAN);
 		mColorBuffer = cbb.asIntBuffer();
 		mColorBuffer.put(colors);
 		mColorBuffer.position(0);
@@ -56,12 +60,12 @@ public class GLSceneRender implements GLSurfaceView.Renderer {
 		gl.glMatrixMode(GL10.GL_MODELVIEW);
 		gl.glLoadIdentity();
 
-		gl.glFrontFace(GL10.GL_CW);
+		gl.glFrontFace(GL10.GL_CCW);
 
 		gl.glEnableClientState(GL10.GL_VERTEX_ARRAY);
 		gl.glEnableClientState(GL10.GL_COLOR_ARRAY);
 
-		gl.glVertexPointer(2, GL10.GL_SHORT, 0, mVertexBuffer);
+		gl.glVertexPointer(2, GL10.GL_FIXED, 0, mVertexBuffer);
 		gl.glColorPointer(4, GL10.GL_FIXED, 0, mColorBuffer);
 		gl.glDrawElements(GL10.GL_TRIANGLE_STRIP, 4, GL10.GL_UNSIGNED_BYTE,
 				mIndexBuffer);
@@ -75,7 +79,7 @@ public class GLSceneRender implements GLSurfaceView.Renderer {
 
 		// Then change render type to orthogonal to prevent perspective using
 		// real screen size (1 pixel = 1 unit)
-		gl.glOrthof(0f, width, height, 0f, 0f, 1f);
+		gl.glOrthox(0, width, height, 0, 0, 10);
 
 		// Reset modelview
 		gl.glMatrixMode(GL10.GL_MODELVIEW);
@@ -84,11 +88,11 @@ public class GLSceneRender implements GLSurfaceView.Renderer {
 
 	public void onSurfaceCreated(GL10 gl, EGLConfig config) {
 
-		gl.glDisable(GL10.GL_DITHER);
+		//gl.glDisable(GL10.GL_DITHER);
 
-		gl.glHint(GL10.GL_PERSPECTIVE_CORRECTION_HINT, GL10.GL_FASTEST);
+		//gl.glHint(GL10.GL_PERSPECTIVE_CORRECTION_HINT, GL10.GL_FASTEST);
 
-		gl.glClearColor(1, 67 / 255.0f, 216 / 255.0f, 248 / 255.0f);
+		gl.glClearColor(67 / 255.0f, 216 / 255.0f, 248 / 255.0f, 1);
 
 		gl.glDisable(GL10.GL_CULL_FACE);
 		gl.glShadeModel(GL10.GL_SMOOTH);

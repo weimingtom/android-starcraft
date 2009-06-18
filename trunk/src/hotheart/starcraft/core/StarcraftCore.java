@@ -6,6 +6,7 @@ import hotheart.starcraft.graphics.Image;
 import hotheart.starcraft.graphics.Sprite;
 import hotheart.starcraft.graphics.TeamColors;
 import hotheart.starcraft.graphics.render.Render;
+import hotheart.starcraft.graphics.render.opengl.OpenGLRender;
 import hotheart.starcraft.graphics.render.simple.GrpRenderFactory;
 import hotheart.starcraft.graphics.render.simple.SimpleRender;
 import hotheart.starcraft.graphics.script.ImageScriptEngine;
@@ -63,7 +64,7 @@ public class StarcraftCore {
 		try {
 			act = parentAcrivity;
 			context = new GameContext();
-			render = new SimpleRender();
+			render = new OpenGLRender();
 			
 
 			FileInputStream fs = null;

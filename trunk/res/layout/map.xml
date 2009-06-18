@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout android:layout_width="fill_parent"
 	android:layout_height="wrap_content" xmlns:android="http://schemas.android.com/apk/res/android">
-	<hotheart.starcraft.system.GameView
+	<hotheart.starcraft.graphics.render.simple.SimpleView
 		android:id="@+id/GameView" android:layout_width="fill_parent"
 		android:layout_height="fill_parent" />
 	<LinearLayout android:orientation="horizontal"

@@ -10,10 +10,13 @@ import android.graphics.Color;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.os.Bundle;
+import android.util.AttributeSet;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 
 public final class GameActivity extends Activity {
 	SimpleView view;
@@ -28,6 +31,20 @@ public final class GameActivity extends Activity {
 		setTheme(android.R.style.Theme_Black_NoTitleBar_Fullscreen);
 		
 		init();
+	}
+	
+	SimpleView createContentView()
+	{
+		//setContentView(R.layout.map);
+		
+		SimpleView res = new SimpleView(this, null); 
+		
+		RelativeLayout rl = new RelativeLayout(this);
+		rl.addView(res);
+		rl.addView(LayoutInflater.from(this).inflate(R.layout.gameui, null));
+		setContentView(rl);
+		
+		return res;
 	}
 
 	void init() {
@@ -54,9 +71,9 @@ public final class GameActivity extends Activity {
 					public void run() {
 						if (result) {
 
-							setContentView(R.layout.map);
-							view = (SimpleView) findViewById(R.id.GameView);
-							view.setMap(initializer.map);
+							view = createContentView();
+							//view = (SimpleView) findViewById(R.id.GameView);
+//							view.setMap(initializer.map);
 
 							final ImageButton kill = (ImageButton) findViewById(R.id.killButton);
 							kill.setOnClickListener(new OnClickListener() {

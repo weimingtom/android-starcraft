@@ -1,4 +1,4 @@
-package hotheart.starcraft.system;
+package hotheart.starcraft.core;
 
 import hotheart.starcraft.configure.BuildParameters;
 import hotheart.starcraft.configure.FilePaths;
@@ -22,17 +22,20 @@ import java.io.FileInputStream;
 import android.app.Activity;
 import android.app.ProgressDialog;
 
-public class SystemInitializer {
+public class StarcraftCore {
 
-	public Map map = null;
+	public static Render render;
+	public static GameContext context;
 
-	public String state = "";
+	
 
-	Activity act;
+	public static String state = "";
 
-	ProgressDialog splash;
+	static Activity act;
 
-	private void showMessage(final String data) {
+	static ProgressDialog splash;
+
+	private static void showMessage(final String data) {
 		state = data;
 		act.runOnUiThread(new Runnable() {
 			public void run() {
@@ -46,7 +49,7 @@ public class SystemInitializer {
 
 	}
 
-	private void hideProgress() {
+	private static void hideProgress() {
 		act.runOnUiThread(new Runnable() {
 			public void run() {
 				if (splash != null)
@@ -56,15 +59,12 @@ public class SystemInitializer {
 
 	}
 
-	public SystemInitializer(Activity parentAcrivity) {
-		act = parentAcrivity;
-	}
-
-	public boolean init() {
+	public static boolean init(Activity parentAcrivity) {
 		try {
+			act = parentAcrivity;
+			context = new GameContext();
+			render = new SimpleRender();
 			
-			Render.defaultRender = new SimpleRender();
-			ObjectPool.init();
 
 			FileInputStream fs = null;
 
@@ -104,28 +104,28 @@ public class SystemInitializer {
 
 			showMessage("Creating units");
 
-			ObjectPool.addUnit(Unit.getUnit(0, TeamColors.COLOR_RED),
+			context.addUnit(Unit.getUnit(0, TeamColors.COLOR_RED),
 						62 * 32, 66 * 32);
 			
-			ObjectPool.addUnit(Unit.getUnit(1, TeamColors.COLOR_RED),
+			context.addUnit(Unit.getUnit(1, TeamColors.COLOR_RED),
 					62 * 32, 66 * 32);
 			
-			ObjectPool.addUnit(Unit.getUnit(0, TeamColors.COLOR_GREEN),
+			context.addUnit(Unit.getUnit(0, TeamColors.COLOR_GREEN),
 					66 * 32, 62 * 32);
 			
-			ObjectPool.addUnit(Unit.getUnit(1, TeamColors.COLOR_GREEN),
+			context.addUnit(Unit.getUnit(1, TeamColors.COLOR_GREEN),
 					66 * 32, 62 * 32);
 			
-			ObjectPool.addUnit(Unit.getUnit(0, TeamColors.COLOR_BLUE),
+			context.addUnit(Unit.getUnit(0, TeamColors.COLOR_BLUE),
 					66 * 32, 66 * 32);
 			
-			ObjectPool.addUnit(Unit.getUnit(1, TeamColors.COLOR_BLUE),
+			context.addUnit(Unit.getUnit(1, TeamColors.COLOR_BLUE),
 					66 * 32, 66 * 32);
 			
 			showMessage("Loading map");
 
 			if (BuildParameters.LOAD_MAP)
-				map = new Map(FileSystemUtils
+				context.map = new Map(FileSystemUtils
 						.readAllBytes(FilePaths.SCENARIO_CHK));
 
 			hideProgress();

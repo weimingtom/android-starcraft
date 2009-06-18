@@ -9,12 +9,13 @@ import java.io.FileInputStream;
 import java.io.IOException;
 
 import hotheart.starcraft.configure.BuildParameters;
+import hotheart.starcraft.core.GameContext;
+import hotheart.starcraft.core.StarcraftCore;
 import hotheart.starcraft.files.DatFile;
 import hotheart.starcraft.graphics.render.Render;
 import hotheart.starcraft.graphics.render.simple.GrpRenderFactory;
 import hotheart.starcraft.graphics.script.ImageScriptEngine;
 import hotheart.starcraft.graphics.script.ImageState;
-import hotheart.starcraft.system.ObjectPool;
 import android.graphics.Canvas;
 
 public class Image {
@@ -77,7 +78,7 @@ public class Image {
 		int functionId = drawFunc[id] & 0xFF;
 		int remapping = remappingData[id] & 0xFF;
 
-		ImageStaticData data = new ImageStaticData(id, Render.defaultRender
+		ImageStaticData data = new ImageStaticData(id, StarcraftCore.render
 				.createObject(grpId), ImageScriptEngine.createHeader(scriptId),
 				functionId, remapping, align == 1);
 
@@ -220,7 +221,7 @@ public class Image {
 	public void delete() {
 
 		deleted = true;
-		ObjectPool.removeImage(this);
+		StarcraftCore.context.removeImage(this);
 		if (childCount == 0) {
 			if (parentOverlay != null) {
 				parentOverlay.removeChild(this);
@@ -280,18 +281,18 @@ public class Image {
 
 	public int sortIndex = 0;
 
-	public void preDraw() {
+	public void buildTree() {
 		if (!this.imageState.visible)
 			return;
 
 		// setPos(dX, dY);
 
-		ObjectPool.drawObjects.add(this);
+		StarcraftCore.context.drawObjects.add(this);
 
 		for (int i = 0; i < childs.length; i++)
 			if (childs[i] != null) {
 				childs[i].setPos(this.posX, this.posY);
-				childs[i].preDraw();
+				childs[i].buildTree();
 			}
 	}
 

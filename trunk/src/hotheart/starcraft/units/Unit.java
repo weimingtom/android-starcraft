@@ -1,12 +1,10 @@
 package hotheart.starcraft.units;
 
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
+import hotheart.starcraft.core.GameContext;
+import hotheart.starcraft.core.StarcraftCore;
 import hotheart.starcraft.graphics.Image;
 import hotheart.starcraft.graphics.utils.SelectionCircles;
-import hotheart.starcraft.sounds.StarcraftSoundPool;
-import hotheart.starcraft.system.ObjectPool;
 import hotheart.starcraft.weapons.Weapon;
 
 import java.util.Random;
@@ -15,12 +13,10 @@ public final class Unit extends Flingy {
 
 	public Unit(Flingy src) {
 		super(src);
-		// TODO Auto-generated constructor stub
 	}
 
 	private static byte[] units;
 	private static int count;
-	private static Random rnd = new Random();
 
 	public static void init(byte[] arr) {
 		units = arr;
@@ -162,16 +158,16 @@ public final class Unit extends Flingy {
 //					+ rnd.nextInt(WhatSoundEnd - WhatSoundStart));
 	}
 
-	public void preDraw() {
-		super.preDraw();
+	public void buildTree() {
+		super.buildTree();
 
 		if (subunit1 != null) {
 			subunit1.setPos(posX, posY);
-			subunit1.preDraw();
+			subunit1.buildTree();
 		}
 		if (subunit2 != null) {
 			subunit2.setPos(posX, posY);
-			subunit2.preDraw();
+			subunit2.buildTree();
 		}
 	}
 
@@ -311,8 +307,8 @@ public final class Unit extends Flingy {
 
 	public void kill() {
 
-		ObjectPool.removeUnit(this);
-		ObjectPool.addImage(this);
+		StarcraftCore.context.removeUnit(this);
+		StarcraftCore.context.addImage(this);
 
 		super.kill();
 

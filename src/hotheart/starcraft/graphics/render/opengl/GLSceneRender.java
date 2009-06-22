@@ -55,6 +55,10 @@ public class GLSceneRender implements GLSurfaceView.Renderer {
 	public void onDrawFrame(GL10 gl) {
 		render.gl = gl;
 		gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
+		
+        gl.glTexEnvx(GL10.GL_TEXTURE_ENV, GL10.GL_TEXTURE_ENV_MODE,
+                GL10.GL_MODULATE);
+		
 		gl.glMatrixMode(GL10.GL_MODELVIEW);
 		gl.glLoadIdentity();
 		
@@ -89,6 +93,6 @@ public class GLSceneRender implements GLSurfaceView.Renderer {
 		gl.glDisable(GL10.GL_CULL_FACE);
 		gl.glShadeModel(GL10.GL_SMOOTH);
 		gl.glDisable(GL10.GL_DEPTH_TEST);
-
+		gl.glEnable(GL10.GL_TEXTURE_2D);
 	}
 }

@@ -3,6 +3,7 @@ package hotheart.starcraft.graphics.render.opengl;
 import javax.microedition.khronos.opengles.GL10;
 
 import android.content.Context;
+import hotheart.starcraft.graphics.grp.GrpLibrary;
 import hotheart.starcraft.graphics.render.Render;
 import hotheart.starcraft.graphics.render.RenderImage;
 import hotheart.starcraft.graphics.render.ViewController;
@@ -19,7 +20,7 @@ public class OpenGLRender extends Render {
 
 	@Override
 	public RenderImage createObject(int grpId) {
-		return new OpenGLRenderImage(this);
+		return new OpenGLRenderImage(this, GrpLibrary.getGraphics(grpId));
 	}
 
 	@Override

@@ -5,6 +5,7 @@ import hotheart.starcraft.configure.FilePaths;
 import hotheart.starcraft.graphics.Image;
 import hotheart.starcraft.graphics.Sprite;
 import hotheart.starcraft.graphics.TeamColors;
+import hotheart.starcraft.graphics.grp.GrpLibrary;
 import hotheart.starcraft.graphics.render.Render;
 import hotheart.starcraft.graphics.render.opengl.OpenGLRender;
 import hotheart.starcraft.graphics.render.simple.GrpRenderFactory;
@@ -27,8 +28,6 @@ public class StarcraftCore {
 
 	public static Render render;
 	public static GameContext context;
-
-	
 
 	public static String state = "";
 
@@ -65,7 +64,6 @@ public class StarcraftCore {
 			act = parentAcrivity;
 			context = new GameContext();
 			render = new OpenGLRender();
-			
 
 			FileInputStream fs = null;
 
@@ -75,7 +73,11 @@ public class StarcraftCore {
 					.readAllBytes(FilePaths.SFX_DATA_DAT));
 
 			showMessage("GRP library");
-			GrpRenderFactory.init(FileSystemUtils.readAllBytes(FilePaths.IMAGES_TBL));
+			GrpLibrary.init(FileSystemUtils.readAllBytes(FilePaths.IMAGES_TBL));
+
+			// DEPRECATED
+			GrpRenderFactory.init(FileSystemUtils
+					.readAllBytes(FilePaths.IMAGES_TBL));
 
 			showMessage("Init script engine");
 			ImageScriptEngine.init(FileSystemUtils
@@ -102,27 +104,26 @@ public class StarcraftCore {
 
 			SelectionCircles.initCircles();
 
-
 			showMessage("Creating units");
 
-			context.addUnit(Unit.getUnit(0, TeamColors.COLOR_RED),
-						62 * 32, 66 * 32);
-			
-			context.addUnit(Unit.getUnit(1, TeamColors.COLOR_RED),
-					62 * 32, 66 * 32);
-			
-			context.addUnit(Unit.getUnit(0, TeamColors.COLOR_GREEN),
-					66 * 32, 62 * 32);
-			
-			context.addUnit(Unit.getUnit(1, TeamColors.COLOR_GREEN),
-					66 * 32, 62 * 32);
-			
-			context.addUnit(Unit.getUnit(0, TeamColors.COLOR_BLUE),
-					66 * 32, 66 * 32);
-			
-			context.addUnit(Unit.getUnit(1, TeamColors.COLOR_BLUE),
-					66 * 32, 66 * 32);
-			
+			context.addUnit(Unit.getUnit(0, TeamColors.COLOR_RED), 62 * 32,
+					66 * 32);
+
+			context.addUnit(Unit.getUnit(1, TeamColors.COLOR_RED), 62 * 32,
+					66 * 32);
+
+			context.addUnit(Unit.getUnit(0, TeamColors.COLOR_GREEN), 66 * 32,
+					62 * 32);
+
+			context.addUnit(Unit.getUnit(1, TeamColors.COLOR_GREEN), 66 * 32,
+					62 * 32);
+
+			context.addUnit(Unit.getUnit(0, TeamColors.COLOR_BLUE), 66 * 32,
+					66 * 32);
+
+			context.addUnit(Unit.getUnit(1, TeamColors.COLOR_BLUE), 66 * 32,
+					66 * 32);
+
 			showMessage("Loading map");
 
 			if (BuildParameters.LOAD_MAP)

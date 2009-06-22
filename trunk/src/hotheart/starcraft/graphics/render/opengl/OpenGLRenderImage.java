@@ -1,52 +1,79 @@
 package hotheart.starcraft.graphics.render.opengl;
 
+import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 
 import javax.microedition.khronos.opengles.GL10;
 
+import android.R;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.Bitmap.Config;
+import android.opengl.GLUtils;
 
 import hotheart.starcraft.graphics.render.RenderImage;
 
 public class OpenGLRenderImage extends RenderImage {
 
-	static IntBuffer mVertexBuffer;
-	static IntBuffer mColorBuffer;
-	static ByteBuffer mIndexBuffer;
-	
-	static int[] coords = { 
-			10, 10,
-			10, 0,
-			0, 0,
-			0, 10};
+	IntBuffer mVertexBuffer;
+	FloatBuffer mTexBuffer;
+	ByteBuffer mIndexBuffer;
 
-	static int[] colors = { Color.RED, Color.BLUE, Color.WHITE, Color.WHITE };
+	int[] coords = { 1, 1, 1, 0, 0, 0, 0, 1 };
+	float[] texCoords = { 1, 1, 1, 0, 0, 0, 0, 1 };
 
-	static byte[] vertex_strip = { 1, 0, 2, 3 };
-	
-	
-	synchronized static void init()
-	{
+	byte[] vertex_strip = { 1, 0, 2, 3 };
+
+	int tex;
+
+	synchronized void init(GL10 gl) {
 		if (mVertexBuffer != null)
 			return;
-		
+
 		ByteBuffer vbb = ByteBuffer.allocateDirect(coords.length * 4);
 		vbb.order(ByteOrder.nativeOrder());
 		mVertexBuffer = vbb.asIntBuffer();
 		mVertexBuffer.put(coords);
 		mVertexBuffer.position(0);
 
-		ByteBuffer cbb = ByteBuffer.allocateDirect(colors.length * 4);
-		cbb.order(ByteOrder.BIG_ENDIAN);
-		mColorBuffer = cbb.asIntBuffer();
-		mColorBuffer.put(colors);
-		mColorBuffer.position(0);
+		ByteBuffer tbb = ByteBuffer.allocateDirect(texCoords.length * 4);
+		tbb.order(ByteOrder.nativeOrder());
+		mTexBuffer = tbb.asFloatBuffer();
+		mTexBuffer.put(texCoords);
+		mTexBuffer.position(0);
 
 		mIndexBuffer = ByteBuffer.allocateDirect(vertex_strip.length);
+		mIndexBuffer.order(ByteOrder.nativeOrder());
 		mIndexBuffer.put(vertex_strip);
 		mIndexBuffer.position(0);
+
+		int[] ids = new int[1];
+		gl.glGenTextures(1, ids, 0);
+		tex = ids[0];
+
+		gl.glBindTexture(GL10.GL_TEXTURE_2D, tex);
+
+		gl.glTexEnvf(GL10.GL_TEXTURE_ENV, GL10.GL_TEXTURE_ENV_MODE,
+				GL10.GL_REPLACE);
+
+		Bitmap bitmap = Bitmap.createBitmap(2, 2, Config.RGB_565);
+		bitmap.setPixel(0, 0, Color.RED);
+		bitmap.setPixel(1, 0, Color.GREEN);
+		bitmap.setPixel(0, 1, Color.GREEN);
+		bitmap.setPixel(1, 1, Color.RED);
+
+		GLUtils.texImage2D(GL10.GL_TEXTURE_2D, 0, bitmap, 0);
+		bitmap.recycle();
+
+		gl.glTexParameterx(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MIN_FILTER,
+				GL10.GL_LINEAR);
+		gl.glTexParameterx(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MAG_FILTER,
+				GL10.GL_LINEAR);
+
 	}
 
 	OpenGLRender render;
@@ -58,21 +85,25 @@ public class OpenGLRenderImage extends RenderImage {
 	@Override
 	public void draw(int x, int y, boolean align, int baseFrame, int angle,
 			int function, int remapping, int teamColor) {
-		
-		init();
-		
+
+		init(render.gl);
+
 		render.gl.glPushMatrix();
-		
+
 		render.gl.glTranslatex(x, y, 0);
-		
+
 		render.gl.glEnableClientState(GL10.GL_VERTEX_ARRAY);
-		render.gl.glEnableClientState(GL10.GL_COLOR_ARRAY);
+		render.gl.glEnableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
 
 		render.gl.glVertexPointer(2, GL10.GL_FIXED, 0, mVertexBuffer);
-		render.gl.glColorPointer(4, GL10.GL_FIXED, 0, mColorBuffer);
-		render.gl.glDrawElements(GL10.GL_TRIANGLE_STRIP, 4, GL10.GL_UNSIGNED_BYTE,
-				mIndexBuffer);
-		
+		render.gl.glTexCoordPointer(2, GL10.GL_FLOAT, 0, mTexBuffer);
+
+		render.gl.glActiveTexture(GL10.GL_TEXTURE0);
+		render.gl.glBindTexture(GL10.GL_TEXTURE_2D, tex);
+
+		render.gl.glDrawElements(GL10.GL_TRIANGLE_STRIP, 4,
+				GL10.GL_UNSIGNED_BYTE, mIndexBuffer);
+
 		render.gl.glPopMatrix();
 	}
 

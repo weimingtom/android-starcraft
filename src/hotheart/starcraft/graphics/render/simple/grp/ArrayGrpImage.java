@@ -69,8 +69,7 @@ public class ArrayGrpImage extends GrpRender {
 		} catch (Exception e) {
 			if (BuildParameters.DEBUG_GRP_RENDER_ERROR) {
 
-				System.err.print("GRPId: "
-						+ GrpRenderFactory.getFileName(grpId) + "\n");
+				System.err.print("GRPId: " + grpId + "\n");
 				System.err.print("Frame ID:" + Integer.toString(frameId)
 						+ " of " + dataOffset.length + "\n");
 				e.printStackTrace();

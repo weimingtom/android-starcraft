@@ -28,7 +28,7 @@ public class BitmapGrpImage extends GrpRender {
 			matr.preTranslate(xOffset[frameId], yOffset[frameId]);
 			c.setMatrix(matr);
 
-			if (function == RenderFunction.SHADOW) 
+			if (function == RenderFunction.SHADOW)
 				draw_Shadow(c, frameId);
 			else if (function == RenderFunction.REMAPPING)
 				draw_Simple(c, frameId);
@@ -40,8 +40,7 @@ public class BitmapGrpImage extends GrpRender {
 		} catch (Exception e) {
 			if (BuildParameters.DEBUG_GRP_RENDER_ERROR) {
 
-				System.err.print("GRPId: "
-						+ GrpRenderFactory.getFileName(grpId) + "\n");
+				System.err.print("GRPId: " + grpId + "\n");
 				System.err.print("Frame ID:" + Integer.toString(frameId)
 						+ " of " + dataOffset.length + "\n");
 				e.printStackTrace();
@@ -50,7 +49,7 @@ public class BitmapGrpImage extends GrpRender {
 
 		c.restore();
 	}
-	
+
 	private void draw_Simple(Canvas c, int frameId) {
 		Paint p = new Paint();
 		c.drawBitmap(bitmaps[frameId], 0, 0, p);
@@ -69,11 +68,8 @@ public class BitmapGrpImage extends GrpRender {
 	private void draw_Selection(Canvas c, int frameId) {
 		Paint p = new Paint();
 		ColorMatrix cm = new ColorMatrix();
-		cm.set(new float[] { 
-				0, 0, 0, 0, 0, 
-				0, 0, 0, 0, 255,
-				0, 0, 0, 0, 0, 
-				0, 0, 0, 1, 0 });
+		cm.set(new float[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 0, 0, 0, 0, 0, 0,
+				0, 0, 1, 0 });
 
 		p.setColorFilter(new ColorMatrixColorFilter(cm));
 		c.drawBitmap(bitmaps[frameId], 0, 0, p);
@@ -97,12 +93,9 @@ public class BitmapGrpImage extends GrpRender {
 		}
 
 		ColorMatrix cm = new ColorMatrix();
-		cm.set(new float[] 
-		                 { 0, 0, 0, 0, 	Color.red(real_color),
-						   0, 0, 0, 0,	Color.green(real_color), 
-						   0, 0, 0, 0,  Color.blue(real_color), 
-						   0, 0, 0, 1000, 0 }
-		);
+		cm.set(new float[] { 0, 0, 0, 0, Color.red(real_color), 0, 0, 0, 0,
+				Color.green(real_color), 0, 0, 0, 0, Color.blue(real_color), 0,
+				0, 0, 1000, 0 });
 		p.setColorFilter(new ColorMatrixColorFilter(cm));
 		c.drawBitmap(bitmaps[frameId], 0, 0, p);
 		p.setColorFilter(null);

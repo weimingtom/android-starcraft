@@ -12,18 +12,8 @@ public abstract class GrpRender {
 	public int height = 0;
 	public int grpId;
 
-	public abstract void draw(Canvas c, int frameId, int function,
+	protected abstract void draw(Canvas c, int frameId, int function,
 			int remapping, int teamColor);
-
-	// public final void draw(int dX, int dY, boolean align, int baseFrame,
-	// int angle, int function, int remapping, int teamColor, Canvas c) {
-	// if (!align) {
-	// drawSCFrame(c, baseFrame, function, remapping, teamColor, dX, dY);
-	// } else {
-	// drawSCFrame(c, angle, baseFrame, baseFrame + 16, function,
-	// remapping, teamColor, dX, dY);
-	// }
-	// }
 
 	public final void drawSCFrame(Canvas c, int baseFrame, boolean isMirrored,
 			int function, int remapping, int teamColor, int dX, int dY) {
@@ -50,7 +40,7 @@ public abstract class GrpRender {
 
 	}
 
-	protected final void drawSCFrame(Canvas c, int tile, int function,
+	public final void drawSCFrame(Canvas c, int tile, int function,
 			int remapping, int teamColor, int dX, int dY) {
 		c.save();
 		Matrix matr = c.getMatrix();

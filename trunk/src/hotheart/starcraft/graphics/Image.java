@@ -13,7 +13,7 @@ import hotheart.starcraft.core.GameContext;
 import hotheart.starcraft.core.StarcraftCore;
 import hotheart.starcraft.files.DatFile;
 import hotheart.starcraft.graphics.render.Render;
-import hotheart.starcraft.graphics.render.simple.GrpRenderFactory;
+import hotheart.starcraft.graphics.render.simple.grp.GrpRenderFactory;
 import hotheart.starcraft.graphics.script.ImageScriptEngine;
 import hotheart.starcraft.graphics.script.ImageState;
 import android.graphics.Canvas;

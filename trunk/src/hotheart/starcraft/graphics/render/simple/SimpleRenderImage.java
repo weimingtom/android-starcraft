@@ -15,14 +15,25 @@ public class SimpleRenderImage extends RenderImage {
 		grpRender = grp;
 	}
 
+	// @Override
+	// public void draw(int x, int y, boolean align, int baseFrame, int angle,
+	// int function, int remapping, int teamColor) {
+	// Canvas c = render.canvas;
+	// c.save();
+	// grpRender.draw(x, y, align, baseFrame, angle, function, remapping,
+	// teamColor, c);
+	// c.restore();
+	// }
+
 	@Override
-	public void draw(int x, int y, boolean align, int baseFrame, int angle,
+	protected void draw(int x, int y, int frameId, boolean isMirrored,
 			int function, int remapping, int teamColor) {
+
 		Canvas c = render.canvas;
 		c.save();
-		grpRender.draw(x, y, align, baseFrame, angle, function, remapping,
-				teamColor, c);
+		grpRender.drawSCFrame(c, frameId, isMirrored, function, remapping, teamColor, x, y);
 		c.restore();
+
 	}
 
 }

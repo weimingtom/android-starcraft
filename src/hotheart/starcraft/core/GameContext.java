@@ -15,69 +15,61 @@ public final class GameContext {
 	public Random rnd;
 	public int drawCount;
 	public static Map map = null;
-	
-	public GameContext()
-	{
+
+	public GameContext() {
 		rnd = new Random();
 		drawCount = 0;
 		units = new ArrayList<Unit>();
-		drawObjects = new TreeSet<Image>(new Comparator<Image>()
-				{
-			
+		drawObjects = new TreeSet<Image>(new Comparator<Image>() {
+
 			public int compare(Image arg0, Image arg1) {
 				if (arg0 == arg1)
 					return 0;
 				if (arg0.currentImageLayer == Image.MIN_IMAGE_LAYER)
 					return 1;
-				
+
 				if (arg1.currentImageLayer == Image.MIN_IMAGE_LAYER)
 					return -1;
-				
+
 				if (arg0.sortIndex < arg1.sortIndex)
 					return 1;
 				else if (arg0.sortIndex > arg1.sortIndex)
 					return -1;
-				
-				if (arg0.currentImageLayer>arg1.currentImageLayer)
+
+				if (arg0.currentImageLayer > arg1.currentImageLayer)
 					return 1;
 				else
 					return -1;
 			}
 		});
 	}
-		
+
 	public ArrayList<Unit> units;
-	
-	public void addUnit(Unit u, int x, int y)
-	{
+
+	public void addUnit(Unit u, int x, int y) {
 		int R = 0;
-		//int objR = Sprite.selCircleSize[u.flingy.sprite.selCircle];
-		while(true)
-		{
-			for(int i = 0; i < R; i++)
-			{
+		// int objR = Sprite.selCircleSize[u.flingy.sprite.selCircle];
+		while (true) {
+			for (int i = 0; i < R; i++) {
 				int nx = x - R;
-				int ny=y - R/2 + i;
-//				if ((nx < objR)||(ny < objR))
-//					continue;
-				
-				if (PickUnit(nx, ny) == null)
-				{
+				int ny = y - R / 2 + i;
+				// if ((nx < objR)||(ny < objR))
+				// continue;
+
+				if (PickUnit(nx, ny) == null) {
 					u.setPos(nx, ny);
 
 					addUnit(u);
 					return;
 				}
 			}
-			for(int i = 0; i < R; i++)
-			{
+			for (int i = 0; i < R; i++) {
 				int nx = x + R;
-				int ny=y - R/2 + i;
-//				if ((nx < objR)||(ny < objR))
-//					continue;
-				
-				if (PickUnit(nx, ny) == null)
-				{
+				int ny = y - R / 2 + i;
+				// if ((nx < objR)||(ny < objR))
+				// continue;
+
+				if (PickUnit(nx, ny) == null) {
 					u.setPos(nx, ny);
 
 					addUnit(u);
@@ -85,16 +77,14 @@ public final class GameContext {
 
 				}
 			}
-			
-			for(int i = 0; i < R; i++)
-			{
+
+			for (int i = 0; i < R; i++) {
 				int ny = y - R;
-				int nx = x - R/2 + i;
-				
-//				if ((nx < objR)||(ny < objR))
-//					continue;
-				if (PickUnit(nx, ny) == null)
-				{
+				int nx = x - R / 2 + i;
+
+				// if ((nx < objR)||(ny < objR))
+				// continue;
+				if (PickUnit(nx, ny) == null) {
 					u.setPos(nx, ny);
 
 					addUnit(u);
@@ -102,110 +92,94 @@ public final class GameContext {
 
 				}
 			}
-			
-			for(int i = 0; i < R; i++)
-			{
+
+			for (int i = 0; i < R; i++) {
 				int ny = y + R;
-				int nx = x - R/2 + i;
-//				if ((nx < objR)||(ny < objR))
-//					continue;
-				if (PickUnit(nx, ny) == null)
-				{
+				int nx = x - R / 2 + i;
+				// if ((nx < objR)||(ny < objR))
+				// continue;
+				if (PickUnit(nx, ny) == null) {
 					u.setPos(nx, ny);
 
 					addUnit(u);
 					return;
 				}
 			}
-			
-			R+=10;
+
+			R += 10;
 		}
 	}
-	
-	public Unit PickUnit(int x, int y)
-	{
-		for(Unit a : units)
-		{
-			if ( (x-a.getPosX())*(x-a.getPosX()) + (y-a.getPosY())*(y-a.getPosY()) 
-					< 
-					SelectionCircles.selCircleSize[a.selCircle]
-					                     *
-					                     SelectionCircles.selCircleSize[a.selCircle]/4)
-			{
+
+	public Unit PickUnit(int x, int y) {
+		for (Unit a : units) {
+			if ((x - a.getPosX()) * (x - a.getPosX()) + (y - a.getPosY())
+					* (y - a.getPosY()) < SelectionCircles.selCircleSize[a.selCircle]
+					* SelectionCircles.selCircleSize[a.selCircle] / 4) {
 				return a;
 			}
 		}
 		return null;
 	}
-	
-	public void addUnit(Unit u)
-	{
+
+	public void addUnit(Unit u) {
 		units.add(u);
 	}
-	public void removeUnit(Unit u)
-	{
+
+	public void removeUnit(Unit u) {
 		units.remove(u);
 	}
 
 	public ArrayList<Image> sprites = new ArrayList<Image>();
-	public void addImage(Image s)
-	{
+
+	public void addImage(Image s) {
 		sprites.add(s);
 	}
-	public void removeImage(Image s)
-	{
+
+	public void removeImage(Image s) {
 		sprites.remove(s);
 	}
-	
+
 	public TreeSet<Image> drawObjects = new TreeSet<Image>();
-	
-	public void buildTree()
-	{
+
+	public void buildTree() {
 		drawObjects.clear();
-		
-		for(Image s: sprites)
-    		s.buildTree();
-   	
-    	for(Unit u: units)
-    		u.buildTree();
+
+		for (Image s : sprites)
+			s.buildTree();
+
+		for (Unit u : units)
+			u.buildTree();
 	}
-	
-	public void drawTree()
-	{
+
+	public void drawTree() {
 		drawCount = 0;
-		
-		for(Image i: drawObjects)
-    		i.drawWithoutChilds();
-		
-    	for(Unit u: units)
-    	{
-    		u.draw_selection();
-    		u.draw_healths();
-    	}
+
+		for (Image i : drawObjects)
+			i.drawWithoutChilds();
+
+		for (Unit u : units) {
+			u.draw_selection();
+			u.draw_healths();
+		}
 	}
 
-	public void update()
-	{
-		for(Object s: sprites.toArray())
-    	{
-    		((Image)s).update();
-    	}
-		
-    	for(Object u: units.toArray())
-    	{
-    		((Unit)u).update();
-    	}
+	public void update() {
+		for (Object s : sprites.toArray()) {
+			((Image) s).update();
+		}
+
+		for (Object u : units.toArray()) {
+			((Unit) u).update();
+		}
 	}
 
-	public void draw()
-	{
+	public void draw() {
 		buildTree();
-		
+
 		Render render = StarcraftCore.render;
 		render.begin();
 		drawTree();
 		render.end();
 	}
-	
-}
 
+}

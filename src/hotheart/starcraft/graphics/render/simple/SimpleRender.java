@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import hotheart.starcraft.graphics.render.RenderImage;
 import hotheart.starcraft.graphics.render.Render;
 import hotheart.starcraft.graphics.render.ViewController;
+import hotheart.starcraft.graphics.render.simple.grp.GrpRenderFactory;
 
 public class SimpleRender extends Render {
 

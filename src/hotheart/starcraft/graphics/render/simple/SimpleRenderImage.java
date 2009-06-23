@@ -3,6 +3,7 @@ package hotheart.starcraft.graphics.render.simple;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import hotheart.starcraft.graphics.render.RenderImage;
+import hotheart.starcraft.graphics.render.simple.grp.GrpRender;
 import hotheart.starcraft.map.TileLib;
 
 public class SimpleRenderImage extends RenderImage {

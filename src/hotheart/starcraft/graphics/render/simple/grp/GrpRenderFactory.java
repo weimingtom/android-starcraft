@@ -1,4 +1,4 @@
-package hotheart.starcraft.graphics.render.simple;
+package hotheart.starcraft.graphics.render.simple.grp;
 
 import hotheart.starcraft.configure.BuildParameters;
 import hotheart.starcraft.configure.FilePaths;

@@ -18,34 +18,8 @@ import android.opengl.GLSurfaceView;
 public class GLSceneRender implements GLSurfaceView.Renderer {
 	OpenGLRender render;
 
-	int[] coords = { 200, 100, 200, 0, 0, 0, 0, 100 };
-
-	int[] colors = { Color.RED, Color.BLUE, Color.WHITE, Color.WHITE };
-
-	byte[] vertex_strip = { 1, 0, 2, 3 };
-
-	IntBuffer mVertexBuffer;
-	IntBuffer mColorBuffer;
-	ByteBuffer mIndexBuffer;
-
 	public GLSceneRender(OpenGLRender r) {
 		render = r;
-
-		ByteBuffer vbb = ByteBuffer.allocateDirect(coords.length * 4);
-		vbb.order(ByteOrder.nativeOrder());
-		mVertexBuffer = vbb.asIntBuffer();
-		mVertexBuffer.put(coords);
-		mVertexBuffer.position(0);
-
-		ByteBuffer cbb = ByteBuffer.allocateDirect(colors.length * 4);
-		cbb.order(ByteOrder.BIG_ENDIAN);
-		mColorBuffer = cbb.asIntBuffer();
-		mColorBuffer.put(colors);
-		mColorBuffer.position(0);
-
-		mIndexBuffer = ByteBuffer.allocateDirect(vertex_strip.length);
-		mIndexBuffer.put(vertex_strip);
-		mIndexBuffer.position(0);
 	}
 
 	public void onDrawFrame(GL10 gl) {
@@ -58,9 +32,9 @@ public class GLSceneRender implements GLSurfaceView.Renderer {
 		gl.glMatrixMode(GL10.GL_MODELVIEW);
 		gl.glLoadIdentity();
 
-		gl
-				.glTranslatex(-render.controller.getX(), -render.controller
-						.getY(), 0);
+		int dX = -render.controller.getX();
+		int dY = -render.controller.getY();
+		gl.glTranslatex(dX, dY, 0);
 
 		gl.glFrontFace(GL10.GL_CCW);
 

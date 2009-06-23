@@ -76,10 +76,6 @@ public class StarcraftCore {
 			showMessage("GRP library");
 			GrpLibrary.init(FileSystemUtils.readAllBytes(FilePaths.IMAGES_TBL));
 
-			// DEPRECATED
-			GrpRenderFactory.init(FileSystemUtils
-					.readAllBytes(FilePaths.IMAGES_TBL));
-
 			showMessage("Init script engine");
 			ImageScriptEngine.init(FileSystemUtils
 					.readAllBytes(FilePaths.ISCRIPT_BIN));

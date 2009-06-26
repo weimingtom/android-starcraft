@@ -73,7 +73,7 @@ public class GLSceneRender implements GLSurfaceView.Renderer {
 	public void onSurfaceCreated(GL10 gl, EGLConfig config) {
 
 		int[] res = new int[1];
-		gl.glGetIntegerv(GL10.GL_MAX_TEXTURE_SIZE, res, 0);
+		gl.glGetIntegerv(GL10.GL_MAX_ELEMENTS_INDICES, res, 0);
 		createMapTexture(gl);
 		
 		

@@ -18,9 +18,9 @@ import hotheart.starcraft.configure.FilePaths;
 import hotheart.starcraft.utils.FileSystemUtils;
 
 public class TileLib {
-	
+
 	public static final int TILE_SIZE = 32;
-	
+
 	public static int[] palette;// Palette - generated from WPE file
 	public static byte[] CV5; // Descriptions of sprites
 	public static byte[] VR4; // Tiles(8x8)
@@ -98,6 +98,25 @@ public class TileLib {
 		}
 	}
 
+	// it's works
+	public static int[] getTiles(int id) {
+		int cv5id = (id >> 4);
+		// first half-byte is subid
+		int cv5SubId = (id & 0x000F);
+
+		int vx4Id = (CV5[cv5id * 52 + 20 + cv5SubId * 2] & 0xFF)
+				+ ((CV5[cv5id * 52 + 20 + cv5SubId * 2 + 1] & 0xFF) << 8);
+
+		int index = vx4Id * 16;
+
+		return new int[] { VX4Indexes[index++], VX4Indexes[index++],
+				VX4Indexes[index++], VX4Indexes[index++], VX4Indexes[index++],
+				VX4Indexes[index++], VX4Indexes[index++], VX4Indexes[index++],
+				VX4Indexes[index++], VX4Indexes[index++], VX4Indexes[index++],
+				VX4Indexes[index++], VX4Indexes[index++], VX4Indexes[index++],
+				VX4Indexes[index++], VX4Indexes[index++] };
+	}
+
 	// ////////////////////////////
 	// Drawing with canvas
 	// ////////////////////////////
@@ -141,7 +160,8 @@ public class TileLib {
 
 	public static final void drawTile(int x, int y, int id, Canvas c) {
 		Paint p = new Paint();
-		boolean flipped = (id & 1) == 1;
+		// boolean flipped = (id & 1) == 1;
+		boolean flipped = false;
 		id = id >> 1;
 		Matrix transform = new Matrix();
 		if (!flipped) {
@@ -158,10 +178,10 @@ public class TileLib {
 		c.setMatrix(transform);
 		c.drawBitmap(tmpBuf, 0, 8, 0, 0, 8, 8, false, p);
 		c.restore();
-		
+
 		// miniTiles[id] = Bitmap.createBitmap(tmpBuf, 8, 8,
 		// Config.RGB_565);
-		
+
 		// c.drawBitmap(miniTiles[id], transform, p);
 	}
 }

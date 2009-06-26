@@ -12,7 +12,6 @@ import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 import javax.microedition.khronos.egl.EGL10;
 
-
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Bitmap.Config;
@@ -27,23 +26,27 @@ public class GLSceneRender implements GLSurfaceView.Renderer {
 
 	public void onDrawFrame(GL10 gl) {
 		render.gl = gl;
+		
+		int offsetX = render.controller.getX();
+		int offsetY = render.controller.getY();
+		
 		gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 
 		gl.glTexEnvx(GL10.GL_TEXTURE_ENV, GL10.GL_TEXTURE_ENV_MODE,
 				GL10.GL_MODULATE);
-		
+
 		gl.glFrontFace(GL10.GL_CCW);
 
 		gl.glMatrixMode(GL10.GL_MODELVIEW);
 		gl.glLoadIdentity();
-		
+		mapRender.offsetX = offsetX;
+		mapRender.offsetY = offsetY;
+
 		mapRender.testDraw(gl);
 
-		int dX = -render.controller.getX();
-		int dY = -render.controller.getY();
+		int dX = -offsetX;
+		int dY = -offsetY;
 		gl.glTranslatex(dX, dY, 0);
-
-		
 
 		StarcraftCore.context.draw();
 
@@ -62,11 +65,10 @@ public class GLSceneRender implements GLSurfaceView.Renderer {
 		gl.glMatrixMode(GL10.GL_MODELVIEW);
 		gl.glLoadIdentity();
 	}
-	
 
 	MapRender mapRender;
-	private void createMapTexture(GL10 gl)
-	{
+
+	private void createMapTexture(GL10 gl) {
 		mapRender = new MapRender(gl);
 	}
 
@@ -75,8 +77,7 @@ public class GLSceneRender implements GLSurfaceView.Renderer {
 		int[] res = new int[1];
 		gl.glGetIntegerv(GL10.GL_MAX_ELEMENTS_INDICES, res, 0);
 		createMapTexture(gl);
-		
-		
+
 		// gl.glDisable(GL10.GL_DITHER);
 
 		// gl.glHint(GL10.GL_PERSPECTIVE_CORRECTION_HINT, GL10.GL_FASTEST);

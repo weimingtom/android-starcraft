@@ -46,7 +46,7 @@ public final class GameActivity extends Activity {
 		RelativeLayout rl = new RelativeLayout(this);
 		rl.addView(cont.getView());
 		View gui = LayoutInflater.from(this).inflate(R.layout.gameui, null);
-		gui.setVisibility(View.INVISIBLE);
+//		gui.setVisibility(View.INVISIBLE);
 		rl.addView(gui);
 		setContentView(rl);
 

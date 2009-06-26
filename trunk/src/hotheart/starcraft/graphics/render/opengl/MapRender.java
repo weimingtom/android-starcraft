@@ -18,6 +18,7 @@ import javax.microedition.khronos.opengles.GL10;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Rect;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.Bitmap.Config;
 import android.opengl.GLUtils;
@@ -30,23 +31,42 @@ public class MapRender {
 
 	class TileRender {
 
-		public static final int ROWS = 40;
-		public static final int COLS = 60;
-		public static final int COUNT = ROWS * COLS * 6;
+		// private static final int ROWS = 40;
+		// private static final int COLS = 60;
+		// public static final int COUNT = ROWS * COLS * 6;
 		public IntBuffer vertexBuffer;
 		public FloatBuffer texBuffer;
 		public ShortBuffer indexBuffer;
 
-		public TileRender(int[] indexes) {
+		public int rowCount = 0;
+		public int colCount = 0;
 
-			int[] coords = new int[ROWS * COLS * 8];
-			short[] strip = new short[ROWS * COLS * 6];
-			float[] texCoords = new float[ROWS * COLS * 8];
+		public int xPos = 0;
+		public int yPos = 0;
 
-			for (int x = 0; x < COLS; x++)
-				for (int y = 0; y < ROWS; y++) {
+		public int width = 0;
+		public int height = 0;
 
-					int quadId = x + y * COLS;
+		public int getIndexesSize() {
+			return rowCount * colCount * 6;
+		}
+
+		public TileRender(int[] indexes, int rows, int cols, int px, int py) {
+			rowCount = rows;
+			colCount = cols;
+			xPos = px * 32;
+			yPos = py * 32;
+			width = colCount * 32;
+			height = rowCount * 32;
+
+			int[] coords = new int[rowCount * colCount * 8];
+			short[] strip = new short[rowCount * colCount * 6];
+			float[] texCoords = new float[rowCount * colCount * 8];
+
+			for (int x = 0; x < colCount; x++)
+				for (int y = 0; y < rowCount; y++) {
+
+					int quadId = x + y * colCount;
 
 					float texX = getTextureX(indexes[quadId] >> 1);
 					float texY = getTextureY(indexes[quadId] >> 1);
@@ -148,6 +168,17 @@ public class MapRender {
 
 	TileRender rend;
 
+	TileRender[][] mapRenders;
+
+	final static int HOR_STEP = 8;
+	final static int VER_STEP = 10;
+
+	public int offsetX = 100;
+	public int offsetY = 100;
+
+	int count_x = 0;
+	int count_y = 0;
+
 	public MapRender(GL10 gl) {
 
 		createBuffers();
@@ -170,21 +201,51 @@ public class MapRender {
 		gl.glTexParameterx(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MAG_FILTER,
 				GL10.GL_NEAREST);
 
-		int[] indexes = new int[TileRender.ROWS * TileRender.COLS];
+		count_x = GameContext.map.width / HOR_STEP;
+		if (GameContext.map.width % HOR_STEP != 0)
+			count_x++;
 
-		for (int i = 0; i < TileRender.COLS; i += 4)
-			for (int j = 0; j < TileRender.ROWS; j += 4) {
+		count_y = GameContext.map.width / VER_STEP;
+		if (GameContext.map.height % VER_STEP != 0)
+			count_y++;
 
-				int[] tiles = TileLib.getTiles(GameContext.map.mapTiles[(i / 4)
-						+ (j / 4) * GameContext.map.width]);
+		mapRenders = new TileRender[count_x][count_y];
+		for (int i = 0; i < count_x; i++)
+			for (int j = 0; j < count_y; j++) {
+
+				int x1 = i * HOR_STEP;
+				int y1 = j * VER_STEP;
+
+				int x2 = Math
+						.min((i + 1) * HOR_STEP, GameContext.map.width - 1);
+				int y2 = Math.min((j + 1) * VER_STEP,
+						GameContext.map.height - 1);
+
+				mapRenders[i][j] = createRender(x1, y1, x2, y2);
+			}
+		rend = createRender(15, 10, 30, 20);
+	}
+
+	TileRender createRender(int x1, int y1, int x2, int y2) {
+		int rowCount = y2 - y1 + 1;
+		int colCount = x2 - x1 + 1;
+
+		int[] indexes = new int[rowCount * colCount * 16];
+
+		for (int i = x1; i <= x2; i++)
+			for (int j = y1; j <= y2; j++) {
+
+				int[] tiles = TileLib.getTiles(GameContext.map.mapTiles[i + j
+						* GameContext.map.width]);
 
 				for (int x = 0; x < 4; x++)
 					for (int y = 0; y < 4; y++) {
-						indexes[i + x + (j + y) * TileRender.COLS] = tiles[x
-								+ y * 4];
+						indexes[(i - x1) * 4 + x + ((j - y1) * 4 + y)
+								* colCount * 4] = tiles[x + y * 4];
 					}
 			}
-		rend = new TileRender(indexes);
+
+		return new TileRender(indexes, rowCount * 4, colCount * 4, x1, y1);
 	}
 
 	void createBuffers() {
@@ -244,66 +305,40 @@ public class MapRender {
 		return res;
 	}
 
-	int getPixelColor(int a, int b, int c, int d) {
-		return a;
-
-		// int R = Color.red(a) + Color.red(b) + Color.red(c) + Color.red(d);
-		// int G = Color.green(a) + Color.green(b) + Color.green(c)
-		// + Color.green(d);
-		// int B = Color.blue(a) + Color.blue(b) + Color.blue(c) +
-		// Color.blue(d);
-		//
-		// R /= 4;
-		// G /= 4;
-		// B /= 4;
-		//
-		// return Color.argb(255, R, G, B);
-	}
-
 	public void testDraw(GL10 gl) {
 		gl.glEnableClientState(GL10.GL_VERTEX_ARRAY);
 		gl.glEnableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
 
-		gl.glVertexPointer(2, GL10.GL_FIXED, 0, rend.vertexBuffer);
-		gl.glTexCoordPointer(2, GL10.GL_FLOAT, 0, rend.texBuffer);
-
 		gl.glActiveTexture(GL10.GL_TEXTURE0);
 		gl.glBindTexture(GL10.GL_TEXTURE_2D, texture);
 
-		// gl.glPushMatrix();
-		//
-		// gl.glTranslatex(100, 100, 0);
+		Rect screenRect = new Rect(offsetX, offsetY, offsetX + 480,
+				offsetY + 320);
+		for (int i = 0; i < count_x; i++)
+			for (int j = 0; j < count_y; j++) {
+				TileRender tile = mapRenders[i][j];
 
-		// for (int i = 0; i < 10; i++)
-		gl.glDrawElements(GL10.GL_TRIANGLES, TileRender.COUNT,
-				GL10.GL_UNSIGNED_SHORT, rend.indexBuffer);
+				Rect tileRect = new Rect(tile.xPos, tile.yPos, tile.xPos
+						+ tile.width, tile.yPos + tile.height);
 
-		// gl.glPopMatrix();
+				if (tileRect.intersect(screenRect))
+					draw(tile, gl);
 
-		// gl.glMatrixMode(GL10.GL_TEXTURE);
-		// gl.glPushMatrix();
-		// gl.glTranslatef(0, texDelta * 10, 0);
-		// gl.glMatrixMode(GL10.GL_MODELVIEW);
-		// gl.glPushMatrix();
-		// for (int i = 0; i < 480 / 32; i++) {
-		// for (int j = 0; j < 320 / 32; j++) {
-		//
-		// gl.glMatrixMode(GL10.GL_TEXTURE);
-		// gl.glTranslatef(texDelta, 0, 0);
-		// gl.glMatrixMode(GL10.GL_MODELVIEW);
-		//
-		// // gl.glDrawElements(GL10.GL_TRIANGLE_STRIP, 4,
-		// // GL10.GL_UNSIGNED_BYTE, mIndexBuffer);
-		//				
-		// gl.glDrawElements(GL10.GL_TRIANGLES, rend.COUNT,
-		// GL10.GL_UNSIGNED_BYTE, rend.indexBuffer);
-		// gl.glTranslatex(0, 32, 0);
-		// }
-		// gl.glTranslatex(32, -320, 0);
-		// }
-		// gl.glMatrixMode(GL10.GL_TEXTURE);
-		// gl.glPopMatrix();
-		// gl.glMatrixMode(GL10.GL_MODELVIEW);
-		// gl.glPopMatrix();
+			}
+
+	}
+
+	void draw(TileRender tile, GL10 gl) {
+		gl.glPushMatrix();
+
+		gl.glVertexPointer(2, GL10.GL_FIXED, 0, tile.vertexBuffer);
+		gl.glTexCoordPointer(2, GL10.GL_FLOAT, 0, tile.texBuffer);
+
+		gl.glTranslatex(tile.xPos - offsetX, tile.yPos - offsetY, 0);
+
+		gl.glDrawElements(GL10.GL_TRIANGLES, rend.getIndexesSize(),
+				GL10.GL_UNSIGNED_SHORT, tile.indexBuffer);
+
+		gl.glPopMatrix();
 	}
 }

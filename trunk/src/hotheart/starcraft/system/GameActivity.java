@@ -16,6 +16,8 @@ import android.os.Bundle;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -31,6 +33,10 @@ public final class GameActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 		setTheme(android.R.style.Theme_Black_NoTitleBar_Fullscreen);
+		
+		requestWindowFeature(Window.FEATURE_NO_TITLE); 
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, 
+                WindowManager.LayoutParams.FLAG_FULLSCREEN); 
 		init();
 	}
 
@@ -39,7 +45,9 @@ public final class GameActivity extends Activity {
 
 		RelativeLayout rl = new RelativeLayout(this);
 		rl.addView(cont.getView());
-		rl.addView(LayoutInflater.from(this).inflate(R.layout.gameui, null));
+		View gui = LayoutInflater.from(this).inflate(R.layout.gameui, null);
+		gui.setVisibility(View.INVISIBLE);
+		rl.addView(gui);
 		setContentView(rl);
 
 		return cont;

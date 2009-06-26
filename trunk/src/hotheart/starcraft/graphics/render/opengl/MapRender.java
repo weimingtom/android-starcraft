@@ -150,27 +150,6 @@ public class MapRender {
 
 	public MapRender(GL10 gl) {
 
-		// {
-		// Bitmap image = Bitmap.createBitmap(32, 32, Config.RGB_565);
-		// Canvas c = new Canvas(image);
-		//
-		// int[] tiles = TileLib.getTiles(180);
-		//
-		// for (int x = 0; x < 4; x++)
-		// for (int y = 0; y < 4; y++) {
-		// TileLib.drawTile(x * 8, y * 8, tiles[x + y * 4], c);
-		// }
-		//
-		// try {
-		// Bitmap.createScaledBitmap(image, 16, 16, true).compress(
-		// CompressFormat.PNG, 1,
-		// new FileOutputStream("/sdcard/test.png"));
-		// } catch (FileNotFoundException e) {
-		// // TODO Auto-generated catch block
-		// e.printStackTrace();
-		// }
-		// }
-
 		createBuffers();
 
 		int[] ids = new int[1];
@@ -233,13 +212,9 @@ public class MapRender {
 	}
 
 	Bitmap createBitmap() {
-		int count = TileLib.VR4.length / 64;
+		Bitmap img = Bitmap.createBitmap(2048, 2048, Config.RGB_565);
 
-		// int[] pixels = new int[TILELIB_STRIDE*8 * TILELIB_HEIGHT*8];
-
-		Bitmap img = Bitmap.createBitmap(1024, 1024, Config.RGB_565);
-
-		int[] pixels = new int[4 * 4];
+		int[] pixels_8x8 = new int[8 * 8];
 
 		for (int i = 0; i < TILELIB_STRIDE; i++)
 			for (int j = 0; j < TILELIB_HEIGHT; j++) {
@@ -248,21 +223,25 @@ public class MapRender {
 				if (ofs >= TileLib.VR4.length)
 					break;
 
-				for (int x = 0; x < 4; x++)
-					for (int y = 0; y < 4; y++) {
+				for (int x = 0; x < 8; x++)
+					for (int y = 0; y < 8; y++) {
 
-						int index = ofs + (x + y * 8) * 2;
-						int a11 = TileLib.palette[TileLib.VR4[index] & 0xFF];
-						int a21 = TileLib.palette[TileLib.VR4[index + 1] & 0xFF];
-						int a12 = TileLib.palette[TileLib.VR4[index + 8] & 0xFF];
-						int a22 = TileLib.palette[TileLib.VR4[index + 9] & 0xFF];
-						pixels[x + y * 4] = getPixelColor(a11, a12, a21, a22);
+						int index = ofs + (x + y * 8);
+						pixels_8x8[x + y * 8] = TileLib.palette[TileLib.VR4[index] & 0xFF];
 					}
 
-				img.setPixels(pixels, 0, 4, i * 4, j * 4, 4, 4);
-			}
+				// image_8x8.setPixels(pixels_8x8, 0, 8, 0, 0, 8, 8);
 
-		return img;
+				// Bitmap image_4x4 = Bitmap.createScaledBitmap(image_8x8, 4, 4,
+				// true);
+				// image_4x4.getPixels(pixels_4x4, 0, 4, 0, 0, 4, 4);
+				// image_4x4.recycle();
+
+				img.setPixels(pixels_8x8, 0, 8, i * 8, j * 8, 8, 8);
+			}
+		Bitmap res = Bitmap.createScaledBitmap(img, 1024, 1024, true);
+		img.recycle();
+		return res;
 	}
 
 	int getPixelColor(int a, int b, int c, int d) {
@@ -296,7 +275,7 @@ public class MapRender {
 		// gl.glTranslatex(100, 100, 0);
 
 		// for (int i = 0; i < 10; i++)
-		gl.glDrawElements(GL10.GL_TRIANGLES, rend.COUNT,
+		gl.glDrawElements(GL10.GL_TRIANGLES, TileRender.COUNT,
 				GL10.GL_UNSIGNED_SHORT, rend.indexBuffer);
 
 		// gl.glPopMatrix();

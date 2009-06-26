@@ -125,9 +125,8 @@ public class StarcraftCore {
 
 			showMessage("Loading map");
 
-			if (BuildParameters.LOAD_MAP)
-				context.map = new Map(FileSystemUtils
-						.readAllBytes(FilePaths.SCENARIO_CHK));
+			context.map = new Map(FileSystemUtils
+					.readAllBytes(FilePaths.SCENARIO_CHK));
 
 			hideProgress();
 

@@ -54,15 +54,6 @@ public class SimpleView extends View {
 				% TileLib.TILE_SIZE);
 		canvas.setMatrix(transf);
 
-		if (BuildParameters.LOAD_MAP)
-			if (map != null)
-				map.draw((int) ofsX / TileLib.TILE_SIZE, (int) ofsY
-								/ TileLib.TILE_SIZE, (int) ofsX
-								/ TileLib.TILE_SIZE + this.getWidth()
-								/ TileLib.TILE_SIZE + 2, (int) ofsY / 32
-								+ this.getHeight() / TileLib.TILE_SIZE + 2,
-								canvas);
-
 		transf.postTranslate(-ofsX + ofsX % TileLib.TILE_SIZE, -ofsY + ofsY
 				% TileLib.TILE_SIZE);
 

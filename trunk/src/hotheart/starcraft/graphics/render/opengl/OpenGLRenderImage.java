@@ -64,7 +64,6 @@ public class OpenGLRenderImage extends RenderImage {
 	ByteBuffer mIndexBuffer;
 
 	// int[] coords = { 1, 1, 1, 0, 0, 0, 0, 1 };
-	byte[] vertex_strip = { 1, 0, 2, 3 };
 
 	GrpFile image;
 
@@ -86,6 +85,8 @@ public class OpenGLRenderImage extends RenderImage {
 
 		width = image.width;
 		height = image.height;
+		
+		byte[] vertex_strip = { 1, 0, 2, 3 };
 
 		float[] texCoords = { 1, 1, 1, 0, 0, 0, 0, 1 };
 

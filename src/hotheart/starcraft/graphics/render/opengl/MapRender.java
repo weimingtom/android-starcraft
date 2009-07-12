@@ -31,9 +31,6 @@ public class MapRender {
 
 	class TileRender {
 
-		// private static final int ROWS = 40;
-		// private static final int COLS = 60;
-		// public static final int COUNT = ROWS * COLS * 6;
 		public IntBuffer vertexBuffer;
 		public FloatBuffer texBuffer;
 		public ShortBuffer indexBuffer;
@@ -161,17 +158,12 @@ public class MapRender {
 		return (id / TILELIB_STRIDE) * texDelta;
 	}
 
-	public IntBuffer mVertexBuffer;
-	public FloatBuffer mTexBuffer;
-	public ByteBuffer mIndexBuffer;
 	public int texture;
-
-	TileRender rend;
 
 	TileRender[][] mapRenders;
 
-	final static int HOR_STEP = 8;
-	final static int VER_STEP = 10;
+	final static int HOR_STEP = 4;
+	final static int VER_STEP = 4;
 
 	public int offsetX = 100;
 	public int offsetY = 100;
@@ -181,26 +173,12 @@ public class MapRender {
 
 	public MapRender(GL10 gl) {
 
-		createBuffers();
+		initTiles(gl);
+		initTileRenders();
 
-		int[] ids = new int[1];
-		gl.glGenTextures(1, ids, 0);
-		texture = ids[0];
+	}
 
-		gl.glBindTexture(GL10.GL_TEXTURE_2D, texture);
-
-		gl.glTexEnvf(GL10.GL_TEXTURE_ENV, GL10.GL_TEXTURE_ENV_MODE,
-				GL10.GL_REPLACE);
-
-		Bitmap bitmap = createBitmap();
-		GLUtils.texImage2D(GL10.GL_TEXTURE_2D, 0, bitmap, 0);
-		bitmap.recycle();
-
-		gl.glTexParameterx(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MIN_FILTER,
-				GL10.GL_NEAREST);
-		gl.glTexParameterx(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MAG_FILTER,
-				GL10.GL_NEAREST);
-
+	void initTileRenders() {
 		count_x = GameContext.map.width / HOR_STEP;
 		if (GameContext.map.width % HOR_STEP != 0)
 			count_x++;
@@ -210,6 +188,8 @@ public class MapRender {
 			count_y++;
 
 		mapRenders = new TileRender[count_x][count_y];
+		// mapRenders[0][0] = createRender(0, 0, 4, 4);
+
 		for (int i = 0; i < count_x; i++)
 			for (int j = 0; j < count_y; j++) {
 
@@ -223,7 +203,6 @@ public class MapRender {
 
 				mapRenders[i][j] = createRender(x1, y1, x2, y2);
 			}
-		rend = createRender(15, 10, 30, 20);
 	}
 
 	TileRender createRender(int x1, int y1, int x2, int y2) {
@@ -248,28 +227,25 @@ public class MapRender {
 		return new TileRender(indexes, rowCount * 4, colCount * 4, x1, y1);
 	}
 
-	void createBuffers() {
-		int[] coords = { 8, 8, 8, 0, 0, 0, 0, 8 };
-		byte[] vertex_strip = { 1, 0, 2, 3 };
-		float[] texCoords = { texDelta, texDelta, texDelta, 0, 0, 0, 0,
-				texDelta };
+	void initTiles(GL10 gl) {
+		int[] ids = new int[1];
+		gl.glGenTextures(1, ids, 0);
+		texture = ids[0];
 
-		ByteBuffer vbb = ByteBuffer.allocateDirect(coords.length * 4);
-		vbb.order(ByteOrder.nativeOrder());
-		mVertexBuffer = vbb.asIntBuffer();
-		mVertexBuffer.put(coords);
-		mVertexBuffer.position(0);
+		gl.glBindTexture(GL10.GL_TEXTURE_2D, texture);
 
-		ByteBuffer tbb = ByteBuffer.allocateDirect(texCoords.length * 4);
-		tbb.order(ByteOrder.nativeOrder());
-		mTexBuffer = tbb.asFloatBuffer();
-		mTexBuffer.put(texCoords);
-		mTexBuffer.position(0);
+		gl.glTexEnvf(GL10.GL_TEXTURE_ENV, GL10.GL_TEXTURE_ENV_MODE,
+				GL10.GL_REPLACE);
 
-		mIndexBuffer = ByteBuffer.allocateDirect(vertex_strip.length);
-		mIndexBuffer.order(ByteOrder.nativeOrder());
-		mIndexBuffer.put(vertex_strip);
-		mIndexBuffer.position(0);
+		Bitmap bitmap = createBitmap();
+		GLUtils.texImage2D(GL10.GL_TEXTURE_2D, 0, bitmap, 0);
+		bitmap.recycle();
+
+		gl.glTexParameterx(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MIN_FILTER,
+				GL10.GL_NEAREST);
+		gl.glTexParameterx(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MAG_FILTER,
+				GL10.GL_NEAREST);
+
 	}
 
 	Bitmap createBitmap() {
@@ -305,25 +281,44 @@ public class MapRender {
 		return res;
 	}
 
-	public void testDraw(GL10 gl) {
+	public void draw(GL10 gl) {
 		gl.glEnableClientState(GL10.GL_VERTEX_ARRAY);
 		gl.glEnableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
 
 		gl.glActiveTexture(GL10.GL_TEXTURE0);
 		gl.glBindTexture(GL10.GL_TEXTURE_2D, texture);
 
+		// gl.glPushMatrix();
+		//
+		// gl.glVertexPointer(2, GL10.GL_FIXED, 0,
+		// mapRenders[0][0].vertexBuffer);
+		// gl.glTexCoordPointer(2, GL10.GL_FLOAT, 0,
+		// mapRenders[0][0].texBuffer);
+		//
+		// gl.glDrawElements(GL10.GL_TRIANGLES,
+		// mapRenders[0][0].getIndexesSize(),
+		// GL10.GL_UNSIGNED_SHORT, mapRenders[0][0].indexBuffer);
+		//
+		// gl.glPopMatrix();
+
 		Rect screenRect = new Rect(offsetX, offsetY, offsetX + 480,
 				offsetY + 320);
-		for (int i = 0; i < count_x; i++)
-			for (int j = 0; j < count_y; j++) {
+
+		int xStart = (32 * offsetX / VER_STEP) + 1;
+		int yStart = (32 * offsetY / HOR_STEP) + 1;
+
+		a: for (int i = xStart; i < count_x; i++)
+			for (int j = yStart; j < count_y; j++) {
 				TileRender tile = mapRenders[i][j];
 
 				Rect tileRect = new Rect(tile.xPos, tile.yPos, tile.xPos
 						+ tile.width, tile.yPos + tile.height);
 
-				if (tileRect.intersect(screenRect))
+				if (tileRect.intersect(screenRect)) {
 					draw(tile, gl);
-
+				}
+				else
+					break a;
 			}
 
 	}
@@ -336,7 +331,7 @@ public class MapRender {
 
 		gl.glTranslatex(tile.xPos - offsetX, tile.yPos - offsetY, 0);
 
-		gl.glDrawElements(GL10.GL_TRIANGLES, rend.getIndexesSize(),
+		gl.glDrawElements(GL10.GL_TRIANGLES, tile.getIndexesSize(),
 				GL10.GL_UNSIGNED_SHORT, tile.indexBuffer);
 
 		gl.glPopMatrix();

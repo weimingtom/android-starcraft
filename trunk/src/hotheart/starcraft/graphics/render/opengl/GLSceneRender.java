@@ -1,5 +1,6 @@
 package hotheart.starcraft.graphics.render.opengl;
 
+import hotheart.starcraft.configure.BuildParameters;
 import hotheart.starcraft.core.StarcraftCore;
 import hotheart.starcraft.map.Map;
 import hotheart.starcraft.map.TileLib;
@@ -27,10 +28,10 @@ public class GLSceneRender implements GLSurfaceView.Renderer {
 
 	public void onDrawFrame(GL10 gl) {
 		render.gl = gl;
-		
+
 		int offsetX = render.controller.getX();
 		int offsetY = render.controller.getY();
-		
+
 		gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 
 		gl.glTexEnvx(GL10.GL_TEXTURE_ENV, GL10.GL_TEXTURE_ENV_MODE,
@@ -40,10 +41,10 @@ public class GLSceneRender implements GLSurfaceView.Renderer {
 
 		gl.glMatrixMode(GL10.GL_MODELVIEW);
 		gl.glLoadIdentity();
-		//mapRender.offsetX = offsetX;
-		//mapRender.offsetY = offsetY;
+		// mapRender.offsetX = offsetX;
+		// mapRender.offsetY = offsetY;
 
-		//mapRender.draw(gl);
+		// mapRender.draw(gl);
 
 		int dX = -offsetX;
 		int dY = -offsetY;
@@ -70,7 +71,7 @@ public class GLSceneRender implements GLSurfaceView.Renderer {
 	MapRender mapRender;
 
 	private void createMapTexture(GL10 gl) {
-		//mapRender = new MapRender(gl);
+		// mapRender = new MapRender(gl);
 	}
 
 	public void onSurfaceCreated(GL10 gl, EGLConfig config) {
@@ -83,7 +84,11 @@ public class GLSceneRender implements GLSurfaceView.Renderer {
 
 		// gl.glHint(GL10.GL_PERSPECTIVE_CORRECTION_HINT, GL10.GL_FASTEST);
 
-		gl.glClearColor(67 / 255.0f, 216 / 255.0f, 248 / 255.0f, 1);
+		int bkgColor = BuildParameters.BACKGROUND_COLOR;
+
+		gl.glClearColor(Color.red(bkgColor) / 255.0f,
+				Color.green(bkgColor) / 255.0f, Color.blue(bkgColor) / 255.0f,
+				1);
 
 		gl.glDisable(GL10.GL_CULL_FACE);
 		gl.glShadeModel(GL10.GL_SMOOTH);
@@ -92,7 +97,6 @@ public class GLSceneRender implements GLSurfaceView.Renderer {
 		gl.glEnable(GL10.GL_BLEND);
 		gl.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
 
-		
 		OpenGLRenderImage.initData(gl);
 	}
 }

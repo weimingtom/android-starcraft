@@ -1,5 +1,7 @@
 package hotheart.starcraft.configure;
 
+import android.graphics.Color;
+
 public class BuildParameters {
 
 	// Removes some debug information
@@ -21,4 +23,6 @@ public class BuildParameters {
 	public static final boolean LOAD_MAP = false;
 	
 	public static final String GAME_FOLDER = "/sdcard/starcraft/";
+	
+	public static final int BACKGROUND_COLOR = Color.WHITE;
 }

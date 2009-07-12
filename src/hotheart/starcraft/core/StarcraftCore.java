@@ -62,7 +62,7 @@ public class StarcraftCore {
 			act = parentAcrivity;
 			context = new GameContext();
 			render = new OpenGLRender();
-			//render = new SimpleRender();
+			// render = new SimpleRender();
 
 			FileInputStream fs = null;
 
@@ -107,13 +107,19 @@ public class StarcraftCore {
 			// context.addUnit(Unit.getUnit(1, TeamColors.COLOR_RED), 62 * 32,
 			// 66 * 32);
 
-			for (int i = 0; i < 5; i++) {
-				context.addUnit(Unit.getUnit(0, TeamColors.COLOR_GREEN),
-						66 * 32, 62 * 32);
-
-				context.addUnit(Unit.getUnit(1, TeamColors.COLOR_GREEN),
-						66 * 32, 62 * 32);
-			}
+			context.addUnit(Unit.getUnit(0, TeamColors.COLOR_GREEN), 66 * 32,
+					62 * 32);
+			
+			// for (int i = 0; i < 5; i++) {
+			// context.addUnit(Unit.getUnit(0, TeamColors.COLOR_GREEN),
+			// 66 * 32, 62 * 32);
+			//
+			// context.addUnit(Unit.getUnit(1, TeamColors.COLOR_GREEN),
+			// 66 * 32, 62 * 32);
+			// }
+			
+			context.majorSelectedUnit = context.units.get(0);
+			context.majorSelectedUnit.selected = true;
 			//
 			// context.addUnit(Unit.getUnit(0, TeamColors.COLOR_BLUE), 66 * 32,
 			// 66 * 32);

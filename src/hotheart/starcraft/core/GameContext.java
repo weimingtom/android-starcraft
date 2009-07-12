@@ -16,6 +16,8 @@ public final class GameContext {
 	public int drawCount;
 	public static Map map = null;
 
+	public Unit majorSelectedUnit = null;
+
 	public GameContext() {
 		rnd = new Random();
 		drawCount = 0;
@@ -157,10 +159,10 @@ public final class GameContext {
 		for (Image i : drawObjects)
 			i.drawWithoutChilds();
 
-		for (Unit u : units) {
-			u.draw_selection();
-			u.draw_healths();
-		}
+//		for (Unit u : units) {
+//			u.draw_selection();
+//			u.draw_healths();
+//		}
 	}
 
 	public void update() {
@@ -174,6 +176,10 @@ public final class GameContext {
 	}
 
 	public void draw() {
+
+		if (majorSelectedUnit!=null)
+			majorSelectedUnit.draw_selection();
+		
 		buildTree();
 
 		Render render = StarcraftCore.render;

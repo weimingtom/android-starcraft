@@ -39,10 +39,10 @@ public class GLSceneRender implements GLSurfaceView.Renderer {
 
 		gl.glMatrixMode(GL10.GL_MODELVIEW);
 		gl.glLoadIdentity();
-		mapRender.offsetX = offsetX;
-		mapRender.offsetY = offsetY;
+		//mapRender.offsetX = offsetX;
+		//mapRender.offsetY = offsetY;
 
-		mapRender.testDraw(gl);
+		//mapRender.draw(gl);
 
 		int dX = -offsetX;
 		int dY = -offsetY;
@@ -69,7 +69,7 @@ public class GLSceneRender implements GLSurfaceView.Renderer {
 	MapRender mapRender;
 
 	private void createMapTexture(GL10 gl) {
-		mapRender = new MapRender(gl);
+		//mapRender = new MapRender(gl);
 	}
 
 	public void onSurfaceCreated(GL10 gl, EGLConfig config) {

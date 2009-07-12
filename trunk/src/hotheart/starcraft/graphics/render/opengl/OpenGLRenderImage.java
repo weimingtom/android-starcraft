@@ -11,7 +11,9 @@ import javax.microedition.khronos.opengles.GL10;
 import android.R;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.Bitmap.Config;
 import android.opengl.GLUtils;
 
@@ -23,22 +25,22 @@ public class OpenGLRenderImage extends RenderImage {
 
 	class Frame {
 		public IntBuffer mVertexBuffer;
+		public FloatBuffer mTexBuffer;
+		public FloatBuffer mMirTexBuffer;
 		public int texture;
 
+		public int width;
+		public int height;
+
 		public Frame(int i, GL10 gl) {
+			
+			// ======================================
+			// Creating textures
+			// ======================================			
 			int[] ids = new int[1];
 			gl.glGenTextures(1, ids, 0);
 			texture = ids[0];
-
-			int[] coords = { image.widths[i], image.heights[i],
-					image.widths[i], 0, 0, 0, 0, image.heights[i] };
-
-			ByteBuffer vbb = ByteBuffer.allocateDirect(coords.length * 4);
-			vbb.order(ByteOrder.nativeOrder());
-			mVertexBuffer = vbb.asIntBuffer();
-			mVertexBuffer.put(coords);
-			mVertexBuffer.position(0);
-
+			
 			gl.glBindTexture(GL10.GL_TEXTURE_2D, texture);
 
 			gl.glTexEnvf(GL10.GL_TEXTURE_ENV, GL10.GL_TEXTURE_ENV_MODE,
@@ -47,8 +49,9 @@ public class OpenGLRenderImage extends RenderImage {
 			Bitmap bitmap = image.createBitmap(i,
 					StarcraftPalette.normalPalette);
 
-			GLUtils.texImage2D(GL10.GL_TEXTURE_2D, 0, Bitmap
-					.createScaledBitmap(bitmap, 32, 32, false), 0);
+			calcSize(bitmap.getWidth(), bitmap.getHeight());
+			genTexture(bitmap);
+
 			bitmap.recycle();
 
 			gl.glTexParameterx(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MIN_FILTER,
@@ -56,6 +59,74 @@ public class OpenGLRenderImage extends RenderImage {
 			gl.glTexParameterx(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MAG_FILTER,
 					GL10.GL_LINEAR);
 
+			// ======================================
+			// Creating coord buffers
+			// ======================================	
+
+			int[] coords = { image.widths[i], image.heights[i],
+					image.widths[i], 0, 0, 0, 0, image.heights[i] };
+
+			float[] texCoords = { 
+					(float) image.widths[i] / (float) width, (float) image.heights[i] / (float) height,
+					(float) image.widths[i] / (float) width, 0, 
+					0, 0, 
+					0, (float) image.heights[i] / (float) height };
+
+			float[] mirTexCoords = { 
+					0, (float) image.heights[i] / (float) height, 
+					0, 0, 
+					(float) image.widths[i] / (float) width, 0, 
+					(float) image.widths[i] / (float) width, (float) image.heights[i] / (float) height };
+
+			ByteBuffer vbb = ByteBuffer.allocateDirect(coords.length * 4);
+			vbb.order(ByteOrder.nativeOrder());
+			mVertexBuffer = vbb.asIntBuffer();
+			mVertexBuffer.put(coords);
+			mVertexBuffer.position(0);
+			
+			ByteBuffer tbb = ByteBuffer.allocateDirect(texCoords.length * 4);
+			tbb.order(ByteOrder.nativeOrder());
+			mTexBuffer = tbb.asFloatBuffer();
+			mTexBuffer.put(texCoords);
+			mTexBuffer.position(0);
+
+			ByteBuffer mtbb = ByteBuffer.allocateDirect(mirTexCoords.length * 4);
+			mtbb.order(ByteOrder.nativeOrder());
+			mMirTexBuffer = mtbb.asFloatBuffer();
+			mMirTexBuffer.put(mirTexCoords);
+			mMirTexBuffer.position(0);
+		}
+		
+		void calcSize(int w, int h)
+		{
+			width = 1;
+			height = 1;
+
+			for (int i = 0; i < 10; i++) {
+				if ((w >> i) == 0) {
+					width = (int) Math.pow(2, i);
+					break;
+				}
+			}
+
+			for (int i = 0; i < 10; i++) {
+				if ((h >> i) == 0) {
+					height = (int) Math.pow(2, i);
+					break;
+				}
+			}
+	
+		}
+
+		void genTexture(Bitmap bitmap) {
+			
+			Bitmap res = Bitmap.createBitmap(width, height, bitmap.getConfig());
+			Canvas c = new Canvas(res);
+			c.drawBitmap(bitmap, 0, 0, new Paint());
+
+			GLUtils.texImage2D(GL10.GL_TEXTURE_2D, 0, res, 0);
+
+			res.recycle();
 		}
 	}
 
@@ -85,7 +156,7 @@ public class OpenGLRenderImage extends RenderImage {
 
 		width = image.width;
 		height = image.height;
-		
+
 		byte[] vertex_strip = { 1, 0, 2, 3 };
 
 		float[] texCoords = { 1, 1, 1, 0, 0, 0, 0, 1 };
@@ -148,9 +219,9 @@ public class OpenGLRenderImage extends RenderImage {
 				frames[frameId].mVertexBuffer);
 
 		if (isMirrored)
-			render.gl.glTexCoordPointer(2, GL10.GL_FLOAT, 0, mMirTexBuffer);
+			render.gl.glTexCoordPointer(2, GL10.GL_FLOAT, 0, frames[frameId].mMirTexBuffer);
 		else
-			render.gl.glTexCoordPointer(2, GL10.GL_FLOAT, 0, mTexBuffer);
+			render.gl.glTexCoordPointer(2, GL10.GL_FLOAT, 0, frames[frameId].mTexBuffer);
 
 		render.gl.glActiveTexture(GL10.GL_TEXTURE0);
 		render.gl.glBindTexture(GL10.GL_TEXTURE_2D, frames[frameId].texture);

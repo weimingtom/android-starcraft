@@ -1,6 +1,5 @@
 package hotheart.starcraft.core;
 
-import hotheart.starcraft.configure.BuildParameters;
 import hotheart.starcraft.configure.FilePaths;
 import hotheart.starcraft.graphics.Image;
 import hotheart.starcraft.graphics.Sprite;
@@ -9,7 +8,6 @@ import hotheart.starcraft.graphics.grp.GrpLibrary;
 import hotheart.starcraft.graphics.render.Render;
 import hotheart.starcraft.graphics.render.opengl.OpenGLRender;
 import hotheart.starcraft.graphics.render.simple.SimpleRender;
-import hotheart.starcraft.graphics.render.simple.grp.GrpRenderFactory;
 import hotheart.starcraft.graphics.script.ImageScriptEngine;
 import hotheart.starcraft.graphics.utils.SelectionCircles;
 import hotheart.starcraft.map.Map;
@@ -64,7 +62,7 @@ public class StarcraftCore {
 			act = parentAcrivity;
 			context = new GameContext();
 			render = new OpenGLRender();
-			// render = new SimpleRender();
+			//render = new SimpleRender();
 
 			FileInputStream fs = null;
 
@@ -125,7 +123,7 @@ public class StarcraftCore {
 
 			showMessage("Loading map");
 
-			context.map = new Map(FileSystemUtils
+			GameContext.map = new Map(FileSystemUtils
 					.readAllBytes(FilePaths.SCENARIO_CHK));
 
 			hideProgress();

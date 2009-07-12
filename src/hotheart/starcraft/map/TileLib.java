@@ -8,27 +8,53 @@
  */
 package hotheart.starcraft.map;
 
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
-import android.graphics.Bitmap.Config;
 import android.util.Log;
 import hotheart.starcraft.configure.FilePaths;
 import hotheart.starcraft.utils.FileSystemUtils;
 
 public class TileLib {
 
+	public static int IS_WALKABLE = 0x01;
+
 	public static final int TILE_SIZE = 32;
 
 	public static int[] palette;// Palette - generated from WPE file
 	public static byte[] CV5; // Descriptions of sprites
 	public static byte[] VR4; // Tiles(8x8)
+	public static int[] tileFlags; // Tiles(8x8)
 	public static int[] VX4Indexes; // Mega-tiles(32x32)
 
 	// public static Bitmap[] miniTiles; // Tiles(8x8)
 
 	// public static int[][] miniTiles;
+
+	public static int[] getMegaTilesFlags(int id) {
+		int cv5id = (id >> 4);
+		// first half-byte is subid
+		int cv5SubId = (id & 0x000F);
+
+		int vx4Id = (CV5[cv5id * 52 + 20 + cv5SubId * 2] & 0xFF)
+				+ ((CV5[cv5id * 52 + 20 + cv5SubId * 2 + 1] & 0xFF) << 8);
+
+		int index = vx4Id * 16;
+
+		return new int[] { tileFlags[index++], tileFlags[index++],
+				tileFlags[index++], tileFlags[index++], tileFlags[index++],
+				tileFlags[index++], tileFlags[index++], tileFlags[index++],
+				tileFlags[index++], tileFlags[index++], tileFlags[index++],
+				tileFlags[index++], tileFlags[index++], tileFlags[index++],
+				tileFlags[index++], tileFlags[index++] };
+	}
+
+	public static final boolean haveFlagInstalled(int megaTileId, int miniX,
+			int miniY, int flag) {
+
+		int[] flags = getMegaTilesFlags(megaTileId);
+		return (flags[miniX + miniY * 4] & flag) != 0;
+	}
 
 	public static final void init(int type) {
 
@@ -76,6 +102,11 @@ public class TileLib {
 
 		CV5 = FileSystemUtils.readAllBytes(filePrefix + ".cv5");
 		VR4 = FileSystemUtils.readAllBytes(filePrefix + ".vr4");
+
+		byte[] VF4 = FileSystemUtils.readAllBytes(filePrefix + ".vf4");
+		tileFlags = new int[VF4.length / 2];
+		for (int i = 0; i < tileFlags.length; i++)
+			tileFlags[i] = (VF4[i * 2] & 0xFF) + ((VF4[i * 2 + 1] & 0xFF) << 8);
 
 		// miniTiles = new Bitmap[VR4.length / 64];
 		// int[] tmpBuf = new int[64];

@@ -1,8 +1,8 @@
 package hotheart.starcraft.system;
 
+import hotheart.starcraft.controller.ViewController;
 import hotheart.starcraft.core.StarcraftCore;
 import hotheart.starcraft.graphics.render.Render;
-import hotheart.starcraft.graphics.render.ViewController;
 import hotheart.starcraft.graphics.render.simple.SimpleRender;
 import hotheart.starcraft.graphics.render.simple.SimpleView;
 import android.app.Activity;

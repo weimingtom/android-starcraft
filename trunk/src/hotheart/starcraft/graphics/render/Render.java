@@ -1,5 +1,6 @@
 package hotheart.starcraft.graphics.render;
 
+import hotheart.starcraft.controller.ViewController;
 import hotheart.starcraft.files.LoFile;
 
 import java.util.TreeMap;

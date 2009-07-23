@@ -1,5 +1,6 @@
-package hotheart.starcraft.graphics.render;
+package hotheart.starcraft.controller;
 
+import hotheart.starcraft.core.StarcraftCore;
 import hotheart.starcraft.map.Map;
 import android.view.MotionEvent;
 import android.view.View;
@@ -29,14 +30,12 @@ public abstract class ViewController implements View.OnTouchListener {
 	public void setPosXY(int x, int y) {
 		_setPosXY(x, y);
 	}
-	
-	public int getX()
-	{
+
+	public int getX() {
 		return mx;
 	}
-	
-	public int getY()
-	{
+
+	public int getY() {
 		return my;
 	}
 
@@ -51,27 +50,34 @@ public abstract class ViewController implements View.OnTouchListener {
 	int oldX = 0, oldY = 0;
 
 	public boolean onTouch(View v, MotionEvent event) {
-		if (!isScrolling)
-			return false;
+		if (isScrolling) {
 
-		if (event.getAction() == MotionEvent.ACTION_DOWN) {
-			oldX = (int) event.getX();
-			oldY = (int) event.getY();
-		} else if (event.getAction() == MotionEvent.ACTION_MOVE) {
-			try {
-				int dx = (int) (oldX - event.getX());
-				int dy = (int) (oldY - event.getY());
-
+			if (event.getAction() == MotionEvent.ACTION_DOWN) {
 				oldX = (int) event.getX();
 				oldY = (int) event.getY();
+			} else if (event.getAction() == MotionEvent.ACTION_MOVE) {
+				try {
+					int dx = (int) (oldX - event.getX());
+					int dy = (int) (oldY - event.getY());
 
-				mx += dx;
-				my += dy;
+					oldX = (int) event.getX();
+					oldY = (int) event.getY();
 
-				setPosXY(mx, my);
-			} catch (Exception e) {
+					mx += dx;
+					my += dy;
+
+					setPosXY(mx, my);
+				} catch (Exception e) {
+				}
 			}
+			return true;
 		}
-		return true;
+		else
+		{
+			int mapX = (int)event.getX() + getX();
+			int mapY = (int)event.getY() + getY();
+			StarcraftCore.gameController.onClick(mapX, mapY);
+			return true;
+		}
 	}
 }

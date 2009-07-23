@@ -2,7 +2,7 @@ package hotheart.starcraft.graphics.render.simple;
 
 import android.content.Context;
 import android.view.View;
-import hotheart.starcraft.graphics.render.ViewController;
+import hotheart.starcraft.controller.ViewController;
 import hotheart.starcraft.map.Map;
 
 public class SimpleViewController extends ViewController {

@@ -1,6 +1,7 @@
 package hotheart.starcraft.core;
 
 import hotheart.starcraft.configure.FilePaths;
+import hotheart.starcraft.controller.GameController;
 import hotheart.starcraft.graphics.Image;
 import hotheart.starcraft.graphics.Sprite;
 import hotheart.starcraft.graphics.TeamColors;
@@ -26,6 +27,7 @@ public class StarcraftCore {
 
 	public static Render render;
 	public static GameContext context;
+	public static GameController gameController;
 
 	public static String state = "";
 
@@ -61,6 +63,8 @@ public class StarcraftCore {
 		try {
 			act = parentAcrivity;
 			context = new GameContext();
+			gameController = new GameController();
+			
 			// render = new OpenGLRender();
 			render = new SimpleRender();
 

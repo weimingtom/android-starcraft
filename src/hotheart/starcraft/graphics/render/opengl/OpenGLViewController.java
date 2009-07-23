@@ -3,7 +3,7 @@ package hotheart.starcraft.graphics.render.opengl;
 import android.content.Context;
 import android.opengl.GLSurfaceView;
 import android.view.View;
-import hotheart.starcraft.graphics.render.ViewController;
+import hotheart.starcraft.controller.ViewController;
 import hotheart.starcraft.map.Map;
 
 public class OpenGLViewController extends ViewController {

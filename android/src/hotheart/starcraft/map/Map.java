@@ -58,7 +58,6 @@ public class Map {
 
 			p += 8 + len;
 		}
-
 	}
 
 

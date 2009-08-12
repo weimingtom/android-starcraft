@@ -24,5 +24,5 @@ public class BuildParameters {
 	
 	public static final String GAME_FOLDER = "/sdcard/starcraft/";
 	
-	public static final int BACKGROUND_COLOR = Color.WHITE;
+	public static final int BACKGROUND_COLOR = Color.MAGENTA;
 }

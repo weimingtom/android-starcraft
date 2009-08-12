@@ -17,6 +17,8 @@ import android.view.View;
 public class SimpleView extends View {
 
 	SimpleRender render;
+	
+	MapRender mapRend = new MapRender();
 
 	Map map;
 	int ofsX = 56 * 32, ofsY = 60 * 32;
@@ -96,18 +98,20 @@ public class SimpleView extends View {
 		// Drawing Map
 		// ================================================
 
-		canvas.save();
-
-		transf = canvas.getMatrix();
-		transf.preScale(8, 8);
-		transf.postTranslate(-ofsX, -ofsY);
-		canvas.setMatrix(transf);
-
-		// Draw map here
-
-		canvas.drawBitmap(mapBitmap, 0, 0, new Paint());
-
-		canvas.restore();
+//		canvas.save();
+//
+//		transf = canvas.getMatrix();
+//		transf.preScale(8, 8);
+//		transf.postTranslate(-ofsX, -ofsY);
+//		canvas.setMatrix(transf);
+//		
+//		// Draw map here
+//
+//		canvas.drawBitmap(mapBitmap, 0, 0, new Paint());
+//
+//		canvas.restore();
+		
+		mapRend.drawMap(canvas, ofsX, ofsY, getWidth(), getHeight());
 
 		// ================================================
 		// Drawing Units

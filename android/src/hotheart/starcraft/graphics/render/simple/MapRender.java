@@ -1,5 +1,8 @@
 package hotheart.starcraft.graphics.render.simple;
 
+import hotheart.starcraft.core.GameContext;
+import hotheart.starcraft.map.Map;
+import hotheart.starcraft.map.TileLib;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -20,7 +23,11 @@ public class MapRender {
 
 	public int tilesOfsX = 0, tilesOfsY = 0;
 
-	public MapRender() {
+	public Map gameMap;
+
+	public MapRender(Map map) {
+		gameMap = map;
+
 		for (int i = 0; i < WIDTH; i++)
 			for (int j = 0; j < HEIGHT; j++) {
 				loadedTiles[i][j] = false;
@@ -29,16 +36,34 @@ public class MapRender {
 	}
 
 	void loadTile(int x, int y) {
+
 		tilesWindow[x][y] = Bitmap.createBitmap(256, 256, Config.RGB_565);
 
 		Canvas tmp = new Canvas(tilesWindow[x][y]);
-		Paint p = new Paint();
-		p.setTextSize(64);
-		p.setColor(Color.GREEN);
-		p.setAlpha(127);
 
-		tmp.drawText(String.format("[%d | %d]", (Integer) (x + tilesOfsX),
-				(Integer) (y + tilesOfsY)), 100, 100, p);
+		
+
+		int stride = TILE_SIDE / TileLib.TILE_SIZE;
+		
+		int startX =(tilesOfsX + x)*stride;
+		int startY =(tilesOfsY + y)*stride;
+
+		for (int i = 0; i < stride; i++)
+			for (int j = 0; j < stride; j++) {
+				TileLib.draw(i * TileLib.TILE_SIZE, j * TileLib.TILE_SIZE,
+						gameMap.mapTiles[startX + i + (startY + j) * gameMap.width], tmp);
+				// GameContext.map.mapTiles[i + j
+				// * GameContext.map.width]
+			}
+
+		// Canvas tmp = new Canvas(tilesWindow[x][y]);
+		// Paint p = new Paint();
+		// p.setTextSize(64);
+		// p.setColor(Color.GREEN);
+		// p.setAlpha(127);
+		//
+		// tmp.drawText(String.format("[%d | %d]", (Integer) (x + tilesOfsX),
+		// (Integer) (y + tilesOfsY)), 100, 10, p);
 
 		loadedTiles[x][y] = true;
 	}

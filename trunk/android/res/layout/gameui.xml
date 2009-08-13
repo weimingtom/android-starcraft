@@ -2,10 +2,15 @@
 <AbsoluteLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:orientation="horizontal" android:layout_width="fill_parent"
 	android:layout_height="wrap_content">
-	
-		<ImageView android:layout_width="fill_parent"
+
+	<ImageView android:layout_width="fill_parent"
 		android:layout_height="fill_parent" android:clickable="false"
-		android:src="@drawable/console" />
+		android:src="@drawable/console"/>
+
+	<hotheart.starcraft.system.MapPreview
+		android:id="@+id/mapPreview" android:clickable="true"
+		android:layout_height="96px" android:layout_width="96px"
+		android:layout_y = "221px" android:layout_x = "5px" />
 
 	<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 		android:orientation="horizontal" android:layout_width="fill_parent"

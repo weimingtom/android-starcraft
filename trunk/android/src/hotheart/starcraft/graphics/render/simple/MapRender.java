@@ -46,7 +46,7 @@ public class MapRender {
 		int absY = y + tilesOfsY;
 
 		String fileName = String.format(
-				"/sdcard/starcraft/cache/%dx%d_map.jpg", absX, absY);
+				"/sdcard/starcraft/cache/%dx%d_map.cache", absX, absY);
 
 		File img = new File(fileName);
 

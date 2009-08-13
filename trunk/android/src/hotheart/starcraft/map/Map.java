@@ -60,6 +60,27 @@ public class Map {
 		}
 	}
 
+	public Bitmap generateMapPreview() {
+
+		Bitmap res = Bitmap.createBitmap(width, height, Config.RGB_565);
+
+		int[] pixels = new int[width * height];
+
+		for (int x = 0; x < width; x++)
+			for (int y = 0; y < height; y++) {
+
+				// int[] tiles = TileLib.getTiles(map.mapTiles[x + y *
+				// map.width]);
+
+				int color = TileLib.getMegaTileColor(mapTiles[x + y * width]);
+
+				pixels[x + y * width] = color;
+			}
+
+		res.setPixels(pixels, 0, width, 0, 0, width, height);
+
+		return res;
+	}
 
 	public void draw(int x1, int y1, int x2, int y2) {
 

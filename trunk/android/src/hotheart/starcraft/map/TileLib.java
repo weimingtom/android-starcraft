@@ -9,6 +9,7 @@
 package hotheart.starcraft.map;
 
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.util.Log;
@@ -148,6 +149,76 @@ public class TileLib {
 				VX4Indexes[index++], VX4Indexes[index++] };
 	}
 
+	public static final int getMegaTileColor(int id) {
+		// Last 3 half-bytes is id
+		int cv5id = (id >> 4);
+		// first half-byte is subid
+		int cv5SubId = (id & 0x000F);
+
+		// Calc index in VX4 file
+		int vx4Id = (CV5[cv5id * 52 + 20 + cv5SubId * 2] & 0xFF)
+				+ ((CV5[cv5id * 52 + 20 + cv5SubId * 2 + 1] & 0xFF) << 8);
+
+		return getTilesColor(vx4Id);
+	}
+
+	private static final int getTilesColor(int vx4Id) {
+		
+		int R = 0;
+		int G = 0;
+		int B = 0;
+		
+		int index = vx4Id * 16;
+		
+		for(int i = 0; i<16; i++)
+		{
+			int col = getMiniTilesColor(VX4Indexes[index++]);
+			
+			R += Color.red(col);
+			G += Color.green(col);
+			B += Color.blue(col);
+		}
+		
+		R = R/16;
+		G = G/16;
+		B = B/16;
+		
+		return Color.rgb(R, G, B);
+	}
+
+	private static final int getMiniTilesColor(int id) {
+		
+		int R = 0;
+		int G = 0;
+		int B = 0;
+		
+		// Readl id by shift the flipped flag
+		id = id >> 1;
+
+		// Offset in file
+		int offset = id << 6;
+
+		// For each of 64 pixel
+		for (int rowIndex = 0; rowIndex < 8; rowIndex++)
+			for (int colIndex = 0; colIndex < 8; colIndex++) {
+				// Offset in file for pixel from first
+				int pixelOffset = rowIndex * 8 + colIndex;
+				
+				int col = palette[VR4[offset + pixelOffset] & 0xFF];
+				
+				
+
+				R += Color.red(col);
+				G += Color.green(col);
+				B += Color.blue(col);
+			}
+		
+		R = R/64;
+		G = G/64;
+		B = B/64;
+		return Color.rgb(R, G, B);
+	}
+
 	// ////////////////////////////////////
 	// Drawing with int buffers
 	// ////////////////////////////////////
@@ -168,7 +239,7 @@ public class TileLib {
 
 	public static final void drawMegaTile(int x, int y, int vx4Id, int[] c,
 			int stride) {
-		
+
 		int index = vx4Id * 16;
 
 		drawTile(x, y, VX4Indexes[index++], c, stride);
@@ -218,7 +289,7 @@ public class TileLib {
 							+ pixelOffset] & 0xFF];
 			}
 	}
-	
+
 	// ////////////////////////////
 	// Drawing with canvas
 	// ////////////////////////////

@@ -148,6 +148,77 @@ public class TileLib {
 				VX4Indexes[index++], VX4Indexes[index++] };
 	}
 
+	// ////////////////////////////////////
+	// Drawing with int buffers
+	// ////////////////////////////////////
+
+	public static final void draw(int x, int y, int id, int[] b, int stride) {
+		// Last 3 half-bytes is id
+		int cv5id = (id >> 4);
+		// first half-byte is subid
+		int cv5SubId = (id & 0x000F);
+
+		// Calc index in VX4 file
+		int vx4Id = (CV5[cv5id * 52 + 20 + cv5SubId * 2] & 0xFF)
+				+ ((CV5[cv5id * 52 + 20 + cv5SubId * 2 + 1] & 0xFF) << 8);
+
+		// Draw mega-tile(32x32)
+		drawMegaTile(x, y, vx4Id, b, stride);
+	}
+
+	public static final void drawMegaTile(int x, int y, int vx4Id, int[] c,
+			int stride) {
+		
+		int index = vx4Id * 16;
+
+		drawTile(x, y, VX4Indexes[index++], c, stride);
+		drawTile(x + 8, y, VX4Indexes[index++], c, stride);
+		drawTile(x + 16, y, VX4Indexes[index++], c, stride);
+		drawTile(x + 24, y, VX4Indexes[index++], c, stride);
+
+		drawTile(x, y + 8, VX4Indexes[index++], c, stride);
+		drawTile(x + 8, y + 8, VX4Indexes[index++], c, stride);
+		drawTile(x + 16, y + 8, VX4Indexes[index++], c, stride);
+		drawTile(x + 24, y + 8, VX4Indexes[index++], c, stride);
+
+		drawTile(x, y + 16, VX4Indexes[index++], c, stride);
+		drawTile(x + 8, y + 16, VX4Indexes[index++], c, stride);
+		drawTile(x + 16, y + 16, VX4Indexes[index++], c, stride);
+		drawTile(x + 24, y + 16, VX4Indexes[index++], c, stride);
+
+		drawTile(x, y + 24, VX4Indexes[index++], c, stride);
+		drawTile(x + 8, y + 24, VX4Indexes[index++], c, stride);
+		drawTile(x + 16, y + 24, VX4Indexes[index++], c, stride);
+		drawTile(x + 24, y + 24, VX4Indexes[index++], c, stride);
+	}
+
+	public static final void drawTile(int x, int y, int id, int[] c, int stride) {
+		// First bit is flag is flipped horizontal
+		boolean flipped = (id & 1) == 1;
+		// Readl id by shift the flipped flag
+		id = id >> 1;
+
+		// Offset in file
+		int offset = id << 6;
+
+		// For each of 64 pixel
+		for (int rowIndex = 0; rowIndex < 8; rowIndex++)
+			for (int colIndex = 0; colIndex < 8; colIndex++) {
+				// Offset in file for pixel from first
+				int pixelOffset = rowIndex * 8 + colIndex;
+
+				// Offset for first pixel in row
+				int destBufferOffset = (y + rowIndex) * stride;
+
+				if (flipped)
+					c[x + 7 - colIndex + destBufferOffset] = palette[VR4[offset
+							+ pixelOffset] & 0xFF];
+				else
+					c[x + colIndex + destBufferOffset] = palette[VR4[offset
+							+ pixelOffset] & 0xFF];
+			}
+	}
+	
 	// ////////////////////////////
 	// Drawing with canvas
 	// ////////////////////////////

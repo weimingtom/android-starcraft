@@ -1,13 +1,17 @@
 package hotheart.starcraft.graphics.render.simple;
 
-import hotheart.starcraft.core.GameContext;
 import hotheart.starcraft.map.Map;
 import hotheart.starcraft.map.TileLib;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Bitmap.CompressFormat;
 import android.graphics.Bitmap.Config;
 
 public class MapRender {
@@ -35,35 +39,55 @@ public class MapRender {
 			}
 	}
 
+	int[] colors = new int[TILE_SIDE*TILE_SIDE];
 	void loadTile(int x, int y) {
 
-		tilesWindow[x][y] = Bitmap.createBitmap(256, 256, Config.RGB_565);
+		int absX = x + tilesOfsX;
+		int absY = y + tilesOfsY;
 
-		Canvas tmp = new Canvas(tilesWindow[x][y]);
+		String fileName = String.format(
+				"/sdcard/starcraft/cache/%dx%d_map.jpg", absX, absY);
+
+		File img = new File(fileName);
+
+		if (!img.exists()) {
+
+			// Generate Tile
+			int stride = TILE_SIDE / TileLib.TILE_SIZE;
+
+			int startX = absX * stride;
+			int startY = absY * stride;
 
 		
+			Bitmap tmpImage = Bitmap.createBitmap(256, 256, Config.RGB_565);
 
-		int stride = TILE_SIDE / TileLib.TILE_SIZE;
-		
-		int startX =(tilesOfsX + x)*stride;
-		int startY =(tilesOfsY + y)*stride;
+			for (int i = 0; i < stride; i++)
+				for (int j = 0; j < stride; j++) {
+					TileLib.draw(i * TileLib.TILE_SIZE, j * TileLib.TILE_SIZE,
+							gameMap.mapTiles[startX + i + (startY + j)
+												* gameMap.width], colors, 256);
+					
+				}
+			
+			tmpImage.setPixels(colors, 0, 256, 0, 0, 256, 256);
 
-		for (int i = 0; i < stride; i++)
-			for (int j = 0; j < stride; j++) {
-				TileLib.draw(i * TileLib.TILE_SIZE, j * TileLib.TILE_SIZE,
-						gameMap.mapTiles[startX + i + (startY + j) * gameMap.width], tmp);
-				// GameContext.map.mapTiles[i + j
-				// * GameContext.map.width]
+			// Save Tile
+			try {
+				FileOutputStream fis = new FileOutputStream(img);
+				tmpImage.compress(CompressFormat.JPEG, 90, fis);
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
 			}
+			
+			tilesWindow[x][y] = tmpImage;
 
-		// Canvas tmp = new Canvas(tilesWindow[x][y]);
-		// Paint p = new Paint();
-		// p.setTextSize(64);
-		// p.setColor(Color.GREEN);
-		// p.setAlpha(127);
-		//
-		// tmp.drawText(String.format("[%d | %d]", (Integer) (x + tilesOfsX),
-		// (Integer) (y + tilesOfsY)), 100, 10, p);
+		}
+		else
+		{
+			tilesWindow[x][y] = BitmapFactory.decodeFile(fileName);
+		}
+
+		
 
 		loadedTiles[x][y] = true;
 	}

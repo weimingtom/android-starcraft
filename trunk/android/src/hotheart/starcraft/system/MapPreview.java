@@ -81,7 +81,7 @@ public class MapPreview extends View {
 			}
 			
 			int x = u.getPosX()/32;
-			int y = u.getPosX()/32;
+			int y = u.getPosY()/32; 
 			
 			unitPaint.setColor(color);
 			

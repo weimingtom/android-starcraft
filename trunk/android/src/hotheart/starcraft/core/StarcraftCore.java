@@ -65,12 +65,12 @@ public class StarcraftCore {
 			context = new GameContext();
 			gameController = new GameController();
 			
-			// render = new OpenGLRender();
-			render = new SimpleRender();
+			render = new OpenGLRender();
+			//render = new SimpleRender();
 
 			FileInputStream fs = null;
 
-			showMessage("Init sound lib");
+			showMessage("Init sound lib"); 
 			StarcraftSoundPool.init(FileSystemUtils
 					.readAllBytes(FilePaths.SFX_DATA_TBL), FileSystemUtils
 					.readAllBytes(FilePaths.SFX_DATA_DAT));

@@ -2,6 +2,7 @@ package hotheart.starcraft.controller;
 
 import hotheart.starcraft.core.StarcraftCore;
 import hotheart.starcraft.map.Map;
+import hotheart.starcraft.system.MapPreview;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -27,8 +28,18 @@ public abstract class ViewController implements View.OnTouchListener {
 		return cached;
 	}
 
+	MapPreview previewView = null;
+
+	public void setMapPreview(MapPreview view) {
+		previewView = view;
+
+	}
+
 	public void setPosXY(int x, int y) {
 		_setPosXY(x, y);
+
+		if (previewView != null)
+			previewView.setSelectionPos(x / 32, y / 32);
 	}
 
 	public int getX() {
@@ -71,11 +82,9 @@ public abstract class ViewController implements View.OnTouchListener {
 				}
 			}
 			return true;
-		}
-		else
-		{
-			int mapX = (int)event.getX() + getX();
-			int mapY = (int)event.getY() + getY();
+		} else {
+			int mapX = (int) event.getX() + getX();
+			int mapY = (int) event.getY() + getY();
 			StarcraftCore.gameController.onClick(mapX, mapY);
 			return true;
 		}

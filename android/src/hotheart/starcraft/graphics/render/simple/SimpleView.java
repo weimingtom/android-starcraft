@@ -28,7 +28,7 @@ public class SimpleView extends View {
 	int FPS = 0;
 	long startTime;
 
-	// Bitmap mapBitmap;
+	Bitmap mapBitmap;
 
 	public SimpleView(Context context, SimpleRender r) {
 		super(context);
@@ -45,41 +45,41 @@ public class SimpleView extends View {
 	public void setMap(Map mp) {
 		map = mp;
 		mapRend = new MapRender(map);
-		// generateMapBitmap();
+		generateMapBitmap();
 	}
 
 	private static final int WALKABLE_COLOR = Color.rgb(155, 248, 31);
 	private static final int NON_WALKABLE_COLOR = Color.rgb(249, 112, 30);
 
-	// void generateMapBitmap() {
-	// mapBitmap = Bitmap.createBitmap(map.width * 4, map.height * 4,
-	// Config.RGB_565);
-	//
-	// for (int x = 0; x < map.width; x++)
-	// for (int y = 0; y < map.height; y++) {
-	//
-	// // int[] tiles = TileLib.getTiles(map.mapTiles[x + y *
-	// // map.width]);
-	//
-	// int baseIndex = map.mapTiles[x + y * map.width];
-	// for (int i = 0; i < 4; i++)
-	// for (int j = 0; j < 4; j++) {
-	// boolean walkable = TileLib.haveFlagInstalled(baseIndex,
-	// i, j, TileLib.IS_WALKABLE);
-	//
-	// int xPos = x * 4 + i;
-	// int yPos = y * 4 + j;
-	//
-	// // boolean walkable = yPos % 2 == 0;
-	//
-	// if (walkable) {
-	// mapBitmap.setPixel(xPos, yPos, WALKABLE_COLOR);
-	// } else {
-	// mapBitmap.setPixel(xPos, yPos, NON_WALKABLE_COLOR);
-	// }
-	// }
-	// }
-	// }
+	void generateMapBitmap() {
+		mapBitmap = Bitmap.createBitmap(map.width * 4, map.height * 4,
+				Config.RGB_565);
+
+		for (int x = 0; x < map.width; x++)
+			for (int y = 0; y < map.height; y++) {
+
+				// int[] tiles = TileLib.getTiles(map.mapTiles[x + y *
+				// map.width]);
+
+				int baseIndex = map.mapTiles[x + y * map.width];
+				for (int i = 0; i < 4; i++)
+					for (int j = 0; j < 4; j++) {
+						boolean walkable = TileLib.haveFlagInstalled(baseIndex,
+								i, j, TileLib.IS_WALKABLE);
+
+						int xPos = x * 4 + i;
+						int yPos = y * 4 + j;
+
+						// boolean walkable = yPos % 2 == 0;
+
+						if (walkable) {
+							mapBitmap.setPixel(xPos, yPos, WALKABLE_COLOR);
+						} else {
+							mapBitmap.setPixel(xPos, yPos, NON_WALKABLE_COLOR);
+						}
+					}
+			}
+	}
 
 	@Override
 	protected void onDraw(Canvas canvas) {
@@ -99,21 +99,29 @@ public class SimpleView extends View {
 		// ================================================
 		// Drawing Map
 		// ================================================
-
-		// canvas.save();
-		//
-		// transf = canvas.getMatrix();
-		// transf.preScale(8, 8);
-		// transf.postTranslate(-ofsX, -ofsY);
-		// canvas.setMatrix(transf);
-		//		
-		// // Draw map here
-		//
-		// canvas.drawBitmap(mapBitmap, 0, 0, new Paint());
-		//
-		// canvas.restore();
+		
 		if (mapRend != null)
 			mapRend.drawMap(canvas, ofsX, ofsY, getWidth(), getHeight());
+		
+		// ================================================
+		// Drawing Map Paths
+		// ================================================
+
+		canvas.save();
+
+		transf = canvas.getMatrix();
+		transf.preScale(8, 8);
+		transf.postTranslate(-ofsX, -ofsY);
+		canvas.setMatrix(transf);
+
+		// Draw map path here
+		
+		Paint p = new Paint();
+		p.setAlpha(127);
+
+		canvas.drawBitmap(mapBitmap, 0, 0, p);
+
+		canvas.restore();
 
 		// ================================================
 		// Drawing Units
@@ -139,7 +147,7 @@ public class SimpleView extends View {
 			startTime = System.currentTimeMillis();
 		}
 
-		Paint p = new Paint();
+		p = new Paint();
 		p.setColor(Color.RED);
 		canvas.drawText("FPS: " + FPS, 10, 20, p);
 

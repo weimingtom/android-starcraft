@@ -50,6 +50,7 @@ public final class GameActivity extends Activity {
 		
 		MapPreview prev = (MapPreview)gui.findViewById(R.id.mapPreview);
 		prev.setBitmap(GameContext.map.generateMapPreview());
+		cont.setMapPreview(prev);
 //		gui.setVisibility(View.INVISIBLE);
 		rl.addView(gui);
 		setContentView(rl);

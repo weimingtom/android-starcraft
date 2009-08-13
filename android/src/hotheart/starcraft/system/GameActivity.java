@@ -1,6 +1,7 @@
 package hotheart.starcraft.system;
 
 import hotheart.starcraft.controller.ViewController;
+import hotheart.starcraft.core.GameContext;
 import hotheart.starcraft.core.StarcraftCore;
 import hotheart.starcraft.graphics.render.Render;
 import hotheart.starcraft.graphics.render.simple.SimpleRender;
@@ -46,6 +47,9 @@ public final class GameActivity extends Activity {
 		RelativeLayout rl = new RelativeLayout(this);
 		rl.addView(cont.getView());
 		View gui = LayoutInflater.from(this).inflate(R.layout.gameui, null);
+		
+		MapPreview prev = (MapPreview)gui.findViewById(R.id.mapPreview);
+		prev.setBitmap(GameContext.map.generateMapPreview());
 //		gui.setVisibility(View.INVISIBLE);
 		rl.addView(gui);
 		setContentView(rl);

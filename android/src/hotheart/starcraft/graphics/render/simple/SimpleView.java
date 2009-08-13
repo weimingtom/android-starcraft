@@ -52,6 +52,7 @@ public class SimpleView extends View {
 	private static final int NON_WALKABLE_COLOR = Color.rgb(249, 112, 30);
 
 	void generateMapBitmap() {
+
 		mapBitmap = Bitmap.createBitmap(map.width * 4, map.height * 4,
 				Config.RGB_565);
 
@@ -99,10 +100,10 @@ public class SimpleView extends View {
 		// ================================================
 		// Drawing Map
 		// ================================================
-		
+
 		if (mapRend != null)
 			mapRend.drawMap(canvas, ofsX, ofsY, getWidth(), getHeight());
-		
+
 		// ================================================
 		// Drawing Map Paths
 		// ================================================
@@ -115,7 +116,7 @@ public class SimpleView extends View {
 		canvas.setMatrix(transf);
 
 		// Draw map path here
-		
+
 		Paint p = new Paint();
 		p.setAlpha(127);
 

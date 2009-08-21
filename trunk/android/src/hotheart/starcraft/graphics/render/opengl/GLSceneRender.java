@@ -2,28 +2,22 @@ package hotheart.starcraft.graphics.render.opengl;
 
 import hotheart.starcraft.configure.BuildParameters;
 import hotheart.starcraft.core.StarcraftCore;
-import hotheart.starcraft.map.Map;
-import hotheart.starcraft.map.TileLib;
-
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-import java.nio.IntBuffer;
+import hotheart.starcraft.map.MapRender;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
-import javax.microedition.khronos.opengles.GL11;
-import javax.microedition.khronos.egl.EGL10;
 
-import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.Bitmap.Config;
 import android.opengl.GLSurfaceView;
 
 public class GLSceneRender implements GLSurfaceView.Renderer {
 	OpenGLRender render;
 
+	MapRender mapRender;
+
 	public GLSceneRender(OpenGLRender r) {
 		render = r;
+		mapRender = new MapRender(StarcraftCore.context.map);
 	}
 
 	public void onDrawFrame(GL10 gl) {
@@ -41,6 +35,10 @@ public class GLSceneRender implements GLSurfaceView.Renderer {
 
 		gl.glMatrixMode(GL10.GL_MODELVIEW);
 		gl.glLoadIdentity();
+		
+		// TODO fix sizes
+		mapRender.drawMap(offsetX, offsetY, 480, 320);
+		
 		// mapRender.offsetX = offsetX;
 		// mapRender.offsetY = offsetY;
 
@@ -67,8 +65,6 @@ public class GLSceneRender implements GLSurfaceView.Renderer {
 		gl.glMatrixMode(GL10.GL_MODELVIEW);
 		gl.glLoadIdentity();
 	}
-
-	MapRender mapRender;
 
 	private void createMapTexture(GL10 gl) {
 		// mapRender = new MapRender(gl);

@@ -65,8 +65,8 @@ public class StarcraftCore {
 			context = new GameContext();
 			gameController = new GameController();
 			
-			//render = new OpenGLRender();
-			render = new SimpleRender();
+			render = new OpenGLRender();
+			//render = new SimpleRender();
 
 			FileInputStream fs = null;
 

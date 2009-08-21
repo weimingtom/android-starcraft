@@ -1,7 +1,7 @@
-package hotheart.starcraft.graphics.render.simple;
+package hotheart.starcraft.map;
 
-import hotheart.starcraft.map.Map;
-import hotheart.starcraft.map.TileLib;
+import hotheart.starcraft.core.StarcraftCore;
+import hotheart.starcraft.graphics.render.RenderTile;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -22,7 +22,7 @@ public class MapRender {
 	public static final int WIDTH = 3;
 	public static final int HEIGHT = 3;
 
-	Bitmap[][] tilesWindow = new Bitmap[WIDTH][HEIGHT];
+	RenderTile[][] tilesWindow = new RenderTile[WIDTH][HEIGHT];
 	boolean[][] loadedTiles = new boolean[WIDTH][HEIGHT];
 
 	public int tilesOfsX = 0, tilesOfsY = 0;
@@ -39,7 +39,8 @@ public class MapRender {
 			}
 	}
 
-	int[] colors = new int[TILE_SIDE*TILE_SIDE];
+	int[] colors = new int[TILE_SIDE * TILE_SIDE];
+
 	void loadTile(int x, int y) {
 
 		int absX = x + tilesOfsX;
@@ -58,17 +59,16 @@ public class MapRender {
 			int startX = absX * stride;
 			int startY = absY * stride;
 
-		
 			Bitmap tmpImage = Bitmap.createBitmap(256, 256, Config.RGB_565);
 
 			for (int i = 0; i < stride; i++)
 				for (int j = 0; j < stride; j++) {
 					TileLib.draw(i * TileLib.TILE_SIZE, j * TileLib.TILE_SIZE,
 							gameMap.mapTiles[startX + i + (startY + j)
-												* gameMap.width], colors, 256);
-					
+									* gameMap.width], colors, 256);
+
 				}
-			
+
 			tmpImage.setPixels(colors, 0, 256, 0, 0, 256, 256);
 
 			// Save Tile
@@ -78,16 +78,14 @@ public class MapRender {
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
 			}
-			
-			tilesWindow[x][y] = tmpImage;
 
-		}
-		else
-		{
-			tilesWindow[x][y] = BitmapFactory.decodeFile(fileName);
-		}
+			tilesWindow[x][y] = StarcraftCore.render
+					.createTileFromBitmap(tmpImage);
 
-		
+		} else {
+			tilesWindow[x][y] = StarcraftCore.render
+					.createTileFromBitmap(BitmapFactory.decodeFile(fileName));
+		}
 
 		loadedTiles[x][y] = true;
 	}
@@ -117,7 +115,7 @@ public class MapRender {
 		int tileX = pixOfsX / TILE_SIDE;
 		int tileY = pixOfsY / TILE_SIDE;
 
-		Bitmap[][] newTilesWindow = new Bitmap[WIDTH][HEIGHT];
+		RenderTile[][] newTilesWindow = new RenderTile[WIDTH][HEIGHT];
 		boolean[][] newLoadedTiles = new boolean[WIDTH][HEIGHT];
 
 		boolean[][] usedOldTiles = new boolean[WIDTH][HEIGHT];
@@ -159,7 +157,7 @@ public class MapRender {
 		tilesOfsY = tileY;
 	}
 
-	public void drawMap(Canvas c, int ofsX, int ofsY, int width, int height) {
+	public void drawMap(int ofsX, int ofsY, int width, int height) {
 		if (needMoving(ofsX, ofsY, width, height)) {
 			moveTileWindow(ofsX, ofsY);
 		}
@@ -177,9 +175,12 @@ public class MapRender {
 				if (tilesWindow[i][j].isRecycled())
 					loadTile(i, j);
 
-				c.drawBitmap(tilesWindow[i][j], -renderOfsX + TILE_SIDE
-						* (i - startX), -renderOfsY + TILE_SIDE * (j - startY),
-						new Paint());
+				tilesWindow[i][j].draw(-renderOfsX + TILE_SIDE * (i - startX),
+						-renderOfsY + TILE_SIDE * (j - startY));
+
+				// c.drawBitmap(tilesWindow[i][j], -renderOfsX + TILE_SIDE
+				// * (i - startX), -renderOfsY + TILE_SIDE * (j - startY),
+				// new Paint());
 			}
 	}
 }

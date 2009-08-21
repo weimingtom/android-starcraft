@@ -19,8 +19,6 @@ public class Map {
 
 	public int[] mapTiles;
 
-	Bitmap tile;
-
 	public Map(byte[] mapData) {
 		int p = 0;
 		while (p < mapData.length) {
@@ -82,9 +80,5 @@ public class Map {
 //		res.setPixels(pixels, 0, width, 0, 0, width, height);
 //
 //		return res;
-	}
-
-	public void draw(int x1, int y1, int x2, int y2) {
-
 	}
 }

@@ -4,6 +4,7 @@ import hotheart.starcraft.configure.BuildParameters;
 import hotheart.starcraft.core.GameContext;
 import hotheart.starcraft.core.StarcraftCore;
 import hotheart.starcraft.map.Map;
+import hotheart.starcraft.map.MapRender;
 import hotheart.starcraft.map.TileLib;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -102,7 +103,7 @@ public class SimpleView extends View {
 		// ================================================
 
 		if (mapRend != null)
-			mapRend.drawMap(canvas, ofsX, ofsY, getWidth(), getHeight());
+			mapRend.drawMap(ofsX, ofsY, getWidth(), getHeight());
 
 		// ================================================
 		// Drawing Map Paths

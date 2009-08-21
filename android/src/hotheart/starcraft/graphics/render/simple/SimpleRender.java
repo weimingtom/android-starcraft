@@ -35,6 +35,6 @@ public class SimpleRender extends Render {
 
 	@Override
 	public RenderTile createTileFromBitmap(Bitmap bitmap) {
-		return null;
+		return new SimpleTile(bitmap);
 	}
 }

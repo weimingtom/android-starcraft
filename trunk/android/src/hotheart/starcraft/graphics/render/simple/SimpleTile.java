@@ -20,4 +20,14 @@ public class SimpleTile extends RenderTile {
 		render.canvas.drawBitmap(img, x, y, imagePaint);
 	}
 
+	@Override
+	public boolean isRecycled() {
+		return img.isRecycled();
+	}
+
+	@Override
+	public void recycle() {
+		img.recycle();	
+	}
+
 }

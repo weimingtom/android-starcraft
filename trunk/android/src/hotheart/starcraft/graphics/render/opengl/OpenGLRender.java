@@ -38,7 +38,7 @@ public class OpenGLRender extends Render {
 
 	@Override
 	public RenderTile createTileFromBitmap(Bitmap bitmap) {
-		return new OpenGLTile();
+		return new OpenGLTile(bitmap);
 	}
 
 }

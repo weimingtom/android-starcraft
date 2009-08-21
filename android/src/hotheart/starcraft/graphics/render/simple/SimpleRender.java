@@ -1,11 +1,13 @@
 package hotheart.starcraft.graphics.render.simple;
 
-import android.content.Context;
-import android.graphics.Canvas;
 import hotheart.starcraft.controller.ViewController;
-import hotheart.starcraft.graphics.render.RenderImage;
 import hotheart.starcraft.graphics.render.Render;
+import hotheart.starcraft.graphics.render.RenderImage;
+import hotheart.starcraft.graphics.render.RenderTile;
 import hotheart.starcraft.graphics.render.simple.grp.GrpRenderFactory;
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 
 public class SimpleRender extends Render {
 
@@ -29,5 +31,10 @@ public class SimpleRender extends Render {
 	protected ViewController createViewController(Context c) {
 		contr = new SimpleViewController(c, this);
 		return contr;
+	}
+
+	@Override
+	public RenderTile createTileFromBitmap(Bitmap bitmap) {
+		return null;
 	}
 }

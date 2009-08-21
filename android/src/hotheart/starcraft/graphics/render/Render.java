@@ -1,12 +1,11 @@
 package hotheart.starcraft.graphics.render;
 
 import hotheart.starcraft.controller.ViewController;
-import hotheart.starcraft.files.LoFile;
 
 import java.util.TreeMap;
 
 import android.content.Context;
-import android.view.View;
+import android.graphics.Bitmap;
 
 public abstract class Render {
 
@@ -17,6 +16,8 @@ public abstract class Render {
 	private ViewController cached = null;
 
 	protected abstract ViewController createViewController(Context c);
+	
+	public abstract RenderTile createTileFromBitmap(Bitmap bitmap); 
 
 	public ViewController getController(Context c) {
 		if (cached == null)

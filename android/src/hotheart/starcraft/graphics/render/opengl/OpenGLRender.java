@@ -1,12 +1,15 @@
 package hotheart.starcraft.graphics.render.opengl;
 
-import javax.microedition.khronos.opengles.GL10;
-
-import android.content.Context;
 import hotheart.starcraft.controller.ViewController;
 import hotheart.starcraft.graphics.grp.GrpLibrary;
 import hotheart.starcraft.graphics.render.Render;
 import hotheart.starcraft.graphics.render.RenderImage;
+import hotheart.starcraft.graphics.render.RenderTile;
+
+import javax.microedition.khronos.opengles.GL10;
+
+import android.content.Context;
+import android.graphics.Bitmap;
 
 public class OpenGLRender extends Render {
 
@@ -31,6 +34,11 @@ public class OpenGLRender extends Render {
 
 	@Override
 	public void end() {
+	}
+
+	@Override
+	public RenderTile createTileFromBitmap(Bitmap bitmap) {
+		return new OpenGLTile();
 	}
 
 }

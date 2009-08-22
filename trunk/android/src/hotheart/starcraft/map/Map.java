@@ -58,27 +58,65 @@ public class Map {
 		}
 	}
 
+	public boolean isWalkable(int x, int y) {
+
+		int mapX = x / 32;
+		int mapY = y / 32;
+
+		// int[] tiles = TileLib.getTiles(mapTiles[mapX + mapY * width]);
+
+		int baseIndex = mapTiles[mapX + mapY * width];
+
+		return TileLib.haveFlagInstalled(baseIndex, x % 4, y % 4,
+				TileLib.IS_WALKABLE);
+
+		// for (int x = 0; x < map.width; x++)
+		// for (int y = 0; y < map.height; y++) {
+		//
+		// // int[] tiles = TileLib.getTiles(map.mapTiles[x + y *
+		// // map.width]);
+		//
+		// int baseIndex = map.mapTiles[x + y * map.width];
+		// for (int i = 0; i < 4; i++)
+		// for (int j = 0; j < 4; j++) {
+		// boolean walkable = TileLib.haveFlagInstalled(baseIndex,
+		// i, j, TileLib.IS_WALKABLE);
+		//
+		// int xPos = x * 4 + i;
+		// int yPos = y * 4 + j;
+		//
+		// // boolean walkable = yPos % 2 == 0;
+		//
+		// if (walkable) {
+		// mapBitmap.setPixel(xPos, yPos, WALKABLE_COLOR);
+		// } else {
+		// mapBitmap.setPixel(xPos, yPos, NON_WALKABLE_COLOR);
+		// }
+		// }
+		// }
+	}
+
 	public Bitmap generateMapPreview() {
 
 		Bitmap res = Bitmap.createBitmap(width, height, Config.RGB_565);
-		
+
 		return res;
 
-//		int[] pixels = new int[width * height];
-//
-//		for (int x = 0; x < width; x++)
-//			for (int y = 0; y < height; y++) {
-//
-//				// int[] tiles = TileLib.getTiles(map.mapTiles[x + y *
-//				// map.width]);
-//
-//				int color = TileLib.getMegaTileColor(mapTiles[x + y * width]);
-//
-//				pixels[x + y * width] = color;
-//			}
-//
-//		res.setPixels(pixels, 0, width, 0, 0, width, height);
-//
-//		return res;
+		// int[] pixels = new int[width * height];
+		//
+		// for (int x = 0; x < width; x++)
+		// for (int y = 0; y < height; y++) {
+		//
+		// // int[] tiles = TileLib.getTiles(map.mapTiles[x + y *
+		// // map.width]);
+		//
+		// int color = TileLib.getMegaTileColor(mapTiles[x + y * width]);
+		//
+		// pixels[x + y * width] = color;
+		// }
+		//
+		// res.setPixels(pixels, 0, width, 0, 0, width, height);
+		//
+		// return res;
 	}
 }

@@ -25,7 +25,6 @@ import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 
 public final class GameActivity extends Activity {
-	ViewController controller;
 	ColorMatrixColorFilter activeFilter;
 	ColorMatrixColorFilter unactiveFilter;
 
@@ -81,7 +80,7 @@ public final class GameActivity extends Activity {
 					public void run() {
 						if (result) {
 
-							controller = createContentView();
+							StarcraftCore.viewController = createContentView();
 							// view = (SimpleView) findViewById(R.id.GameView);
 							// view.setMap(initializer.map);
 
@@ -95,17 +94,17 @@ public final class GameActivity extends Activity {
 							//
 							final ImageButton move = (ImageButton) findViewById(R.id.moveButton);
 
-							if (controller.isMapScroll())
+							if (StarcraftCore.viewController.isMapScroll())
 								move.setColorFilter(activeFilter);
 							else
 								move.setColorFilter(unactiveFilter);
 
 							move.setOnClickListener(new OnClickListener() {
 								public void onClick(View v) {
-									controller.setMapScrollingState(!controller
+									StarcraftCore.viewController.setMapScrollingState(!StarcraftCore.viewController
 											.isMapScroll());
 
-									if (controller.isMapScroll())
+									if (StarcraftCore.viewController.isMapScroll())
 										move.setColorFilter(activeFilter);
 									else
 										move.setColorFilter(unactiveFilter);

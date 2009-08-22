@@ -12,6 +12,7 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Paint.Style;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.view.View;
 
 public class MapPreview extends View {
@@ -47,6 +48,14 @@ public class MapPreview extends View {
 		vertOfs = (SIDE - (int) (image.getHeight() * resize)) >> 1;
 	}
 
+	public boolean onTouchEvent(MotionEvent event) {
+		int x = (int) (event.getX()/resize)*32;
+		int y = (int) (event.getY()/resize)*32;
+		
+		StarcraftCore.viewController.setPosXY(x,y);
+		return true;
+	}
+
 	@Override
 	protected void onDraw(Canvas canvas) {
 
@@ -67,7 +76,7 @@ public class MapPreview extends View {
 		Paint unitPaint = new Paint();
 		for (Unit u : StarcraftCore.context.units) {
 			int color = Color.GRAY;
-			
+
 			switch (u.foregroundColor) {
 			case TeamColors.COLOR_GREEN:
 				color = Color.GREEN;
@@ -79,13 +88,13 @@ public class MapPreview extends View {
 				color = Color.RED;
 				break;
 			}
-			
-			int x = u.getPosX()/32;
-			int y = u.getPosY()/32; 
-			
+
+			int x = u.getPosX() / 32;
+			int y = u.getPosY() / 32;
+
 			unitPaint.setColor(color);
-			
-			canvas.drawPoint(x*resize, y*resize, unitPaint);
+
+			canvas.drawPoint(x * resize, y * resize, unitPaint);
 		}
 
 		// Selected region
@@ -99,7 +108,7 @@ public class MapPreview extends View {
 		p.setStyle(Style.STROKE);
 
 		canvas.drawRect(rect, p);
-		
+
 		invalidate();
 	}
 }

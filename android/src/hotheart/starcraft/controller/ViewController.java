@@ -36,6 +36,9 @@ public abstract class ViewController implements View.OnTouchListener {
 	}
 
 	public void setPosXY(int x, int y) {
+		mx = x;
+		my = y;
+		
 		_setPosXY(x, y);
 
 		if (previewView != null)

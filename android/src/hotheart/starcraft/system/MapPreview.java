@@ -30,11 +30,6 @@ public class MapPreview extends View {
 		super(context, attrs);
 	}
 
-	public void setSelectionPos(int x, int y) {
-		selX = x;
-		selY = y;
-	}
-
 	public void setBitmap(Bitmap img) {
 		image = img;
 
@@ -49,15 +44,20 @@ public class MapPreview extends View {
 	}
 
 	public boolean onTouchEvent(MotionEvent event) {
-		int x = (int) (event.getX()/resize)*32;
-		int y = (int) (event.getY()/resize)*32;
-		
-		StarcraftCore.viewController.setPosXY(x,y);
+		int x = (int) (event.getX() / resize) * 32;
+		int y = (int) (event.getY() / resize) * 32;
+
+		StarcraftCore.viewController.setPosXY(x, y);
 		return true;
 	}
 
 	@Override
 	protected void onDraw(Canvas canvas) {
+
+		if (StarcraftCore.viewController != null) {
+			selX = StarcraftCore.viewController.getX() / 32;
+			selY = StarcraftCore.viewController.getY() / 32;
+		}
 
 		// Map Image
 

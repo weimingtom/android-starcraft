@@ -9,6 +9,7 @@ import hotheart.starcraft.graphics.TeamColors;
 import hotheart.starcraft.graphics.grp.GrpLibrary;
 import hotheart.starcraft.graphics.render.Render;
 import hotheart.starcraft.graphics.render.opengl.OpenGLRender;
+import hotheart.starcraft.graphics.render.simple.SimpleRender;
 import hotheart.starcraft.graphics.script.ImageScriptEngine;
 import hotheart.starcraft.graphics.utils.SelectionCircles;
 import hotheart.starcraft.map.Map;
@@ -66,8 +67,8 @@ public class StarcraftCore {
 			context = new GameContext();
 			gameController = new GameController();
 			
-			render = new OpenGLRender();
-			//render = new SimpleRender();
+			//render = new OpenGLRender();
+			render = new SimpleRender();
 
 			FileInputStream fs = null;
 
@@ -113,7 +114,7 @@ public class StarcraftCore {
 			// 66 * 32);
 
 			context.addUnit(Unit.getUnit(0, TeamColors.COLOR_GREEN), 66 * 32,
-					62 * 32);
+					55 * 32);
 
 			// for (int i = 0; i < 5; i++) {
 			// context.addUnit(Unit.getUnit(0, TeamColors.COLOR_GREEN),

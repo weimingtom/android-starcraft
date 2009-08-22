@@ -41,8 +41,8 @@ public abstract class ViewController implements View.OnTouchListener {
 		
 		_setPosXY(x, y);
 
-		if (previewView != null)
-			previewView.setSelectionPos(x / 32, y / 32);
+//		if (previewView != null)
+//			previewView.setSelectionPos(x / 32, y / 32);
 	}
 
 	public int getX() {

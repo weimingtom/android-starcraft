@@ -67,7 +67,7 @@ public class Map {
 
 		int baseIndex = mapTiles[mapX + mapY * width];
 
-		return TileLib.haveFlagInstalled(baseIndex, x % 4, y % 4,
+		return TileLib.haveFlagInstalled(baseIndex, (x/8) % 4, (y/8) % 4,
 				TileLib.IS_WALKABLE);
 
 		// for (int x = 0; x < map.width; x++)

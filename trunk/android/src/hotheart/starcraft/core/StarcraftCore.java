@@ -2,13 +2,13 @@ package hotheart.starcraft.core;
 
 import hotheart.starcraft.configure.FilePaths;
 import hotheart.starcraft.controller.GameController;
+import hotheart.starcraft.controller.ViewController;
 import hotheart.starcraft.graphics.Image;
 import hotheart.starcraft.graphics.Sprite;
 import hotheart.starcraft.graphics.TeamColors;
 import hotheart.starcraft.graphics.grp.GrpLibrary;
 import hotheart.starcraft.graphics.render.Render;
 import hotheart.starcraft.graphics.render.opengl.OpenGLRender;
-import hotheart.starcraft.graphics.render.simple.SimpleRender;
 import hotheart.starcraft.graphics.script.ImageScriptEngine;
 import hotheart.starcraft.graphics.utils.SelectionCircles;
 import hotheart.starcraft.map.Map;
@@ -28,6 +28,7 @@ public class StarcraftCore {
 	public static Render render;
 	public static GameContext context;
 	public static GameController gameController;
+	public static ViewController viewController;
 
 	public static String state = "";
 

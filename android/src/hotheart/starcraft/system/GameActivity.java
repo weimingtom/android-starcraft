@@ -6,6 +6,7 @@ import hotheart.starcraft.core.StarcraftCore;
 import hotheart.starcraft.graphics.render.Render;
 import hotheart.starcraft.graphics.render.simple.SimpleRender;
 import hotheart.starcraft.graphics.render.simple.SimpleView;
+import hotheart.starcraft.units.Unit;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -33,10 +34,10 @@ public final class GameActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 		setTheme(android.R.style.Theme_Black_NoTitleBar_Fullscreen);
-		
-		requestWindowFeature(Window.FEATURE_NO_TITLE); 
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, 
-                WindowManager.LayoutParams.FLAG_FULLSCREEN); 
+
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+				WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		init();
 	}
 
@@ -46,11 +47,11 @@ public final class GameActivity extends Activity {
 		RelativeLayout rl = new RelativeLayout(this);
 		rl.addView(cont.getView());
 		View gui = LayoutInflater.from(this).inflate(R.layout.gameui, null);
-		
-		MapPreview prev = (MapPreview)gui.findViewById(R.id.mapPreview);
+
+		MapPreview prev = (MapPreview) gui.findViewById(R.id.mapPreview);
 		prev.setBitmap(GameContext.map.generateMapPreview());
 		cont.setMapPreview(prev);
-//		gui.setVisibility(View.INVISIBLE);
+		// gui.setVisibility(View.INVISIBLE);
 		rl.addView(gui);
 		setContentView(rl);
 
@@ -101,37 +102,33 @@ public final class GameActivity extends Activity {
 
 							move.setOnClickListener(new OnClickListener() {
 								public void onClick(View v) {
-									StarcraftCore.viewController.setMapScrollingState(!StarcraftCore.viewController
-											.isMapScroll());
+									StarcraftCore.viewController
+											.setMapScrollingState(!StarcraftCore.viewController
+													.isMapScroll());
 
-									if (StarcraftCore.viewController.isMapScroll())
+									if (StarcraftCore.viewController
+											.isMapScroll())
 										move.setColorFilter(activeFilter);
 									else
 										move.setColorFilter(unactiveFilter);
 								}
 							});
 							//
-							// final ImageButton fixSelection = (ImageButton)
-							// findViewById(R.id.fixButton);
-							//
-							// if (view.fixed)
-							// fixSelection.setColorFilter(activeFilter);
-							// else
-							// fixSelection.setColorFilter(unactiveFilter);
-							//
-							// fixSelection
-							// .setOnClickListener(new OnClickListener() {
-							// public void onClick(View v) {
-							// view.fixed = !view.fixed;
-							//
-							// if (view.fixed)
-							// fixSelection
-							// .setColorFilter(activeFilter);
-							// else
-							// fixSelection
-							// .setColorFilter(unactiveFilter);
-							// }
-							// });
+							final ImageButton fixSelection = (ImageButton) findViewById(R.id.fixButton);
+
+							fixSelection
+									.setOnClickListener(new OnClickListener() {
+										public void onClick(View v) {
+											// for(Unit u:
+											// StarcraftCore.context.units)
+											// {
+											// if (u.selected)
+											// {
+											// u.play(15);
+											// }
+											// }
+										}
+									});
 							//
 							// final ImageButton attack = (ImageButton)
 							// findViewById(R.id.attackButton);

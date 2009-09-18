@@ -1,5 +1,8 @@
 package hotheart.starcraft.graphics.render.simple;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+
 import hotheart.starcraft.configure.BuildParameters;
 import hotheart.starcraft.core.GameContext;
 import hotheart.starcraft.core.StarcraftCore;
@@ -12,6 +15,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.graphics.Bitmap.CompressFormat;
 import android.graphics.Bitmap.Config;
 import android.view.View;
 
@@ -49,13 +53,18 @@ public class SimpleView extends View {
 		generateMapBitmap();
 	}
 
-	private static final int WALKABLE_COLOR = Color.rgb(155, 248, 31);
-	private static final int NON_WALKABLE_COLOR = Color.rgb(249, 112, 30);
+	//private static final int WALKABLE_COLOR = Color.rgb(155, 248, 31);
+	//private static final int NON_WALKABLE_COLOR = Color.rgb(249, 112, 30);
+	
+	private static final int WALKABLE_COLOR = Color.GREEN;
+	private static final int NON_WALKABLE_COLOR = Color.RED;
 
 	void generateMapBitmap() {
 
 		mapBitmap = Bitmap.createBitmap(map.width * 4, map.height * 4,
 				Config.RGB_565);
+		
+		int[] colors = new int[map.width * 4 * map.height * 4];
 
 		for (int x = 0; x < map.width; x++)
 			for (int y = 0; y < map.height; y++) {
@@ -74,13 +83,27 @@ public class SimpleView extends View {
 
 						// boolean walkable = yPos % 2 == 0;
 
+						int color = Color.BLACK;
 						if (walkable) {
-							mapBitmap.setPixel(xPos, yPos, WALKABLE_COLOR);
+							color = WALKABLE_COLOR;
+							//mapBitmap.setPixel(xPos, yPos, WALKABLE_COLOR);
 						} else {
-							mapBitmap.setPixel(xPos, yPos, NON_WALKABLE_COLOR);
+							color = NON_WALKABLE_COLOR;
+							//mapBitmap.setPixel(xPos, yPos, NON_WALKABLE_COLOR);
 						}
+						
+						colors[xPos + yPos*mapBitmap.getWidth()] = color;
 					}
 			}
+		mapBitmap.setPixels(colors, 0, mapBitmap.getWidth(), 0, 0, mapBitmap.getWidth(), mapBitmap.getHeight());
+		
+		try {
+			FileOutputStream fis = new FileOutputStream("/sdcard/map.png");
+			mapBitmap.compress(CompressFormat.PNG, 90, fis);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+//		mapBitmap.c
 	}
 
 	@Override

@@ -77,6 +77,16 @@ public final class Unit extends Flingy {
 		res.health = health;
 		res.maxHealth = health;
 		res.elevationLevel = elevationLevel;
+		
+		if (elevationLevel>=12)
+		{
+			res.isAir = true;
+		}
+		else
+		{
+			res.isAir = false;
+		}
+		
 		if (id < 106) {
 			res.YesSoundStart = yesSound1;
 			res.YesSoundEnd = yesSound2;

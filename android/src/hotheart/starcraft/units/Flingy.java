@@ -60,6 +60,7 @@ public class Flingy extends Sprite {
 		this.action = src.action;
 		this.destX = src.destX;
 		this.destY = src.destY;
+		this.isAir = src.isAir;
 	}
 
 	private Flingy(Sprite src) {
@@ -78,6 +79,7 @@ public class Flingy extends Sprite {
 	public int haltDistantion;
 	public int turnRadius;
 	public int moveControl;
+	public boolean isAir = true;
 
 	private int currentAttack = ATTACK_GRND;
 
@@ -93,16 +95,26 @@ public class Flingy extends Sprite {
 		final float dy = (float) Math
 				.sin(((imageState.angle - 90) / 180.0f) * 3.1415f)
 				* d;
-
-		if (StarcraftCore.context.map.isWalkable(posX + (int) dx, posY
-				+ (int) dy)) {
+		
+		if (isAir)
+		{
 			posX += dx;
 			posY += dy;
 		}
 		else
 		{
-			stop();
+			if (StarcraftCore.context.map.isWalkable(posX + (int) dx, posY
+					+ (int) dy)) {
+				posX += dx;
+				posY += dy;
+			}
+			else
+			{
+				stop();
+			}
 		}
+
+		
 		
 
 	}

@@ -150,7 +150,12 @@ public class StarcraftCore {
 
 			GameContext.map = new Map(FileSystemUtils
 					.readAllBytes(FilePaths.SCENARIO_CHK));
-
+			
+			showMessage("Generating map preview");
+			
+			GameContext.map.generateMapPreview(); 
+			
+			
 			hideProgress();
 
 			return true;

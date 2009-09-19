@@ -52,9 +52,25 @@ public final class GameActivity extends Activity {
 		MapPreview prev = (MapPreview) gui.findViewById(R.id.mapPreview);
 		prev.setBitmap(GameContext.map.generateMapPreview());
 		cont.setMapPreview(prev);
+		
+		ImageButton b11 = (ImageButton) gui.findViewById(R.id.b11);
+		ImageButton b21 = (ImageButton) gui.findViewById(R.id.b21);
+		ImageButton b31 = (ImageButton) gui.findViewById(R.id.b31);
+		
+		ImageButton b12 = (ImageButton) gui.findViewById(R.id.b12);
+		ImageButton b22 = (ImageButton) gui.findViewById(R.id.b22);
+		ImageButton b32 = (ImageButton) gui.findViewById(R.id.b32);
+		
+		ImageButton b13 = (ImageButton) gui.findViewById(R.id.b13);
+		ImageButton b23 = (ImageButton) gui.findViewById(R.id.b23);
+		ImageButton b33 = (ImageButton) gui.findViewById(R.id.b33);
+		
+		cont.setControlButtons(b11, b21, b31, b12, b22, b32, b13, b23, b33);
+		
 		// gui.setVisibility(View.INVISIBLE);
 		rl.addView(gui);
 		setContentView(rl);
+		
 
 		return cont;
 	}
@@ -115,36 +131,8 @@ public final class GameActivity extends Activity {
 								}
 							});
 							
-							ImageButton btn;
-							
-							btn = (ImageButton) findViewById(R.id.b11);
-							btn.setImageBitmap(IconFactory.getIcon(1));
-							
-							btn = (ImageButton) findViewById(R.id.b21);
-							btn.setImageBitmap(IconFactory.getIcon(2));
-							
-							btn = (ImageButton) findViewById(R.id.b31);
-							btn.setImageBitmap(IconFactory.getIcon(3));
-							
-							btn = (ImageButton) findViewById(R.id.b12);
-							btn.setImageBitmap(IconFactory.getIcon(4));
-							
-							btn = (ImageButton) findViewById(R.id.b22);
-							btn.setImageBitmap(IconFactory.getIcon(5));
-							
-							btn = (ImageButton) findViewById(R.id.b32);
-							btn.setImageBitmap(IconFactory.getIcon(6));
-							
-							btn = (ImageButton) findViewById(R.id.b13);
-							btn.setImageBitmap(IconFactory.getIcon(7));
-							
-							btn = (ImageButton) findViewById(R.id.b23);
-							btn.setImageBitmap(IconFactory.getIcon(8));
-							
-							btn = (ImageButton) findViewById(R.id.b33);
-							btn.setImageBitmap(IconFactory.getIcon(9));
-							
-							
+							for(int i = 0; i<9 ; i++)
+								StarcraftCore.viewController.setControlIcon(i, i+15);
 							
 							//
 							// final ImageButton attack = (ImageButton)

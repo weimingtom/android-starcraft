@@ -26,7 +26,11 @@ public class TileLib {
 	public static byte[] CV5; // Descriptions of sprites
 	public static byte[] VR4; // Tiles(8x8)
 	public static int[] tileFlags; // Tiles(8x8)
+
 	public static int[] VX4Indexes; // Mega-tiles(32x32)
+	
+	private static int[] megaTileColors = new int[256];
+	private static boolean[] megaTileColorsCalced = new boolean[256];
 
 	// public static Bitmap[] miniTiles; // Tiles(8x8)
 
@@ -128,6 +132,9 @@ public class TileLib {
 			VX4Indexes[i] = (VX4[i * 2] & 0xFF)
 					+ ((VX4[i * 2 + 1] & 0xFF) << 8);
 		}
+		
+		for(int i = 0; i < megaTileColorsCalced.length; i++)
+			megaTileColorsCalced[i] = false;
 	}
 
 	// it's works
@@ -148,6 +155,29 @@ public class TileLib {
 				VX4Indexes[index++], VX4Indexes[index++], VX4Indexes[index++],
 				VX4Indexes[index++], VX4Indexes[index++] };
 	}
+	
+	public static final int getMegaTileColor2(int id) {
+		// Last 3 half-bytes is id
+		int cv5id = (id >> 4);
+		// first half-byte is subid
+		int cv5SubId = (id & 0x000F);
+		//
+		// // Calc index in VX4 file
+		// int vx4Id = (CV5[cv5id * 52 + 20 + cv5SubId * 2] & 0xFF)
+		// + ((CV5[cv5id * 52 + 20 + cv5SubId * 2 + 1] & 0xFF) << 8);
+		//
+		// return getTilesColor(vx4Id);
+		
+		int cid = CV5[cv5id * 52] & 0xFF;
+		
+		if (!megaTileColorsCalced[cid])
+		{
+			megaTileColors[cid] = getMegaTileColor(id);
+			megaTileColorsCalced[cid] = true;
+		}
+		return megaTileColors[cid];
+		//return palette[CV5[cv5id * 52] & 0xFF];
+	}
 
 	public static final int getMegaTileColor(int id) {
 		// Last 3 half-bytes is id
@@ -163,59 +193,56 @@ public class TileLib {
 	}
 
 	private static final int getTilesColor(int vx4Id) {
-		
+
 		int R = 0;
 		int G = 0;
 		int B = 0;
-		
+
 		int index = vx4Id * 16;
-		
-		for(int i = 0; i<16; i++)
-		{
+
+		for (int i = 0; i < 16; i++) {
 			int col = getMiniTilesColor(VX4Indexes[index++]);
-			
-			R += Color.red(col);
-			G += Color.green(col);
-			B += Color.blue(col);
+
+			R += (col >> 16) & 0xFF;
+			G += (col >> 8) & 0xFF;
+			B += col & 0xFF;
 		}
-		
-		R = R/16;
-		G = G/16;
-		B = B/16;
-		
+
+		R = R >> 4;
+		G = G >> 4;
+		B = B >> 4;
+
 		return Color.rgb(R, G, B);
 	}
 
-	private static final int getMiniTilesColor(int id) {
-		
+	private static final int getMiniTilesColor(int miniTileId) {
+
 		int R = 0;
 		int G = 0;
 		int B = 0;
-		
+
 		// Readl id by shift the flipped flag
-		id = id >> 1;
+		miniTileId = miniTileId >> 1;
 
 		// Offset in file
-		int offset = id << 6;
+		int offset = miniTileId << 6;
 
 		// For each of 64 pixel
 		for (int rowIndex = 0; rowIndex < 8; rowIndex++)
 			for (int colIndex = 0; colIndex < 8; colIndex++) {
 				// Offset in file for pixel from first
 				int pixelOffset = rowIndex * 8 + colIndex;
-				
-				int col = palette[VR4[offset + pixelOffset] & 0xFF];
-				
-				
 
-				R += Color.red(col);
-				G += Color.green(col);
-				B += Color.blue(col);
+				int col = palette[VR4[offset + pixelOffset] & 0xFF];
+
+				R += (col >> 16) & 0xFF;
+				G += (col >> 8) & 0xFF;
+				B += col & 0xFF;
 			}
-		
-		R = R/64;
-		G = G/64;
-		B = B/64;
+
+		R = R >> 6;
+		G = G >> 6;
+		B = B >> 6;
 		return Color.rgb(R, G, B);
 	}
 

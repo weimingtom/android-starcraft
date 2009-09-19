@@ -67,7 +67,7 @@ public class Map {
 
 		int baseIndex = mapTiles[mapX + mapY * width];
 
-		return TileLib.haveFlagInstalled(baseIndex, (x/8) % 4, (y/8) % 4,
+		return TileLib.haveFlagInstalled(baseIndex, (x / 8) % 4, (y / 8) % 4,
 				TileLib.IS_WALKABLE);
 
 		// for (int x = 0; x < map.width; x++)
@@ -96,27 +96,33 @@ public class Map {
 		// }
 	}
 
+	Bitmap mapPreview = null;
+
 	public Bitmap generateMapPreview() {
 
-		Bitmap res = Bitmap.createBitmap(width, height, Config.RGB_565);
+		if (mapPreview == null) {
+			Bitmap res = Bitmap.createBitmap(width, height, Config.RGB_565);
 
-		return res;
+			// return res;
 
-		// int[] pixels = new int[width * height];
-		//
-		// for (int x = 0; x < width; x++)
-		// for (int y = 0; y < height; y++) {
-		//
-		// // int[] tiles = TileLib.getTiles(map.mapTiles[x + y *
-		// // map.width]);
-		//
-		// int color = TileLib.getMegaTileColor(mapTiles[x + y * width]);
-		//
-		// pixels[x + y * width] = color;
-		// }
-		//
-		// res.setPixels(pixels, 0, width, 0, 0, width, height);
-		//
-		// return res;
+			int[] pixels = new int[width * height];
+
+			for (int x = 0; x < width; x++)
+				for (int y = 0; y < height; y++) {
+
+					// int[] tiles = TileLib.getTiles(map.mapTiles[x + y *
+					// map.width]);
+
+					int color = TileLib.getMegaTileColor2(mapTiles[x + y
+							* width]);
+
+					pixels[x + y * width] = color;
+				}
+
+			res.setPixels(pixels, 0, width, 0, 0, width, height);
+
+			mapPreview = res;
+		}
+		return mapPreview;
 	}
 }

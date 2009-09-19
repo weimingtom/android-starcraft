@@ -13,6 +13,7 @@ import hotheart.starcraft.graphics.render.simple.SimpleRender;
 import hotheart.starcraft.graphics.script.ImageScriptEngine;
 import hotheart.starcraft.graphics.utils.SelectionCircles;
 import hotheart.starcraft.map.Map;
+import hotheart.starcraft.orders.Order;
 import hotheart.starcraft.sounds.StarcraftSoundPool;
 import hotheart.starcraft.units.Flingy;
 import hotheart.starcraft.units.Unit;
@@ -95,6 +96,11 @@ public class StarcraftCore {
 			fs = new FileInputStream(FilePaths.SPRITES_DAT);
 			Sprite.initSprites(fs);
 			fs.close();
+			
+			showMessage("Init Orders");
+			fs = new FileInputStream(FilePaths.ORDERS_DAT);
+			Order.initOrders(fs);
+			fs.close();
 
 			showMessage("Init Flingy");
 			Flingy.init(FileSystemUtils.readAllBytes(FilePaths.FLINGY_DAT));
@@ -102,6 +108,7 @@ public class StarcraftCore {
 			Unit.init(FileSystemUtils.readAllBytes(FilePaths.UNITS_DAT));
 			showMessage("Init Weapons");
 			Weapon.init(FileSystemUtils.readAllBytes(FilePaths.WEAPONS_DAT));
+			
 
 			SelectionCircles.initCircles();
 
@@ -115,6 +122,12 @@ public class StarcraftCore {
 
 			context.addUnit(Unit.getUnit(0, TeamColors.COLOR_GREEN), 66 * 32,
 					55 * 32);
+//			
+//			context.addUnit(Unit.getUnit(1, TeamColors.COLOR_GREEN), 66 * 32,
+//					55 * 32);
+//			
+//			context.addUnit(Unit.getUnit(1, TeamColors.COLOR_GREEN), 66 * 32,
+//					55 * 32);
 
 			// for (int i = 0; i < 5; i++) {
 			// context.addUnit(Unit.getUnit(0, TeamColors.COLOR_GREEN),

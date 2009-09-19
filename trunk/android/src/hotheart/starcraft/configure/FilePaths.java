@@ -21,6 +21,7 @@ public class FilePaths {
 	public static final String IMAGES_TBL = ARR_FOLDER + "images.tbl";
 	public static final String IMAGES_DAT = ARR_FOLDER + "images.dat";
 	public static final String SPRITES_DAT = ARR_FOLDER + "sprites.dat";
+	public static final String ORDERS_DAT = ARR_FOLDER + "orders.dat";
 	public static final String FLINGY_DAT = ARR_FOLDER + "flingy.dat";
 	public static final String UNITS_DAT = ARR_FOLDER + "units.dat";
 	public static final String WEAPONS_DAT = ARR_FOLDER + "weapons.dat";
@@ -51,10 +52,18 @@ public class FilePaths {
 	public static final String PALETTE_FOLDER = GAME_FOLDER + "palette/";
 
 	public static final String DEFAULT_PAL = PALETTE_FOLDER + "units.pal";
+	
+	public static final String ICONS_PAL = PALETTE_FOLDER + "icons.pal";
 	public static final String ORANGE_FIRE_PAL = PALETTE_FOLDER + "ofire.pal";
 	public static final String BLUE_FIRE_PAL = PALETTE_FOLDER + "blue.pal";
 	public static final String GREEN_FIRE_PAL = PALETTE_FOLDER + "gfire.pal";
 	public static final String BLUE_EXP_PAL = PALETTE_FOLDER + "bexpl.pal";
+	
+	/*
+	 * Icon GRP file
+	 */
+	
+	public static final String ICON_GRP_FILE = GAME_FOLDER + "unit/cmdbtns/cmdicons.grp";
 
 	/*
 	 * Scenario file path

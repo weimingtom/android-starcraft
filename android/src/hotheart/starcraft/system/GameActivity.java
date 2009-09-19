@@ -114,22 +114,6 @@ public final class GameActivity extends Activity {
 								}
 							});
 							//
-							final ImageButton fixSelection = (ImageButton) findViewById(R.id.fixButton);
-
-							fixSelection
-									.setOnClickListener(new OnClickListener() {
-										public void onClick(View v) {
-											// for(Unit u:
-											// StarcraftCore.context.units)
-											// {
-											// if (u.selected)
-											// {
-											// u.play(15);
-											// }
-											// }
-										}
-									});
-							//
 							// final ImageButton attack = (ImageButton)
 							// findViewById(R.id.attackButton);
 							//

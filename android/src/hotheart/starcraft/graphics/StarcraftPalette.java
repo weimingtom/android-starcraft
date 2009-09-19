@@ -16,6 +16,8 @@ public class StarcraftPalette {
 
 	// Default palette
 	public static int[] normalPalette;
+	
+	public static int[] iconPalette;
 
 	public static int[] blendedPalette;
 
@@ -65,6 +67,33 @@ public class StarcraftPalette {
 		return res;
 	}
 
+	private final static void initIconPalette()
+	{
+		// We can't use loadEffectPaletteFromFile func because of here is 3-byte
+		// RGB color, but loadEffectPaletteFromFile used for 4-byte ARGB
+		// palettes
+		if (iconPalette == null)
+			try {
+				FileInputStream is = new FileInputStream(FilePaths.ICONS_PAL);
+				byte[] tmp = new byte[is.available()];
+				is.read(tmp);
+				is.close();
+
+				iconPalette = new int[256];
+				for (int i = 0; i < 256; i++) {
+					iconPalette[i] = (255 << 24) + (tmp[i * 3] << 16)
+							+ (tmp[i * 3 + 1] << 8) + tmp[i * 3 + 2];
+				}
+				
+				iconPalette[0] = 0;
+				
+			} catch (FileNotFoundException e1) {
+				e1.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+	}
+	
 	private final static void initDefPalette() {
 
 		// We can't use loadEffectPaletteFromFile func because of here is 3-byte
@@ -175,6 +204,7 @@ public class StarcraftPalette {
 		initShadowPalette();
 		initSelectionPalette();
 		initEffectPalette();
+		initIconPalette();
 	}
 
 	public final static int[] getImagePalette(int graphicsFunction,

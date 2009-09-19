@@ -38,8 +38,8 @@ public class GrpLibrary {
 		return FilePaths.UNITS_FOLDER + getFileName(id).replace('\\', '/');
 	}
 
-	private final static byte[] readWholeImage(int id) {
-		return FileSystemUtils.readAllBytes(getAbsoluteFileName(id));
+	private final static byte[] readWholeImage(String fileName) {
+		return FileSystemUtils.readAllBytes(fileName);
 	}
 
 //	public final static LoFile getLoData(int id) {
@@ -53,7 +53,11 @@ public class GrpLibrary {
 //	}
 
 	public final static GrpFile getGraphics(int id) {
-		return new GrpFile(readWholeImage(id));
+		return new GrpFile(readWholeImage(getAbsoluteFileName(id)));
+	}
+	
+	public final static GrpFile getGraphics(String path) {
+		return new GrpFile(readWholeImage(path));
 	}
 
 }

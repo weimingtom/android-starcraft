@@ -10,7 +10,7 @@
 
 	<ImageButton android:id="@+id/b11" android:layout_width="27px"
 		android:layout_height="27px" android:src="@drawable/btn_test"
-		android:clickable="true" android:layout_x="380px" android:layout_y="228px" />
+		android:clickable="true" android:layout_x="380px" android:layout_y="228px"/>
 		
 	<ImageButton android:id="@+id/b21" android:layout_width="27px"
 		android:layout_height="27px" android:src="@drawable/btn_test"
@@ -34,15 +34,15 @@
 		android:clickable="true" android:layout_x="449px" android:layout_y="258px" />
 		
 	
-	<ImageButton android:id="@+id/b12" android:layout_width="27px"
+	<ImageButton android:id="@+id/b13" android:layout_width="27px"
 		android:layout_height="27px" android:src="@drawable/btn_test"
 		android:clickable="true" android:layout_x="380px" android:layout_y="289px" />
 		
-	<ImageButton android:id="@+id/b22" android:layout_width="27px"
+	<ImageButton android:id="@+id/b23" android:layout_width="27px"
 		android:layout_height="27px" android:src="@drawable/btn_test"
 		android:clickable="true" android:layout_x="414px" android:layout_y="289px" />
 		
-	<ImageButton android:id="@+id/b32" android:layout_width="27px"
+	<ImageButton android:id="@+id/b33" android:layout_width="27px"
 		android:layout_height="27px" android:src="@drawable/btn_test"
 		android:clickable="true" android:layout_x="449px" android:layout_y="289px" />
 

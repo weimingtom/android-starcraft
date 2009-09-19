@@ -3,6 +3,7 @@ package hotheart.starcraft.system;
 import hotheart.starcraft.controller.ViewController;
 import hotheart.starcraft.core.GameContext;
 import hotheart.starcraft.core.StarcraftCore;
+import hotheart.starcraft.graphics.IconFactory;
 import hotheart.starcraft.graphics.render.Render;
 import hotheart.starcraft.graphics.render.simple.SimpleRender;
 import hotheart.starcraft.graphics.render.simple.SimpleView;
@@ -113,6 +114,38 @@ public final class GameActivity extends Activity {
 										move.setColorFilter(unactiveFilter);
 								}
 							});
+							
+							ImageButton btn;
+							
+							btn = (ImageButton) findViewById(R.id.b11);
+							btn.setImageBitmap(IconFactory.getIcon(1));
+							
+							btn = (ImageButton) findViewById(R.id.b21);
+							btn.setImageBitmap(IconFactory.getIcon(2));
+							
+							btn = (ImageButton) findViewById(R.id.b31);
+							btn.setImageBitmap(IconFactory.getIcon(3));
+							
+							btn = (ImageButton) findViewById(R.id.b12);
+							btn.setImageBitmap(IconFactory.getIcon(4));
+							
+							btn = (ImageButton) findViewById(R.id.b22);
+							btn.setImageBitmap(IconFactory.getIcon(5));
+							
+							btn = (ImageButton) findViewById(R.id.b32);
+							btn.setImageBitmap(IconFactory.getIcon(6));
+							
+							btn = (ImageButton) findViewById(R.id.b13);
+							btn.setImageBitmap(IconFactory.getIcon(7));
+							
+							btn = (ImageButton) findViewById(R.id.b23);
+							btn.setImageBitmap(IconFactory.getIcon(8));
+							
+							btn = (ImageButton) findViewById(R.id.b33);
+							btn.setImageBitmap(IconFactory.getIcon(9));
+							
+							
+							
 							//
 							// final ImageButton attack = (ImageButton)
 							// findViewById(R.id.attackButton);

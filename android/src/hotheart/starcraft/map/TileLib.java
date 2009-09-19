@@ -29,8 +29,8 @@ public class TileLib {
 
 	public static int[] VX4Indexes; // Mega-tiles(32x32)
 	
-	private static int[] megaTileColors = new int[256];
-	private static boolean[] megaTileColorsCalced = new boolean[256];
+	private static int[] megaTileColors_HACK = new int[256];
+	private static boolean[] megaTileColorsCalced_HACK = new boolean[256];
 
 	// public static Bitmap[] miniTiles; // Tiles(8x8)
 
@@ -133,8 +133,8 @@ public class TileLib {
 					+ ((VX4[i * 2 + 1] & 0xFF) << 8);
 		}
 		
-		for(int i = 0; i < megaTileColorsCalced.length; i++)
-			megaTileColorsCalced[i] = false;
+		for(int i = 0; i < megaTileColorsCalced_HACK.length; i++)
+			megaTileColorsCalced_HACK[i] = false;
 	}
 
 	// it's works
@@ -156,7 +156,7 @@ public class TileLib {
 				VX4Indexes[index++], VX4Indexes[index++] };
 	}
 	
-	public static final int getMegaTileColor2(int id) {
+	public static final int getMegaTileColor_HACK(int id) {
 		// Last 3 half-bytes is id
 		int cv5id = (id >> 4);
 		// first half-byte is subid
@@ -170,12 +170,12 @@ public class TileLib {
 		
 		int cid = CV5[cv5id * 52] & 0xFF;
 		
-		if (!megaTileColorsCalced[cid])
+		if (!megaTileColorsCalced_HACK[cid])
 		{
-			megaTileColors[cid] = getMegaTileColor(id);
-			megaTileColorsCalced[cid] = true;
+			megaTileColors_HACK[cid] = getMegaTileColor(id);
+			megaTileColorsCalced_HACK[cid] = true;
 		}
-		return megaTileColors[cid];
+		return megaTileColors_HACK[cid];
 		//return palette[CV5[cv5id * 52] & 0xFF];
 	}
 

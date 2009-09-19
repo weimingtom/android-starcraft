@@ -113,7 +113,7 @@ public class Map {
 					// int[] tiles = TileLib.getTiles(map.mapTiles[x + y *
 					// map.width]);
 
-					int color = TileLib.getMegaTileColor2(mapTiles[x + y
+					int color = TileLib.getMegaTileColor_HACK(mapTiles[x + y
 							* width]);
 
 					pixels[x + y * width] = color;

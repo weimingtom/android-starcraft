@@ -188,12 +188,20 @@ public final class GameContext {
 		render.end();
 	}
 
-	public void moveSelection(int x, int y)
+	public void moveSelected(int x, int y)
 	{
 		for (Object u : units.toArray()) {
 			Unit unit = (Unit) u;
 			if (unit.selected)
 				unit.move(x, y);
+		}
+	}
+	
+	public void removeSelection()
+	{
+		for (Object u : units.toArray()) {
+			Unit unit = (Unit) u;
+			unit.selected = false;
 		}
 	}
 	

@@ -67,13 +67,13 @@ public class StarcraftCore {
 			act = parentAcrivity;
 			context = new GameContext();
 			gameController = new GameController();
-			
+
 			render = new OpenGLRender();
-			//render = new SimpleRender();
+			// render = new SimpleRender();
 
 			FileInputStream fs = null;
 
-			showMessage("Init sound lib"); 
+			showMessage("Init sound lib");
 			StarcraftSoundPool.init(FileSystemUtils
 					.readAllBytes(FilePaths.SFX_DATA_TBL), FileSystemUtils
 					.readAllBytes(FilePaths.SFX_DATA_DAT));
@@ -96,7 +96,7 @@ public class StarcraftCore {
 			fs = new FileInputStream(FilePaths.SPRITES_DAT);
 			Sprite.initSprites(fs);
 			fs.close();
-			
+
 			showMessage("Init Orders");
 			fs = new FileInputStream(FilePaths.ORDERS_DAT);
 			Order.initOrders(fs);
@@ -108,7 +108,6 @@ public class StarcraftCore {
 			Unit.init(FileSystemUtils.readAllBytes(FilePaths.UNITS_DAT));
 			showMessage("Init Weapons");
 			Weapon.init(FileSystemUtils.readAllBytes(FilePaths.WEAPONS_DAT));
-			
 
 			SelectionCircles.initCircles();
 
@@ -119,15 +118,14 @@ public class StarcraftCore {
 			//
 			// context.addUnit(Unit.getUnit(1, TeamColors.COLOR_RED), 62 * 32,
 			// 66 * 32);
-
 			context.addUnit(Unit.getUnit(0, TeamColors.COLOR_GREEN), 66 * 32,
 					55 * 32);
-//			
-//			context.addUnit(Unit.getUnit(1, TeamColors.COLOR_GREEN), 66 * 32,
-//					55 * 32);
-//			
-//			context.addUnit(Unit.getUnit(1, TeamColors.COLOR_GREEN), 66 * 32,
-//					55 * 32);
+			//			
+			// context.addUnit(Unit.getUnit(1, TeamColors.COLOR_GREEN), 66 * 32,
+			// 55 * 32);
+			//			
+			// context.addUnit(Unit.getUnit(1, TeamColors.COLOR_GREEN), 66 * 32,
+			// 55 * 32);
 
 			// for (int i = 0; i < 5; i++) {
 			// context.addUnit(Unit.getUnit(0, TeamColors.COLOR_GREEN),
@@ -150,12 +148,11 @@ public class StarcraftCore {
 
 			GameContext.map = new Map(FileSystemUtils
 					.readAllBytes(FilePaths.SCENARIO_CHK));
-			
+
 			showMessage("Generating map preview");
-			
-			GameContext.map.generateMapPreview(); 
-			
-			
+
+			GameContext.map.generateMapPreview();
+
 			hideProgress();
 
 			return true;

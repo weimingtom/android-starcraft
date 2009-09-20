@@ -16,7 +16,7 @@ public class SimpleViewController extends ViewController {
 	}
 	
 	@Override
-	protected View _getView() {
+	protected View _getRenderView() {
 		return view;
 	}
 

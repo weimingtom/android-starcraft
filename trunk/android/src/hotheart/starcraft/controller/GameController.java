@@ -1,21 +1,25 @@
 package hotheart.starcraft.controller;
 
 import hotheart.starcraft.core.StarcraftCore;
+import hotheart.starcraft.units.Unit;
 
 public class GameController {
-	private static final int MOVE_ACTION = 1;
-	private static final int SELECT_ACTION = 2;
+	public static final int ACTION_MOVE = 1;
+	public static final int ACTION_SELECT = 2;
 	
-	private int currentAction = MOVE_ACTION;
+	private int currentAction = ACTION_MOVE;
 	
 	public void onClick(int mapX, int mapY)
 	{
 		switch(currentAction)
 		{
-			case MOVE_ACTION:
-				StarcraftCore.context.moveSelection(mapX, mapY);
+			case ACTION_MOVE:
+				StarcraftCore.context.moveSelected(mapX, mapY);
 				break;
-			case SELECT_ACTION:
+			case ACTION_SELECT:
+				Unit u = StarcraftCore.context.PickUnit(mapX, mapY);
+				if (u != null)
+					StarcraftCore.context.selectUnit(u);
 				break;
 		}
 	}

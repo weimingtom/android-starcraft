@@ -18,7 +18,7 @@ public class OpenGLViewController extends ViewController {
 	}
 	
 	@Override
-	protected View _getView() {
+	protected View _getRenderView() {
 		return surface;
 	}
 

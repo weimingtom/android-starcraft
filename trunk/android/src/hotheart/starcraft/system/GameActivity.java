@@ -46,7 +46,7 @@ public final class GameActivity extends Activity {
 		ViewController cont = StarcraftCore.render.getController(this);
 
 		RelativeLayout rl = new RelativeLayout(this);
-		rl.addView(cont.getView());
+		rl.addView(cont.getRenderView());
 		View gui = LayoutInflater.from(this).inflate(R.layout.gameui, null);
 
 		MapPreview prev = (MapPreview) gui.findViewById(R.id.mapPreview);

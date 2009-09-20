@@ -10,7 +10,7 @@ import android.widget.ImageButton;
 
 public abstract class ViewController implements View.OnTouchListener {
 
-	protected abstract View _getView();
+	protected abstract View _getRenderView();
 
 	protected abstract void _setPosXY(int x, int y);
 
@@ -19,22 +19,9 @@ public abstract class ViewController implements View.OnTouchListener {
 	private int mx = 56 * 32, my = 56 * 32;
 	private boolean isScrolling = false;
 
-	View cached = null;
-
-	public View getView() {
-		if (cached == null) {
-			cached = _getView();
-			cached.setOnTouchListener(this);
-			setPosXY(mx, my);
-		}
-		return cached;
-	}
-
+	View renderView = null;
+	
 	MapPreview previewView = null;
-
-	public void setMapPreview(MapPreview view) {
-		previewView = view;
-	}
 	
 	ImageButton b11 = null;
 	ImageButton b21 = null;
@@ -47,6 +34,19 @@ public abstract class ViewController implements View.OnTouchListener {
 	ImageButton b13 = null;
 	ImageButton b23 = null;
 	ImageButton b33 = null;
+
+	public View getRenderView() {
+		if (renderView == null) {
+			renderView = _getRenderView();
+			renderView.setOnTouchListener(this);
+			setPosXY(mx, my);
+		}
+		return renderView;
+	}
+
+	public void setMapPreview(MapPreview view) {
+		previewView = view;
+	}
 	
 	public void setControlButtons(ImageButton _b11, ImageButton _b21, ImageButton _b31,
 			ImageButton _b12, ImageButton _b22, ImageButton _b32,

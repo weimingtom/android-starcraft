@@ -3,80 +3,83 @@ package hotheart.starcraft.units;
 import android.graphics.Canvas;
 import hotheart.starcraft.core.GameContext;
 import hotheart.starcraft.core.StarcraftCore;
+import hotheart.starcraft.files.DatFile;
 import hotheart.starcraft.graphics.Image;
 import hotheart.starcraft.graphics.utils.SelectionCircles;
 import hotheart.starcraft.weapons.Weapon;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.util.Random;
 
 public final class Unit extends Flingy {
+	
+	public static final int ABILITY_BUILDING = 0x1;
 
 	public Unit(Flingy src) {
 		super(src);
 	}
 
-	private static byte[] units;
-	private static int count;
+	private static final int COUNT = 228;
+	
+	private static byte[] libFlingyId;
+	private static int[] libSubUnit1;
+	private static int[] libSubUnit2;
+	private static int[] libHitPoints;
+	private static byte[] libElevationLevel;
+	private static byte[] libGroundWeapon;
+	private static byte[] libAirWeapon;
+	private static int[] libSpecialAbilityFlags;
 
-	public static void init(byte[] arr) {
-		units = arr;
-		count = 228;// ?
+	public static void init(byte[] arr){
+	
+		DatFile file = new DatFile(new ByteArrayInputStream(arr));
+		try {
+			libFlingyId = file.read1ByteData(COUNT);
+			libSubUnit1 = file.read2ByteData(COUNT);
+			libSubUnit2 = file.read2ByteData(COUNT);
+			
+			file.skip(201 - 106 + 1);
+			file.skip(COUNT*8);
+			
+			libHitPoints = file.read4ByteData2LowestBytes(COUNT);
+			libElevationLevel = file.read1ByteData(COUNT);
+			
+			file.skip(COUNT*7);
+			
+			libGroundWeapon = file.read1ByteData(COUNT);
+			
+			file.skip(COUNT);
+			
+			libAirWeapon = file.read1ByteData(COUNT);
+			
+			file.skip(COUNT*2);
+			
+			libSpecialAbilityFlags = file.read4ByteData(COUNT);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public static Unit getUnit(int id, int teamColor) {
-		int flingyId = (units[id] & 0xFF);
-
-		int subUnit1 = (units[id * 2 + count] & 0xFF)
-				+ ((units[id * 2 + count + 1] & 0xFF) << 8);
-
-		int subUnit2 = (units[id * 2 + count * 3] & 0xFF)
-				+ ((units[id * 2 + count * 3 + 1] & 0xFF) << 8);
-
-		int healthOffset = count * 13 + (201 - 106 + 1) * 2;
-
-		int health = (units[id * 4 + healthOffset + 1] & 0xFF)
-				+ ((units[id * 4 + healthOffset + 2] & 0xFF) << 8);
-
-		int elevationLevelOffset = healthOffset + count * 4;
-		int elevationLevel = (units[id + elevationLevelOffset] & 0xFF);
-
-		int groundWeaponOffset = healthOffset + count * 12;
-		int groundWeapon = (units[id + groundWeaponOffset] & 0xFF);
-
-		int airWeaponOffset = groundWeaponOffset + 2 * count;
-		int airWeapon = (units[id + airWeaponOffset] & 0xFF);
-
-		int readySoundOffset = groundWeaponOffset + count * 15;
-		// int readySound = (units[readySoundOffset + id*2]&0xFF) +
-		// ((units[readySoundOffset + id*2 + 1]&0xFF)<<8);
-
-		int whatSoundStartOffset = readySoundOffset + 106 * 2;
-		int whatSoundEndOffset = whatSoundStartOffset + count * 2;
-
-		int pissSoundStartOffset = whatSoundEndOffset + count * 2;
-		int pissSoundEndOffset = pissSoundStartOffset + 106 * 2;
-
-		int yesSoundStartOffset = pissSoundEndOffset + 106 * 2;
-		int yesSoundEndOffset = yesSoundStartOffset + 106 * 2;
-
-		int yesSound1 = (units[yesSoundStartOffset + id * 2] & 0xFF)
-				+ ((units[yesSoundStartOffset + id * 2 + 1] & 0xFF) << 8);
-
-		int yesSound2 = (units[yesSoundEndOffset + id * 2] & 0xFF)
-				+ ((units[yesSoundEndOffset + id * 2 + 1] & 0xFF) << 8);
-
-		int whatSound1 = (units[whatSoundStartOffset + id * 2] & 0xFF)
-				+ ((units[whatSoundStartOffset + id * 2 + 1] & 0xFF) << 8);
-
-		int whatSound2 = (units[whatSoundEndOffset + id * 2] & 0xFF)
-				+ ((units[whatSoundEndOffset + id * 2 + 1] & 0xFF) << 8);
-
+		int flingyId = libFlingyId[id];
+		int subUnit1 = libSubUnit1[id];
+		int subUnit2 = libSubUnit2[id];
+		int hitPoints = libHitPoints[id];
+		int elevationLevel = libElevationLevel[id];
+		int groundWeapon = libGroundWeapon[id];
+		int airWeapon = libAirWeapon[id];
+	
+		int specialAbilityFlags = libSpecialAbilityFlags[id];
+		
 		Unit res = new Unit(Flingy.getFlingy(flingyId, teamColor));
 
 		res.teamColor = teamColor;
-		res.health = health;
-		res.maxHealth = health;
+		res.hipPoints = hitPoints;
+		res.maxHitPoints = hitPoints;
 		res.elevationLevel = elevationLevel;
+		res.specialAbilityFlags = specialAbilityFlags;
 		
 		if (elevationLevel>=12)
 		{
@@ -86,15 +89,6 @@ public final class Unit extends Flingy {
 		{
 			res.isAir = false;
 		}
-		
-		if (id < 106) {
-			res.YesSoundStart = yesSound1;
-			res.YesSoundEnd = yesSound2;
-		}
-
-		res.WhatSoundStart = whatSound1;
-		res.WhatSoundEnd = whatSound2;
-
 		if (groundWeapon != 130)
 			res.groundWeapon = Weapon.getWeapon(groundWeapon);
 		if (airWeapon != 130)
@@ -134,8 +128,8 @@ public final class Unit extends Flingy {
 
 	public int teamColor;
 
-	public int maxHealth;
-	public int health;
+	public int maxHitPoints;
+	public int hipPoints;
 
 	public int repeatTime = 0;
 
@@ -144,28 +138,12 @@ public final class Unit extends Flingy {
 	public int armor;
 	public boolean selected = false;
 
-	public int YesSoundStart = -1;
-	public int YesSoundEnd = -1;
-
-	public int WhatSoundStart = -1;
-	public int WhatSoundEnd = -1;
+	public int specialAbilityFlags = 0;
 
 	public int action = ACTION_IDLE;
 
 	public final boolean isGround() {
 		return elevationLevel <= MAX_GROUND_LEVEL;
-	}
-
-	public final void sayYes() {
-//		if (YesSoundStart > 0)
-//			StarcraftSoundPool.playSound(YesSoundStart
-//					+ rnd.nextInt(YesSoundEnd - YesSoundStart));
-	}
-
-	public final void sayWhat() {
-//		if (WhatSoundStart > 0)
-//			StarcraftSoundPool.playSound(WhatSoundStart
-//					+ rnd.nextInt(WhatSoundEnd - WhatSoundStart));
 	}
 
 	public void buildTree() {
@@ -297,7 +275,12 @@ public final class Unit extends Flingy {
 	}
 
 	private void moveUnit(int dx, int dy) {
-
+		
+		if ((specialAbilityFlags & ABILITY_BUILDING) != 0)
+		{
+			return;
+		}
+		
 		if (subunit1 != null) {
 			if (subunit1.action != ACTION_GRND_ATTACK)
 				subunit1.move(dx, dy);
@@ -382,9 +365,9 @@ public final class Unit extends Flingy {
 	}
 
 	public final void hit(int points) {
-		health -= points;
-		if (health <= 0) {
-			health = 0;
+		hipPoints -= points;
+		if (hipPoints <= 0) {
+			hipPoints = 0;
 			kill();
 		}
 	}

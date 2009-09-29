@@ -50,6 +50,8 @@ public class DatFile {
 		for (int i = 0; i < size; i++) {
 			res[i] = (((byte) is.read()) & 0xFF)
 					+ ((((byte) is.read()) & 0xFF) << 8);
+			
+			is.read();is.read();
 		}
 		return res;
 	}

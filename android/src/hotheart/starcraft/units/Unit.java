@@ -147,15 +147,13 @@ public final class Unit extends Flingy {
 
 	public void buildTree() {
 		super.buildTree();
+		
+		updateSubunits();
 
-		if (subunit1 != null) {
-			subunit1.setPos(posX, posY);
+		if (subunit1 != null)
 			subunit1.buildTree();
-		}
-		if (subunit2 != null) {
-			subunit2.setPos(posX, posY);
+		if (subunit2 != null)
 			subunit2.buildTree();
-		}
 	}
 
 	public final void draw_selection() {
@@ -195,15 +193,14 @@ public final class Unit extends Flingy {
 
 		draw_selection();
 		draw_healths();
+		
+		updateSubunits();
 
-		if (subunit1 != null) {
-			subunit1.setPos(posX, posY);
+		if (subunit1 != null)
 			subunit1.draw(c);
-		}
-		if (subunit2 != null) {
-			subunit2.setPos(posX, posY);
+			
+		if (subunit2 != null)
 			subunit2.draw(c);
-		}
 
 	}
 
@@ -271,6 +268,24 @@ public final class Unit extends Flingy {
 			}
 		}
 	}
+	
+	private void updateSubunits()
+	{
+		if (subunit1 != null) {
+			subunit1.setPos(posX, posY);
+			
+			if (subunit1.action != ACTION_GRND_ATTACK)
+				subunit1.rotateTo(destX, destY);
+				
+		}
+		if (subunit2 != null) {
+			subunit2.setPos(posX, posY);
+			
+			if (subunit2.action != ACTION_GRND_ATTACK)
+				subunit2.rotateTo(destX, destY);
+		}
+
+	}
 
 	private void moveUnit(int dx, int dy) {
 
@@ -279,17 +294,7 @@ public final class Unit extends Flingy {
 		}
 
 		if ((specialAbilityFlags & ABILITY_SUBUNIT) == 0) {
-			if (subunit1 != null) {
-				if (subunit1.action != ACTION_GRND_ATTACK)
-					subunit1.move(destX, destY);
-				subunit1.setPos(dx, dy);
-			}
-			if (subunit2 != null) {
-				if (subunit2.action != ACTION_GRND_ATTACK)
-					subunit2.move(destX, destY);
-				subunit2.setPos(dx, dy);
-			}
-			
+			updateSubunits();
 		}
 		
 		super.move(dx, dy);

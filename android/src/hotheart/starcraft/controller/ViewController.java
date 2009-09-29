@@ -16,7 +16,7 @@ public abstract class ViewController implements View.OnTouchListener {
 
 	public abstract void setMap(Map map);
 
-	private int mx = 56 * 32, my = 56 * 32;
+	private int mx = 56 * 32, my = 50 * 32;
 	private boolean isScrolling = false;
 
 	View renderView = null;

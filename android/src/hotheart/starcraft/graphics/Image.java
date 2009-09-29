@@ -21,7 +21,7 @@ import android.graphics.Canvas;
 public class Image {
 
 	public static final int MAX_IMAGE_LAYER = 10000;
-	public static final int MIN_IMAGE_LAYER = 0;
+	public static final int MIN_IMAGE_LAYER = -10000;
 
 	// Data from images.dat file
 	private static final int COUNT = 999;
@@ -142,7 +142,6 @@ public class Image {
 		this.parentOverlay = src.parentOverlay;
 		this.posX = src.posX;
 		this.posY = src.posY;
-		this.sortIndex = src.sortIndex;
 		this.imageData = src.imageData;// Don't copy!
 		this.imageId = src.imageId;
 	}
@@ -229,17 +228,7 @@ public class Image {
 		}
 	}
 
-	public final void addOverlay(Image img) {
-		for (int i = 0; i < childs.length; i++)
-			if (childs[i] == null) {
-				childs[i] = img;
-				childCount++;
-				return;
-			}
-
-	}
-
-	public final void addUnderlay(Image img) {
+	public final void addChild(Image img) {
 		for (int i = 0; i < childs.length; i++)
 			if (childs[i] == null) {
 				childCount++;
@@ -279,14 +268,12 @@ public class Image {
 					childs[i].play(anim);
 	}
 
-	public int sortIndex = 0;
-
 	public void buildTree() {
 		if (!this.imageState.visible)
 			return;
 
 		// setPos(dX, dY);
-
+		
 		StarcraftCore.context.drawObjects.add(this);
 
 		for (int i = 0; i < childs.length; i++)

@@ -27,21 +27,17 @@ public final class GameContext {
 			public int compare(Image arg0, Image arg1) {
 				if (arg0 == arg1)
 					return 0;
+				
 				if (arg0.currentImageLayer == Image.MIN_IMAGE_LAYER)
 					return 1;
 
 				if (arg1.currentImageLayer == Image.MIN_IMAGE_LAYER)
 					return -1;
 
-				if (arg0.sortIndex < arg1.sortIndex)
-					return 1;
-				else if (arg0.sortIndex > arg1.sortIndex)
+				if (arg0.currentImageLayer < arg1.currentImageLayer)
 					return -1;
-
-				if (arg0.currentImageLayer > arg1.currentImageLayer)
-					return 1;
 				else
-					return -1;
+					return 1;
 			}
 		});
 	}

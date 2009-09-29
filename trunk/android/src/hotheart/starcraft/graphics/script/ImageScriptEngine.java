@@ -206,7 +206,7 @@ public class ImageScriptEngine {
 			// overlay.sprite = instance.image.sprite;
 
 			overlay.imageState.angle = instance.angle;
-			instance.image.addOverlay(overlay);
+			instance.image.addChild(overlay);
 			break;
 		// OK
 		case OP_ACT_UNDERLAY:
@@ -228,7 +228,7 @@ public class ImageScriptEngine {
 			underlay.setOffsetX(un_dx);
 			underlay.setOffsetY(un_dy);
 			underlay.imageState.angle = instance.angle;
-			instance.image.addUnderlay(underlay);
+			instance.image.addChild(underlay);
 			break;
 
 		// OK
@@ -243,7 +243,7 @@ public class ImageScriptEngine {
 			shadow.imageState.followParent = true;
 			shadow.setOffsetX(sh_dx);
 			shadow.setOffsetY(sh_dy);
-			instance.image.addUnderlay(shadow);
+			instance.image.addChild(shadow);
 			break;
 
 		// OK

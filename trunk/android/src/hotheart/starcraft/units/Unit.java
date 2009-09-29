@@ -13,15 +13,17 @@ import java.io.IOException;
 import java.util.Random;
 
 public final class Unit extends Flingy {
-	
-	public static final int ABILITY_BUILDING = 0x1;
+
+	public static final int ABILITY_BUILDING = 1 << 0;
+	public static final int ABILITY_WORKER = 1 << 3;
+	public static final int ABILITY_SUBUNIT = 1 << 4;
 
 	public Unit(Flingy src) {
 		super(src);
 	}
 
 	private static final int COUNT = 228;
-	
+
 	private static byte[] libFlingyId;
 	private static int[] libSubUnit1;
 	private static int[] libSubUnit2;
@@ -31,30 +33,30 @@ public final class Unit extends Flingy {
 	private static byte[] libAirWeapon;
 	private static int[] libSpecialAbilityFlags;
 
-	public static void init(byte[] arr){
-	
+	public static void init(byte[] arr) {
+
 		DatFile file = new DatFile(new ByteArrayInputStream(arr));
 		try {
 			libFlingyId = file.read1ByteData(COUNT);
 			libSubUnit1 = file.read2ByteData(COUNT);
 			libSubUnit2 = file.read2ByteData(COUNT);
-			
+
 			file.skip(201 - 106 + 1);
-			file.skip(COUNT*8);
-			
+			file.skip(COUNT * 8);
+
 			libHitPoints = file.read4ByteData2LowestBytes(COUNT);
 			libElevationLevel = file.read1ByteData(COUNT);
-			
-			file.skip(COUNT*7);
-			
+
+			file.skip(COUNT * 7);
+
 			libGroundWeapon = file.read1ByteData(COUNT);
-			
+
 			file.skip(COUNT);
-			
+
 			libAirWeapon = file.read1ByteData(COUNT);
-			
-			file.skip(COUNT*2);
-			
+
+			file.skip(COUNT * 2);
+
 			libSpecialAbilityFlags = file.read4ByteData(COUNT);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -63,16 +65,16 @@ public final class Unit extends Flingy {
 	}
 
 	public static Unit getUnit(int id, int teamColor) {
-		int flingyId = libFlingyId[id];
+		int flingyId = libFlingyId[id]&0xFF;
 		int subUnit1 = libSubUnit1[id];
 		int subUnit2 = libSubUnit2[id];
 		int hitPoints = libHitPoints[id];
 		int elevationLevel = libElevationLevel[id];
 		int groundWeapon = libGroundWeapon[id];
 		int airWeapon = libAirWeapon[id];
-	
+
 		int specialAbilityFlags = libSpecialAbilityFlags[id];
-		
+
 		Unit res = new Unit(Flingy.getFlingy(flingyId, teamColor));
 
 		res.teamColor = teamColor;
@@ -80,13 +82,10 @@ public final class Unit extends Flingy {
 		res.maxHitPoints = hitPoints;
 		res.elevationLevel = elevationLevel;
 		res.specialAbilityFlags = specialAbilityFlags;
-		
-		if (elevationLevel>=12)
-		{
+
+		if (elevationLevel >= 12) {
 			res.isAir = true;
-		}
-		else
-		{
+		} else {
 			res.isAir = false;
 		}
 		if (groundWeapon != 130)
@@ -166,37 +165,37 @@ public final class Unit extends Flingy {
 			circ.draw();
 		}
 	}
-	
-	public final void draw_healths()
-	{
+
+	public final void draw_healths() {
 		// TODO: FIX Health bar
-		
-//		Paint p = new Paint();
-//		p.setColor(Color.GRAY);
-//
-//		int yPos = posY + vertPos + SelectionCircles.selCircleSize[selCircle]
-//				/ 2;
-//
-//		c.drawRect(posX - healthBar / 2, yPos, posX + healthBar / 2, yPos + 4,
-//				p);
-//
-//		p.setColor(Color.GREEN);
-//		if (maxHealth > 0) {
-//			int len = (healthBar * health) / maxHealth;
-//
-//			c.drawRect(posX - healthBar / 2, yPos, posX - healthBar / 2 + len,
-//					yPos + 4, p);
-//		}
+
+		// Paint p = new Paint();
+		// p.setColor(Color.GRAY);
+		//
+		// int yPos = posY + vertPos + SelectionCircles.selCircleSize[selCircle]
+		// / 2;
+		//
+		// c.drawRect(posX - healthBar / 2, yPos, posX + healthBar / 2, yPos +
+		// 4,
+		// p);
+		//
+		// p.setColor(Color.GREEN);
+		// if (maxHealth > 0) {
+		// int len = (healthBar * health) / maxHealth;
+		//
+		// c.drawRect(posX - healthBar / 2, yPos, posX - healthBar / 2 + len,
+		// yPos + 4, p);
+		// }
 
 	}
 
 	public void draw(Canvas c) {
-		
+
 		super.draw();
 
 		draw_selection();
 		draw_healths();
-		
+
 		if (subunit1 != null) {
 			subunit1.setPos(posX, posY);
 			subunit1.draw(c);
@@ -224,7 +223,7 @@ public final class Unit extends Flingy {
 
 	public void update() {
 		super.update();
-		
+
 		if (subunit1 != null) {
 			subunit1.update();
 		}
@@ -242,8 +241,7 @@ public final class Unit extends Flingy {
 					int dposY = (int) targetUnit.getPosY();
 					rotateTo(dposX, dposY);
 
-					int len_sq = (int) ((dposX - posX)
-							* (dposX - posX) + (dposY - posY)
+					int len_sq = (int) ((dposX - posX) * (dposX - posX) + (dposY - posY)
 							* (dposY - posY));
 
 					if (len_sq <= selWeapon.maxDistance * selWeapon.maxDistance) {
@@ -275,19 +273,23 @@ public final class Unit extends Flingy {
 	}
 
 	private void moveUnit(int dx, int dy) {
-		
-		if ((specialAbilityFlags & ABILITY_BUILDING) != 0)
-		{
+
+		if ((specialAbilityFlags & ABILITY_BUILDING) != 0) {
 			return;
 		}
-		
-		if (subunit1 != null) {
-			if (subunit1.action != ACTION_GRND_ATTACK)
-				subunit1.move(dx, dy);
-		}
-		if (subunit2 != null) {
-			if (subunit2.action != ACTION_GRND_ATTACK)
-				subunit2.move(dx, dy);
+
+		if ((specialAbilityFlags & ABILITY_SUBUNIT) == 0) {
+			if (subunit1 != null) {
+				if (subunit1.action != ACTION_GRND_ATTACK)
+					subunit1.move(destX, destY);
+				subunit1.setPos(dx, dy);
+			}
+			if (subunit2 != null) {
+				if (subunit2.action != ACTION_GRND_ATTACK)
+					subunit2.move(destX, destY);
+				subunit2.setPos(dx, dy);
+			}
+			
 		}
 		
 		super.move(dx, dy);
@@ -360,8 +362,8 @@ public final class Unit extends Flingy {
 			action = ACTION_REPEAT_GRND_ATTACK;
 		else
 			action = ACTION_REPEAT_AIR_ATTACK;
-		
-		//super.repeatAttack();
+
+		// super.repeatAttack();
 	}
 
 	public final void hit(int points) {

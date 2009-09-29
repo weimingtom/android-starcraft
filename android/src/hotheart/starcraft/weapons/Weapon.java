@@ -72,7 +72,7 @@ public final class Weapon {
 		}
 		public void update()
 		{
-			if ((destUnit.health < 0)|| (destUnit.deleted))
+			if ((destUnit.hipPoints < 0)|| (destUnit.deleted))
 				this.delete();
 			
 			int len_sq = (destUnit.getPosX() - this.posX)*(destUnit.getPosX() - this.posX)+
@@ -104,7 +104,7 @@ public final class Weapon {
 		
 		targetUnit.hit(damage);
 		
-		if (targetUnit.health<=0)
+		if (targetUnit.hipPoints<=0)
 		{
 			targetUnit.kill();
 			return true;

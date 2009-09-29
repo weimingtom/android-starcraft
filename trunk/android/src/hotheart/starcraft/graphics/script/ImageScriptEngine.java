@@ -196,7 +196,8 @@ public class ImageScriptEngine {
 					instance.image.foregroundColor,
 					instance.image.currentImageLayer + 1);
 			overlay.parentOverlay = instance.image;
-			overlay.imageState.followParent = false;
+			overlay.imageState.followParent = true;
+			overlay.imageState.followParentAngle = true;
 			// overlay.followParentAnim = true;
 			// overlay.followParentAngle = true;
 			overlay.setOffsetX(ov_dx);
@@ -218,7 +219,8 @@ public class ImageScriptEngine {
 					instance.image.foregroundColor,
 					instance.image.currentImageLayer - 1);
 			underlay.parentOverlay = instance.image;
-			underlay.imageState.followParent = false;
+			underlay.imageState.followParent = true;
+			underlay.imageState.followParentAngle = true;
 			// underlay.followParentAnim = true;
 			// underlay.followParentAngle = true;
 

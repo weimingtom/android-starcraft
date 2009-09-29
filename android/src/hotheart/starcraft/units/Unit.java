@@ -41,7 +41,7 @@ public final class Unit extends Flingy {
 			libSubUnit1 = file.read2ByteData(COUNT);
 			libSubUnit2 = file.read2ByteData(COUNT);
 
-			file.skip(201 - 106 + 1);
+			file.skip((201 - 106 + 1)*2);
 			file.skip(COUNT * 8);
 
 			libHitPoints = file.read4ByteData2LowestBytes(COUNT);
@@ -69,9 +69,9 @@ public final class Unit extends Flingy {
 		int subUnit1 = libSubUnit1[id];
 		int subUnit2 = libSubUnit2[id];
 		int hitPoints = libHitPoints[id];
-		int elevationLevel = libElevationLevel[id];
-		int groundWeapon = libGroundWeapon[id];
-		int airWeapon = libAirWeapon[id];
+		int elevationLevel = libElevationLevel[id]&0xFF;
+		int groundWeapon = libGroundWeapon[id]&0xFF;
+		int airWeapon = libAirWeapon[id]&0xFF;
 
 		int specialAbilityFlags = libSpecialAbilityFlags[id];
 
@@ -88,6 +88,7 @@ public final class Unit extends Flingy {
 		} else {
 			res.isAir = false;
 		}
+		
 		if (groundWeapon != 130)
 			res.groundWeapon = Weapon.getWeapon(groundWeapon);
 		if (airWeapon != 130)

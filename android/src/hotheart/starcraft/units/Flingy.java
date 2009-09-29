@@ -203,7 +203,7 @@ public class Flingy extends Sprite {
 				}
 			}
 
-			if (len_sq < 10) {
+			if (len_sq < 32*32) {
 				stop();
 				return;
 			}

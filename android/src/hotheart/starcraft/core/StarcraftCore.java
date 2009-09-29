@@ -122,7 +122,7 @@ public class StarcraftCore {
 //			context.addUnit(Unit.getUnit(106, TeamColors.COLOR_GREEN), 66 * 32,
 //					55 * 32);
 			
-			context.addUnit(Unit.getUnit(63, TeamColors.COLOR_GREEN), 66 * 32,
+			context.addUnit(Unit.getUnit(72, TeamColors.COLOR_GREEN), 66 * 32,
 					55 * 32);
 			//			
 			// context.addUnit(Unit.getUnit(1, TeamColors.COLOR_GREEN), 66 * 32,

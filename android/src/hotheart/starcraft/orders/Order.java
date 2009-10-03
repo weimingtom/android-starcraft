@@ -1,6 +1,7 @@
 package hotheart.starcraft.orders;
 
 import hotheart.starcraft.files.DatFile;
+import hotheart.starcraft.units.Unit;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -51,5 +52,27 @@ public class Order {
 		
 		libObscured = file.read1ByteData(COUNT);
 	}
-
+	
+	public static final Order getOrder(int id, Unit unit)
+	{
+		Order res = new Order(unit);
+		res.id = id;
+		res.iconId = libHighlight[id]&0xFF;
+		
+		return res;
+	}
+	
+	public Order(Unit u)
+	{
+		unit = u;
+	}
+	
+	public Unit unit;
+	
+	public int id = 0;
+	public int iconId = -1;
+	
+	public void update()
+	{
+	}
 }

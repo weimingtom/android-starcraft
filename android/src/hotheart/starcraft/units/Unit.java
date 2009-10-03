@@ -6,6 +6,7 @@ import hotheart.starcraft.core.StarcraftCore;
 import hotheart.starcraft.files.DatFile;
 import hotheart.starcraft.graphics.Image;
 import hotheart.starcraft.graphics.utils.SelectionCircles;
+import hotheart.starcraft.orders.Order;
 import hotheart.starcraft.weapons.Weapon;
 
 import java.io.ByteArrayInputStream;
@@ -143,6 +144,13 @@ public final class Unit extends Flingy {
 	public int action = ACTION_IDLE;
 	
 	public UnitControlPanel controlPanel = new UnitControlPanel(this);
+	
+	public Order HumanIdleOrder;
+	public Order ReturnToIdleOrder;
+	public Order AttackOrder;
+	public Order AttackMoveOrder;
+	
+	public Order currentOrder;
 
 	public final boolean isGround() {
 		return elevationLevel <= MAX_GROUND_LEVEL;

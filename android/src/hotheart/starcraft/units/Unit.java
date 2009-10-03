@@ -7,6 +7,7 @@ import hotheart.starcraft.files.DatFile;
 import hotheart.starcraft.graphics.Image;
 import hotheart.starcraft.graphics.utils.SelectionCircles;
 import hotheart.starcraft.orders.Order;
+import hotheart.starcraft.units.target.StaticPointTarget;
 import hotheart.starcraft.weapons.Weapon;
 
 import java.io.ByteArrayInputStream;
@@ -217,8 +218,8 @@ public final class Unit extends Flingy {
 	}
 
 	public int getLenSqToTarget() {
-		int dposX = (int) destX;
-		int dposY = (int) destX;
+		int dposX = (int) target.getDestinationX();
+		int dposY = (int) target.getDestinationY();
 
 		if (action == ACTION_GRND_ATTACK)
 			if (targetUnit != null) {
@@ -287,14 +288,14 @@ public final class Unit extends Flingy {
 			subunit1.setPos(posX, posY);
 			
 			if (subunit1.action != ACTION_GRND_ATTACK)
-				subunit1.rotateTo(destX, destY);
+				subunit1.rotateTo(target.getDestinationX(), target.getDestinationY());
 				
 		}
 		if (subunit2 != null) {
 			subunit2.setPos(posX, posY);
 			
 			if (subunit2.action != ACTION_GRND_ATTACK)
-				subunit2.rotateTo(destX, destY);
+				subunit2.rotateTo(target.getDestinationX(), target.getDestinationY());
 		}
 
 	}
@@ -309,7 +310,7 @@ public final class Unit extends Flingy {
 			updateSubunits();
 		}
 		
-		super.move(dx, dy);
+		target = new StaticPointTarget(dx, dy);
 	}
 
 	public void move(int dx, int dy) {

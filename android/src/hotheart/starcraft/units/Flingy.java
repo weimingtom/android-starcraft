@@ -1,7 +1,11 @@
 package hotheart.starcraft.units;
 
+import hotheart.starcraft.core.GameContext;
 import hotheart.starcraft.core.StarcraftCore;
 import hotheart.starcraft.graphics.Sprite;
+import hotheart.starcraft.units.target.AbstractTarget;
+import hotheart.starcraft.units.target.FlingyTarget;
+import hotheart.starcraft.units.target.StaticPointTarget;
 
 public class Flingy extends Sprite {
 
@@ -58,9 +62,8 @@ public class Flingy extends Sprite {
 		this.currentAttack = src.currentAttack;
 		this.speed = src.speed;
 		this.action = src.action;
-		this.destX = src.destX;
-		this.destY = src.destY;
 		this.isAir = src.isAir;
+		this.target = new FlingyTarget(this);
 	}
 
 	private Flingy(Sprite src) {
@@ -80,13 +83,13 @@ public class Flingy extends Sprite {
 	public int turnRadius;
 	public int moveControl;
 	public boolean isAir = true;
+	
+	public AbstractTarget target = new FlingyTarget(this);
 
 	private int currentAttack = ATTACK_GRND;
 
 	int speed = 0;
 	int action = IDLE;
-
-	public int destX = 0, destY = 0;
 
 	public final void move(int d) {
 		final float dx = (float) Math
@@ -103,7 +106,7 @@ public class Flingy extends Sprite {
 		}
 		else
 		{
-			if (StarcraftCore.context.map.isWalkable(posX + (int) dx, posY
+			if (GameContext.map.isWalkable(posX + (int) dx, posY
 					+ (int) dy)) {
 				posX += dx;
 				posY += dy;
@@ -117,19 +120,6 @@ public class Flingy extends Sprite {
 		
 		
 
-	}
-
-	public void move(int dx, int dy) {
-		destX = dx;
-		destY = dy;
-
-		if (action == MOVING)
-			return;
-		action = MOVING;
-
-		play(11);
-
-		speed = 0;
 	}
 
 	public final void stop() {
@@ -175,9 +165,22 @@ public class Flingy extends Sprite {
 	}
 
 	public void update() {
+		int destR = target.getDestinationRadius();
+		int destX = target.getDestinationX();
+		int destY = target.getDestinationY();
+		
+		final int len_sq = (int) ((posX - destX) * (posX - destX) + (posY - destY)
+				* (posY - destY));
+		
+		if (len_sq > destR*destR) {
+			action = MOVING;
+			play(11);
+			speed = 0;
+		}
+		
+		
 		if (action == MOVING) {
-			final int len_sq = (int) ((posX - destX) * (posX - destX) + (posY - destY)
-					* (posY - destY));
+			
 
 			if ((moveControl == FLINGY_DAT) || (moveControl == MIXED)) {
 				speed += acceleration;
@@ -202,8 +205,8 @@ public class Flingy extends Sprite {
 					}
 				}
 			}
-
-			if (len_sq < 32*32) {
+			
+			if (len_sq < destR*destR) {
 				stop();
 				return;
 			}

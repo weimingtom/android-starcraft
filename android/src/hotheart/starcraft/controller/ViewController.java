@@ -108,6 +108,12 @@ public abstract class ViewController implements View.OnTouchListener {
 		}
 	}
 	
+	public void setControlIcons(int[] ids)
+	{
+		for(int i = 0; i<ids.length; i++)
+			setControlIcon(i,ids[i]);
+	}
+	
 	public void setPosXY(int x, int y) {
 		mx = x;
 		my = y;

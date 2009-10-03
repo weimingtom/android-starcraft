@@ -60,6 +60,10 @@
 		<ImageButton android:id="@+id/moveButton"
 			android:layout_width="wrap_content" android:layout_height="wrap_content"
 			android:src="@drawable/movemap" android:clickable="true" />
+			
+		<ImageButton android:id="@+id/selectButton"
+			android:layout_width="wrap_content" android:layout_height="wrap_content"
+			android:src="@drawable/movemap" android:clickable="true" />
 	</LinearLayout>
 
 </AbsoluteLayout> 

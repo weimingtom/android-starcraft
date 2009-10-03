@@ -141,6 +141,8 @@ public final class Unit extends Flingy {
 	public int specialAbilityFlags = 0;
 
 	public int action = ACTION_IDLE;
+	
+	public UnitControlPanel controlPanel = new UnitControlPanel(this);
 
 	public final boolean isGround() {
 		return elevationLevel <= MAX_GROUND_LEVEL;

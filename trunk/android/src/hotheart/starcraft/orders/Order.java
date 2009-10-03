@@ -43,7 +43,7 @@ public class Order {
 		
 		libTargeting = file.read1ByteData(COUNT);
 		
-		libEnergy = file.read1ByteData(COUNT);
+		libEnergy = file.read1ByteData(COUNT); 
 		libAnimation = file.read1ByteData(COUNT);
 		libHighlight = file.read1ByteData(COUNT);
 		

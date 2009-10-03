@@ -1,5 +1,6 @@
 package hotheart.starcraft.system;
 
+import hotheart.starcraft.controller.GameController;
 import hotheart.starcraft.controller.ViewController;
 import hotheart.starcraft.core.GameContext;
 import hotheart.starcraft.core.StarcraftCore;
@@ -130,6 +131,31 @@ public final class GameActivity extends Activity {
 										move.setColorFilter(unactiveFilter);
 								}
 							});
+							
+							
+							final ImageButton select = (ImageButton) findViewById(R.id.selectButton);
+
+							if (StarcraftCore.gameController.currentAction == GameController.ACTION_SELECT)
+								select.setColorFilter(activeFilter);
+							else
+								select.setColorFilter(unactiveFilter);
+
+							select.setOnClickListener(new OnClickListener() {
+								public void onClick(View v) {
+									
+									if (StarcraftCore.gameController.currentAction == GameController.ACTION_SELECT)
+										StarcraftCore.gameController.currentAction = GameController.ACTION_MOVE;
+									else
+										StarcraftCore.gameController.currentAction = GameController.ACTION_SELECT;
+									
+									
+									if (StarcraftCore.gameController.currentAction == GameController.ACTION_SELECT)
+										select.setColorFilter(activeFilter);
+									else
+										select.setColorFilter(unactiveFilter);
+								}
+							});
+							
 							
 							for(int i = 0; i<9 ; i++)
 								StarcraftCore.viewController.setControlIcon(i, i+15);

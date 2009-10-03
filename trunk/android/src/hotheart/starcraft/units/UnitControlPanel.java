@@ -15,8 +15,8 @@ public class UnitControlPanel {
 		for(int i = 0; i < 9; i++)
 			res[i] = -1;
 		
-		res[0] = 51;
-		res[1] = 14;
+		res[0] = 228;
+		res[1] = 230;
 		
 		return res;
 	}

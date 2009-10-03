@@ -194,7 +194,6 @@ public final class Unit extends Flingy {
 
 		super.draw();
 
-		draw_selection();
 		draw_healths();
 		
 		updateSubunits();
@@ -204,6 +203,8 @@ public final class Unit extends Flingy {
 			
 		if (subunit2 != null)
 			subunit2.draw(c);
+		
+		draw_selection();
 
 	}
 

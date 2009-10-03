@@ -172,16 +172,20 @@ public final class GameContext {
 	}
 
 	public void draw() {
-
-		if (majorSelectedUnit!=null)
-			majorSelectedUnit.draw_selection();
-		
 		buildTree();
 
 		Render render = StarcraftCore.render;
 		render.begin();
 		drawTree();
+		
+		for (Unit u : units) {
+			u.draw_selection();
+			u.draw_healths();
+		}
+		
 		render.end();
+		
+		
 	}
 
 	public void moveSelected(int x, int y)

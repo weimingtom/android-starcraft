@@ -15,8 +15,13 @@ public class UnitControlPanel {
 		for(int i = 0; i < 9; i++)
 			res[i] = -1;
 		
-		res[0] = 228;
-		res[1] = 230;
+		int curPos = 0;
+		
+		if ((unit.specialAbilityFlags&Unit.ABILITY_BUILDING) == 0)
+			res[curPos++] = 228;
+		
+		if ((unit.airWeapon!=null)||(unit.groundWeapon!=null))
+			res[curPos++] = 230;
 		
 		return res;
 	}

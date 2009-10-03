@@ -19,7 +19,12 @@ public class GameController {
 			case ACTION_SELECT:
 				Unit u = StarcraftCore.context.PickUnit(mapX, mapY);
 				if (u != null)
+				{
+					for(Object i:StarcraftCore.context.units)
+						((Unit)i).selected = false;
+					
 					StarcraftCore.context.selectUnit(u); 
+				}
 				break;
 		}
 	}

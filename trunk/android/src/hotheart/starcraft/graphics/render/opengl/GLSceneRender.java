@@ -21,6 +21,18 @@ public class GLSceneRender implements GLSurfaceView.Renderer {
 	}
 
 	public void onDrawFrame(GL10 gl) {
+		
+		gl.glMatrixMode(GL10.GL_PROJECTION);
+		gl.glLoadIdentity();
+
+		// Then change render type to orthogonal to prevent perspective using
+		// real screen size (1 pixel = 1 unit)
+		gl.glOrthox(0, 480, 320, 0, 0, 1);
+
+		// Reset modelview
+		gl.glMatrixMode(GL10.GL_MODELVIEW); 
+		gl.glLoadIdentity();
+		
 		render.gl = gl;
 
 		int offsetX = StarcraftCore.viewController.getX();

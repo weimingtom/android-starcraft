@@ -5,6 +5,7 @@ import hotheart.starcraft.core.StarcraftCore;
 import hotheart.starcraft.graphics.TeamColors;
 import hotheart.starcraft.units.Flingy;
 import hotheart.starcraft.units.Unit;
+import hotheart.starcraft.units.target.FlingyTarget;
 
 public final class Weapon {
 	
@@ -69,6 +70,7 @@ public final class Weapon {
 		{
 			super(base);
 			destUnit = dest;
+			this.target = new FlingyTarget(destUnit);
 		}
 		public void update()
 		{
@@ -79,8 +81,7 @@ public final class Weapon {
 					  (destUnit.getPosY() - this.posY)*(destUnit.getPosY() - this.posY);
 			if (len_sq<10)
 				this.delete();
-			else
-				this.move(destUnit.getPosX(), destUnit.getPosY());
+			
 			super.update();
 		}
 	}

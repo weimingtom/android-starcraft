@@ -3,48 +3,11 @@
 	android:orientation="horizontal" android:layout_width="fill_parent"
 	android:layout_height="wrap_content">
 
-	<ImageView android:layout_width="fill_parent"
+	<!--	<ImageView android:layout_width="fill_parent"-->
+	<!--
 		android:layout_height="fill_parent" android:src="@drawable/console"
-		android:layout_y="0px" android:layout_x="0px" />
-
-
-	<ImageButton android:id="@+id/b11" android:layout_width="27px"
-		android:layout_height="27px" android:src="@drawable/btn_test"
-		android:clickable="true" android:layout_x="380px" android:layout_y="228px"/>
-		
-	<ImageButton android:id="@+id/b21" android:layout_width="27px"
-		android:layout_height="27px" android:src="@drawable/btn_test"
-		android:clickable="true" android:layout_x="414px" android:layout_y="228px" />
-		
-	<ImageButton android:id="@+id/b31" android:layout_width="27px"
-		android:layout_height="27px" android:src="@drawable/btn_test"
-		android:clickable="true" android:layout_x="449px" android:layout_y="228px" />
-		
-		
-	<ImageButton android:id="@+id/b12" android:layout_width="27px"
-		android:layout_height="27px" android:src="@drawable/btn_test"
-		android:clickable="true" android:layout_x="380px" android:layout_y="258px" />
-		
-	<ImageButton android:id="@+id/b22" android:layout_width="27px"
-		android:layout_height="27px" android:src="@drawable/btn_test"
-		android:clickable="true" android:layout_x="414px" android:layout_y="258px" />
-		
-	<ImageButton android:id="@+id/b32" android:layout_width="27px"
-		android:layout_height="27px" android:src="@drawable/btn_test"
-		android:clickable="true" android:layout_x="449px" android:layout_y="258px" />
-		
-	
-	<ImageButton android:id="@+id/b13" android:layout_width="27px"
-		android:layout_height="27px" android:src="@drawable/btn_test"
-		android:clickable="true" android:layout_x="380px" android:layout_y="289px" />
-		
-	<ImageButton android:id="@+id/b23" android:layout_width="27px"
-		android:layout_height="27px" android:src="@drawable/btn_test"
-		android:clickable="true" android:layout_x="414px" android:layout_y="289px" />
-		
-	<ImageButton android:id="@+id/b33" android:layout_width="27px"
-		android:layout_height="27px" android:src="@drawable/btn_test"
-		android:clickable="true" android:layout_x="449px" android:layout_y="289px" />
+	-->
+	<!--		android:layout_y="0px" android:layout_x="0px" />-->
 
 
 	<hotheart.starcraft.system.MapPreview
@@ -54,16 +17,59 @@
 
 	<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 		android:orientation="horizontal" android:layout_width="fill_parent"
+		android:layout_height="wrap_content" android:layout_alignBottom="@+id/ControlView">
+
+		<ImageButton android:id="@+id/b11" android:layout_width="50px"
+			android:layout_height="50px" android:src="@drawable/btn_test"
+			android:clickable="true" />
+
+		<ImageButton android:id="@+id/b21" android:layout_width="50px"
+			android:layout_height="50px" android:src="@drawable/btn_test"
+			android:clickable="true" />
+
+		<ImageButton android:id="@+id/b31" android:layout_width="50px"
+			android:layout_height="50px" android:src="@drawable/btn_test"
+			android:clickable="true" />
+			
+		<ImageButton android:id="@+id/b12" android:layout_width="50px"
+			android:layout_height="50px" android:src="@drawable/btn_test"
+			android:clickable="true" />
+
+		<ImageButton android:id="@+id/b22" android:layout_width="50px"
+			android:layout_height="50px" android:src="@drawable/btn_test"
+			android:clickable="true" />
+
+		<ImageButton android:id="@+id/b32" android:layout_width="50px"
+			android:layout_height="50px" android:src="@drawable/btn_test"
+			android:clickable="true" />
+
+		<ImageButton android:id="@+id/b13" android:layout_width="50px"
+			android:layout_height="50px" android:src="@drawable/btn_test"
+			android:clickable="true" />
+
+		<ImageButton android:id="@+id/b23" android:layout_width="50px"
+			android:layout_height="50px" android:src="@drawable/btn_test"
+			android:clickable="true" />
+
+		<ImageButton android:id="@+id/b33" android:layout_width="50px"
+			android:layout_height="50px" android:src="@drawable/btn_test"
+			android:clickable="true" />
+
+	</LinearLayout>
+	
+	<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+		android:orientation="horizontal" android:layout_width="fill_parent"
 		android:layout_height="wrap_content" android:layout_alignBottom="@+id/GameView"
-		android:background="#AAAAAAAA">
+		android:layout_y="55px">
 
 		<ImageButton android:id="@+id/moveButton"
-			android:layout_width="wrap_content" android:layout_height="wrap_content"
+			android:layout_width="50px" android:layout_height="50px"
 			android:src="@drawable/movemap" android:clickable="true" />
-			
+
 		<ImageButton android:id="@+id/selectButton"
-			android:layout_width="wrap_content" android:layout_height="wrap_content"
+			android:layout_width="50px" android:layout_height="50px"
 			android:src="@drawable/movemap" android:clickable="true" />
 	</LinearLayout>
+	
 
 </AbsoluteLayout> 

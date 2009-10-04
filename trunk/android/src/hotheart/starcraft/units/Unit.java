@@ -1,18 +1,14 @@
 package hotheart.starcraft.units;
 
-import android.graphics.Canvas;
-import hotheart.starcraft.core.GameContext;
 import hotheart.starcraft.core.StarcraftCore;
 import hotheart.starcraft.files.DatFile;
 import hotheart.starcraft.graphics.Image;
 import hotheart.starcraft.graphics.utils.SelectionCircles;
-import hotheart.starcraft.orders.Order;
 import hotheart.starcraft.units.target.StaticPointTarget;
 import hotheart.starcraft.weapons.Weapon;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.util.Random;
 
 public final class Unit extends Flingy {
 
@@ -119,6 +115,8 @@ public final class Unit extends Flingy {
 	public static final int ACTION_REPEAT_AIR_ATTACK = 5;
 
 	public static final int MAX_GROUND_LEVEL = 11;
+	
+	// Library data
 
 	public Weapon groundWeapon;
 	public Weapon airWeapon;
@@ -128,31 +126,30 @@ public final class Unit extends Flingy {
 
 	public Unit parent = null;
 
-	public int teamColor;
-
 	public int maxHitPoints;
 	public int hipPoints;
-
-	public int repeatTime = 0;
-
 	public int elevationLevel;
-
-	public int armor;
+	
+	public int specialAbilityFlags = 0;
+	
+	// Game data
+	
+	public int teamColor;
+	
+	// TODO remove this to another class
 	public boolean selected = false;
 
-	public int specialAbilityFlags = 0;
-
+	// TODO replace by orders
 	public int action = ACTION_IDLE;
 	
+	// TODO replace by a function in Unit class
 	public UnitControlPanel controlPanel = new UnitControlPanel(this);
 	
-	public Order HumanIdleOrder;
-	public Order ReturnToIdleOrder;
-	public Order AttackOrder;
-	public Order AttackMoveOrder;
-	
-	public Order currentOrder;
+	// TODO move to attack order
+	Unit targetUnit;
+	public int repeatTime = 0;
 
+	// TODO need to be replaced by "isAir"?
 	public final boolean isGround() {
 		return elevationLevel <= MAX_GROUND_LEVEL;
 	}
@@ -160,6 +157,7 @@ public final class Unit extends Flingy {
 	public void buildTree() {
 		super.buildTree();
 		
+		// Update automatically by subunit?.buildTree();
 		updateSubunits();
 
 		if (subunit1 != null)
@@ -176,6 +174,7 @@ public final class Unit extends Flingy {
 		}
 	}
 
+	// TODO remove this for the first time
 	public final void draw_healths() {
 		// TODO: FIX Health bar
 
@@ -199,24 +198,8 @@ public final class Unit extends Flingy {
 
 	}
 
-	public void draw(Canvas c) {
-
-		super.draw();
-
-		draw_healths();
-		
-		updateSubunits();
-
-		if (subunit1 != null)
-			subunit1.draw(c);
-			
-		if (subunit2 != null)
-			subunit2.draw(c);
-		
-		draw_selection();
-
-	}
-
+	// TODO remove this to Targets and Orders
+	
 	public int getLenSqToTarget() {
 		int dposX = (int) target.getDestinationX();
 		int dposY = (int) target.getDestinationY();
@@ -239,6 +222,8 @@ public final class Unit extends Flingy {
 		}
 		if (subunit2 != null)
 			subunit2.update();
+		
+		// TODO move this to attack target
 
 		if ((action == ACTION_GRND_ATTACK) || (action == ACTION_AIR_ATTACK)) {
 			if (targetUnit != null) {
@@ -282,6 +267,7 @@ public final class Unit extends Flingy {
 		}
 	}
 	
+	// TODO subunit? must do this automatically
 	private void updateSubunits()
 	{
 		if (subunit1 != null) {
@@ -300,6 +286,7 @@ public final class Unit extends Flingy {
 
 	}
 
+	// TODO move to Orders
 	private void moveUnit(int dx, int dy) {
 
 		if ((specialAbilityFlags & ABILITY_BUILDING) != 0) {
@@ -313,11 +300,13 @@ public final class Unit extends Flingy {
 		target = new StaticPointTarget(dx, dy);
 	}
 
+	// TODO move to Orders
 	public void move(int dx, int dy) {
 		action = ACTION_MOVE;
 		moveUnit(dx, dy);
 	}
 
+	// TODO do this as Order. lowest priority.
 	public void kill() {
 
 		StarcraftCore.context.removeUnit(this);
@@ -331,8 +320,7 @@ public final class Unit extends Flingy {
 			subunit2.kill();
 	}
 
-	Unit targetUnit;
-
+	// TODO move to Attack Order
 	public final void attack(Unit unit) {
 		action = ACTION_GRND_ATTACK;
 		if (!unit.isGround())
@@ -352,6 +340,7 @@ public final class Unit extends Flingy {
 
 	}
 
+	// TODO move to Attack Order
 	public final void attack(int type) {
 		Weapon selWeapon = airWeapon;
 		if (type == 1)
@@ -374,6 +363,8 @@ public final class Unit extends Flingy {
 			finishAttack();
 	}
 
+	// TODO move to Attack Order
+	
 	public void repeatAttack() {
 		repeatTime = 0;
 		if (action == ACTION_GRND_ATTACK)

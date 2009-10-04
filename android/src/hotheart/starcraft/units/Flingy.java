@@ -229,7 +229,7 @@ public class Flingy extends Sprite {
 		super.update();
 	}
 
-	public void attack(int attackType) {
+	public void startAttackAnimation(int attackType) {
 		if (action == attackType)
 			return;
 
@@ -240,7 +240,6 @@ public class Flingy extends Sprite {
 			currentAttack = action = ATTACK_AIR;
 			play(3);
 		}
-
 	}
 
 	public void repeatAttack() {

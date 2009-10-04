@@ -4,6 +4,7 @@ import hotheart.starcraft.graphics.Image;
 import hotheart.starcraft.graphics.render.Render;
 import hotheart.starcraft.graphics.utils.SelectionCircles;
 import hotheart.starcraft.map.Map;
+import hotheart.starcraft.orders.MoveOrder;
 import hotheart.starcraft.units.Unit;
 import hotheart.starcraft.units.target.StaticPointTarget;
 
@@ -192,7 +193,7 @@ public final class GameContext {
 	{
 		for (Object u : selectedUnits.toArray()) {
 			Unit unit = (Unit) u;
-			unit.target = new StaticPointTarget(x, y);
+			unit.currentOrder = new MoveOrder(unit, new StaticPointTarget(x, y));
 		}
 	}
 	

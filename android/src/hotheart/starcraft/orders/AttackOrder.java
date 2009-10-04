@@ -46,7 +46,7 @@ public class AttackOrder extends Order {
 		}
 	}
 
-	public void attack(int type) {
+	public void shoot(int type) {
 
 		Weapon selWeapon = unit.airWeapon;
 		if (type == 1)

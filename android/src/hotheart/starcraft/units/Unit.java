@@ -46,7 +46,7 @@ public final class Unit extends Flingy {
 			file.skip((201 - 106 + 1)*2);
 			file.skip(COUNT * 8);
 
-			libHitPoints = file.read4ByteData2LowestBytes(COUNT);
+			libHitPoints = file.read4ByteData2InnerBytes(COUNT);
 			libElevationLevel = file.read1ByteData(COUNT);
 
 			file.skip(COUNT * 7);
@@ -210,21 +210,18 @@ public final class Unit extends Flingy {
 
 	}
 	
-	public final void startAttackAnimation(int type)
-	{
-		super.attack(type);
-	}
-
-	public final void attack(int type) {
+	public final void shoot(int type) {
 		
 		if (currentOrder instanceof AttackOrder)
-			((AttackOrder)currentOrder).attack(type);
+			((AttackOrder)currentOrder).shoot(type);
 	}
 
 	public void repeatAttack() {
 		
 		if (currentOrder instanceof AttackOrder)
 			((AttackOrder)currentOrder).repeatAttack();
+		
+		super.repeatAttack();
 	}
 
 	public final void hit(int points) {

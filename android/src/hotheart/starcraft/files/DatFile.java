@@ -43,15 +43,16 @@ public class DatFile {
 		}
 		return res;
 	}
-	
-	public final int[] read4ByteData2LowestBytes(int size) throws IOException {
+
+	public final int[] read4ByteData2InnerBytes(int size) throws IOException {
 		int[] res = new int[size];
 
 		for (int i = 0; i < size; i++) {
+
+			is.read();
 			res[i] = (((byte) is.read()) & 0xFF)
 					+ ((((byte) is.read()) & 0xFF) << 8);
-			
-			is.read();is.read();
+			is.read();
 		}
 		return res;
 	}

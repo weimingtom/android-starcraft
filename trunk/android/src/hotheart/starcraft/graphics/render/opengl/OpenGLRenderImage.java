@@ -174,6 +174,9 @@ public class OpenGLRenderImage extends RenderImage {
 			int function, int remapping, int teamColor) {
 
 		init(render.gl);
+		
+		if (frameId >= frames.length)
+			return;
 
 		render.gl.glMatrixMode(GL10.GL_MODELVIEW);
 		render.gl.glPushMatrix();

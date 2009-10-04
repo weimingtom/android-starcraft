@@ -83,19 +83,18 @@ public class Flingy extends Sprite {
 	public int turnRadius;
 	public int moveControl;
 	public boolean isAir = true;
-	
+
 	public AbstractTarget target = new FlingyTarget(this);
 
 	private int currentAttack = ATTACK_GRND;
 
 	int speed = 0;
 	int action = IDLE;
-	
-	public final int getSqLenToTarget()
-	{
+
+	public final int getSqLenToTarget() {
 		int destX = target.getDestinationX();
 		int destY = target.getDestinationY();
-		
+
 		return (int) ((posX - destX) * (posX - destX) + (posY - destY)
 				* (posY - destY));
 	}
@@ -107,27 +106,18 @@ public class Flingy extends Sprite {
 		final float dy = (float) Math
 				.sin(((imageState.angle - 90) / 180.0f) * 3.1415f)
 				* d;
-		
-		if (isAir)
-		{
+
+		if (isAir) {
 			posX += dx;
 			posY += dy;
-		}
-		else
-		{
-			if (GameContext.map.isWalkable(posX + (int) dx, posY
-					+ (int) dy)) {
+		} else {
+			if (GameContext.map.isWalkable(posX + (int) dx, posY + (int) dy)) {
 				posX += dx;
 				posY += dy;
-			}
-			else
-			{
+			} else {
 				stop();
 			}
 		}
-
-		
-		
 
 	}
 
@@ -174,56 +164,56 @@ public class Flingy extends Sprite {
 	}
 
 	public void update() {
-		int destR = target.getDestinationRadius();
-		int destX = target.getDestinationX();
-		int destY = target.getDestinationY();
-		
-		final int len_sq = (int) ((posX - destX) * (posX - destX) + (posY - destY)
-				* (posY - destY));
-		
-		if (len_sq > destR*destR) {
-			action = MOVING;
-			play(11);
-			speed = 0;
-		}
-		
-		
-		if (action == MOVING) {
-			
+		if (target != null) {
+			int destR = target.getDestinationRadius();
+			int destX = target.getDestinationX();
+			int destY = target.getDestinationY();
 
-			if ((moveControl == FLINGY_DAT) || (moveControl == MIXED)) {
-				speed += acceleration;
+			final int len_sq = (int) ((posX - destX) * (posX - destX) + (posY - destY)
+					* (posY - destY));
 
-				if (speed > topSpeed)
-					speed = topSpeed;
-
-				if (len_sq < (haltDistantion) * (haltDistantion)) {
-					speed -= acceleration;
-					if (speed <= 0) {
-						speed += acceleration;
-
-						speed -= acceleration / 10;
-
-						if (speed * speed > len_sq) {
-							speed = (int) Math.sqrt(len_sq) + 3;
-						}
-
-						// speed = (int) Math.sqrt(len_sq);
-						// if (speed > acceleration)
-						// speed = acceleration;
-					}
-				}
+			if (len_sq > destR * destR) {
+				action = MOVING;
+				play(11);
+				speed = 0;
 			}
 			
-			if (len_sq < destR*destR) {
-				stop();
-				return;
-			}
-
 			rotateTo(destX, destY);
 
-			if ((moveControl == FLINGY_DAT) || (moveControl == MIXED)) {
-				move(speed);
+			if (action == MOVING) {
+
+				if ((moveControl == FLINGY_DAT) || (moveControl == MIXED)) {
+					speed += acceleration;
+
+					if (speed > topSpeed)
+						speed = topSpeed;
+
+					if (len_sq < (haltDistantion) * (haltDistantion)) {
+						speed -= acceleration;
+						if (speed <= 0) {
+							speed += acceleration;
+
+							speed -= acceleration / 10;
+
+							if (speed * speed > len_sq) {
+								speed = (int) Math.sqrt(len_sq) + 3;
+							}
+
+							// speed = (int) Math.sqrt(len_sq);
+							// if (speed > acceleration)
+							// speed = acceleration;
+						}
+					}
+				}
+
+				if (len_sq < destR * destR) {
+					stop();
+					return;
+				}
+
+				if ((moveControl == FLINGY_DAT) || (moveControl == MIXED)) {
+					move(speed);
+				}
 			}
 		}
 		super.update();

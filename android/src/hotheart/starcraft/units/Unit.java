@@ -94,7 +94,7 @@ public final class Unit extends Flingy {
 		if (groundWeapon != 130)
 			res.groundWeapon = Weapon.getWeapon(groundWeapon);
 		if (airWeapon != 130)
-			res.airWeapon = Weapon.getWeapon(airWeapon);
+			res.airWeapon = Weapon.getWeapon(airWeapon); 
 
 		if (subUnit1 != 228) {
 			res.subunit1 = getUnit(subUnit1, teamColor);

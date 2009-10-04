@@ -63,7 +63,11 @@ public class AttackOrder extends Order {
 			return;
 		
 		if (selWeapon.attack(unit, destUnit))
+		{
 			unit.target = null;
+			unit.currentOrder = null;
+			unit.finishAttack();
+		}
 	}
 
 	public void repeatAttack() {

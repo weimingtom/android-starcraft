@@ -123,11 +123,11 @@ public class StarcraftCore {
 			// 32,
 			// 55 * 32);
 
-			context.addUnit(Unit.getUnit(72, TeamColors.COLOR_GREEN), 66 * 32, 55 * 32);
+			context.addUnit(Unit.getUnit(0, TeamColors.COLOR_GREEN), 66 * 32, 55 * 32);
 			
-			context.addUnit(Unit.getUnit(109, TeamColors.COLOR_GREEN), 66 * 32, 55 * 32);
+			context.addUnit(Unit.getUnit(0, TeamColors.COLOR_GREEN), 66 * 32, 55 * 32);
 			
-			context.addUnit(Unit.getUnit(42, TeamColors.COLOR_GREEN), 66 * 32, 55 * 32);
+			context.addUnit(Unit.getUnit(0, TeamColors.COLOR_GREEN), 66 * 32, 55 * 32);
 
 			//context.selectUnit(u);
 			//			
@@ -146,7 +146,7 @@ public class StarcraftCore {
 			// }
 
 			context.majorSelectedUnit = context.units.get(0);
-			context.majorSelectedUnit.selected = true;
+			context.selectUnit(context.majorSelectedUnit);
 			//
 			// context.addUnit(Unit.getUnit(0, TeamColors.COLOR_BLUE), 66 * 32,
 			// 66 * 32);

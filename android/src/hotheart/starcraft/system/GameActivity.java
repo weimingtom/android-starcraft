@@ -28,8 +28,6 @@ import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 
 public final class GameActivity extends Activity {
-	ColorMatrixColorFilter activeFilter;
-	ColorMatrixColorFilter unactiveFilter;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -53,42 +51,29 @@ public final class GameActivity extends Activity {
 		MapPreview prev = (MapPreview) gui.findViewById(R.id.mapPreview);
 		prev.setBitmap(GameContext.map.generateMapPreview());
 		cont.setMapPreview(prev);
-		
+
 		ImageButton b11 = (ImageButton) gui.findViewById(R.id.b11);
 		ImageButton b21 = (ImageButton) gui.findViewById(R.id.b21);
 		ImageButton b31 = (ImageButton) gui.findViewById(R.id.b31);
-		
+
 		ImageButton b12 = (ImageButton) gui.findViewById(R.id.b12);
 		ImageButton b22 = (ImageButton) gui.findViewById(R.id.b22);
 		ImageButton b32 = (ImageButton) gui.findViewById(R.id.b32);
-		
+
 		ImageButton b13 = (ImageButton) gui.findViewById(R.id.b13);
 		ImageButton b23 = (ImageButton) gui.findViewById(R.id.b23);
 		ImageButton b33 = (ImageButton) gui.findViewById(R.id.b33);
-		
+
 		cont.setControlButtons(b11, b21, b31, b12, b22, b32, b13, b23, b33);
-		
+
 		// gui.setVisibility(View.INVISIBLE);
 		rl.addView(gui);
 		setContentView(rl);
-		
 
 		return cont;
 	}
 
 	void init() {
-
-		ColorMatrix cm = new ColorMatrix();
-		cm.set(new float[] { 1, 0, 0, 0, 0, 0, 1, 0, 0, 100, 0, 0, 1, 0, 0, 0,
-				0, 0, 1, 0 });
-
-		activeFilter = new ColorMatrixColorFilter(cm);
-
-		cm = new ColorMatrix();
-		cm.set(new float[] { 1, 0, 0, 0, 100, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0,
-				0, 0, 1, 0 });
-
-		unactiveFilter = new ColorMatrixColorFilter(cm);
 
 		final Activity currentActivity = this;
 
@@ -100,88 +85,91 @@ public final class GameActivity extends Activity {
 						if (result) {
 
 							StarcraftCore.viewController = createContentView();
-							// view = (SimpleView) findViewById(R.id.GameView);
-							// view.setMap(initializer.map);
 
-							// final ImageButton kill = (ImageButton)
-							// findViewById(R.id.killButton);
-							// kill.setOnClickListener(new OnClickListener() {
-							// public void onClick(View v) {
-							// view.killSelectedUnit();
-							// }
-							// });
-							//
-							final ImageButton move = (ImageButton) findViewById(R.id.moveButton);
+							final Button move = (Button) findViewById(R.id.moveButton);
+							final Button umove = (Button) findViewById(R.id.unitMoveButton);
+							final Button select = (Button) findViewById(R.id.selectButton);
+							final Button attack = (Button) findViewById(R.id.attackButton);
 
 							if (StarcraftCore.viewController.isMapScroll())
-								move.setColorFilter(activeFilter);
+								move.setEnabled(false);
 							else
-								move.setColorFilter(unactiveFilter);
+								move.setEnabled(true);
 
 							move.setOnClickListener(new OnClickListener() {
 								public void onClick(View v) {
-									StarcraftCore.viewController
-											.setMapScrollingState(!StarcraftCore.viewController
-													.isMapScroll());
 
-									if (StarcraftCore.viewController
-											.isMapScroll())
-										move.setColorFilter(activeFilter);
-									else
-										move.setColorFilter(unactiveFilter);
+									StarcraftCore.viewController
+											.setMapScrollingState(true);
+
+									move.setEnabled(false);
+									select.setEnabled(true);
+									umove.setEnabled(true);
+									attack.setEnabled(true);
 								}
 							});
-							
-							
-							final ImageButton select = (ImageButton) findViewById(R.id.selectButton);
 
 							if (StarcraftCore.gameController.currentAction == GameController.ACTION_SELECT)
-								select.setColorFilter(activeFilter);
+								select.setEnabled(false);
 							else
-								select.setColorFilter(unactiveFilter);
+								select.setEnabled(true);
 
 							select.setOnClickListener(new OnClickListener() {
 								public void onClick(View v) {
-									
-									if (StarcraftCore.gameController.currentAction == GameController.ACTION_SELECT)
-										StarcraftCore.gameController.currentAction = GameController.ACTION_MOVE;
-									else
+									StarcraftCore.viewController
+											.setMapScrollingState(false);
+
+									if (StarcraftCore.gameController.currentAction != GameController.ACTION_SELECT) {
 										StarcraftCore.gameController.currentAction = GameController.ACTION_SELECT;
-									
-									
-									if (StarcraftCore.gameController.currentAction == GameController.ACTION_SELECT)
-										select.setColorFilter(activeFilter);
-									else
-										select.setColorFilter(unactiveFilter);
+									}
+									move.setEnabled(true);
+									select.setEnabled(false);
+									umove.setEnabled(true);
+									attack.setEnabled(true);
 								}
 							});
-							
-							
-							for(int i = 0; i<9 ; i++)
-								StarcraftCore.viewController.setControlIcon(i, i+15);
-							
-							//
-							// final ImageButton attack = (ImageButton)
-							// findViewById(R.id.attackButton);
-							//
-							// if (view.selectingTarget)
-							// attack.setColorFilter(activeFilter);
-							// else
-							// attack.setColorFilter(unactiveFilter);
-							//
-							// attack
-							// .setOnClickListener(new OnClickListener() {
-							// public void onClick(View v) {
-							// view.selectingTarget = !view.selectingTarget;
-							//
-							// if (view.selectingTarget)
-							// attack
-							// .setColorFilter(activeFilter);
-							// else
-							// attack
-							// .setColorFilter(unactiveFilter);
-							// }
-							// });
+
+							if (StarcraftCore.gameController.currentAction == GameController.ACTION_ATTACK)
+								attack.setEnabled(false);
+							else
+								attack.setEnabled(true);
+
+							attack.setOnClickListener(new OnClickListener() {
+								public void onClick(View v) {
+									StarcraftCore.viewController
+											.setMapScrollingState(false);
+									if (StarcraftCore.gameController.currentAction != GameController.ACTION_ATTACK) {
+										StarcraftCore.gameController.currentAction = GameController.ACTION_ATTACK;
+									}
+									move.setEnabled(true);
+									select.setEnabled(true);
+									umove.setEnabled(true);
+									attack.setEnabled(false);
+								}
+							});
+
+							if (StarcraftCore.gameController.currentAction == GameController.ACTION_MOVE)
+								umove.setEnabled(false);
+							else
+								umove.setEnabled(true);
+
+							umove.setOnClickListener(new OnClickListener() {
+								public void onClick(View v) {
+									StarcraftCore.viewController
+											.setMapScrollingState(false);
+									if (StarcraftCore.gameController.currentAction != GameController.ACTION_MOVE) {
+										StarcraftCore.gameController.currentAction = GameController.ACTION_MOVE;
+									}
+									move.setEnabled(true);
+									select.setEnabled(true);
+									umove.setEnabled(false);
+									attack.setEnabled(true);
+								}
+							});
+
+							for (int i = 0; i < 9; i++)
+								StarcraftCore.viewController.setControlIcon(i,
+										-1);
 
 						} else // ERROR
 						{

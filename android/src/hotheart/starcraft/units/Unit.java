@@ -4,7 +4,11 @@ import hotheart.starcraft.core.StarcraftCore;
 import hotheart.starcraft.files.DatFile;
 import hotheart.starcraft.graphics.Image;
 import hotheart.starcraft.graphics.utils.SelectionCircles;
+import hotheart.starcraft.orders.AttackOrder;
+import hotheart.starcraft.orders.Order;
+import hotheart.starcraft.units.target.FlingyTarget;
 import hotheart.starcraft.units.target.StaticPointTarget;
+import hotheart.starcraft.units.target.UnitTarget;
 import hotheart.starcraft.weapons.Weapon;
 
 import java.io.ByteArrayInputStream;
@@ -136,82 +140,27 @@ public final class Unit extends Flingy {
 	
 	public int teamColor;
 	
-	// TODO remove this to another class
-	public boolean selected = false;
-
-	// TODO replace by orders
-	public int action = ACTION_IDLE;
+	public Order currentOrder = null;
 	
 	// TODO replace by a function in Unit class
 	public UnitControlPanel controlPanel = new UnitControlPanel(this);
 	
-	// TODO move to attack order
-	Unit targetUnit;
-	public int repeatTime = 0;
-
-	// TODO need to be replaced by "isAir"?
-	public final boolean isGround() {
-		return elevationLevel <= MAX_GROUND_LEVEL;
-	}
-
 	public void buildTree() {
+		if (parent!=null)
+			updateSubunitPos();
+		
 		super.buildTree();
 		
-		// Update automatically by subunit?.buildTree();
-		updateSubunits();
-
 		if (subunit1 != null)
 			subunit1.buildTree();
 		if (subunit2 != null)
 			subunit2.buildTree();
 	}
 
-	public final void draw_selection() {
-		if (selected) {
-			Image circ = SelectionCircles.selCircles[selCircle];
-			circ.setPos(posX, posY + vertPos);
-			circ.draw();
-		}
-	}
-
-	// TODO remove this for the first time
-	public final void draw_healths() {
-		// TODO: FIX Health bar
-
-		// Paint p = new Paint();
-		// p.setColor(Color.GRAY);
-		//
-		// int yPos = posY + vertPos + SelectionCircles.selCircleSize[selCircle]
-		// / 2;
-		//
-		// c.drawRect(posX - healthBar / 2, yPos, posX + healthBar / 2, yPos +
-		// 4,
-		// p);
-		//
-		// p.setColor(Color.GREEN);
-		// if (maxHealth > 0) {
-		// int len = (healthBar * health) / maxHealth;
-		//
-		// c.drawRect(posX - healthBar / 2, yPos, posX - healthBar / 2 + len,
-		// yPos + 4, p);
-		// }
-
-	}
-
-	// TODO remove this to Targets and Orders
-	
-	public int getLenSqToTarget() {
-		int dposX = (int) target.getDestinationX();
-		int dposY = (int) target.getDestinationY();
-
-		if (action == ACTION_GRND_ATTACK)
-			if (targetUnit != null) {
-				dposX = (int) targetUnit.getPosX();
-				dposY = (int) targetUnit.getPosY();
-			}
-
-		return (int) ((dposX - posX) * (dposX - posX) + (dposY - posY)
-				* (dposY - posY));
+	public final void drawSelection() {
+		Image circ = SelectionCircles.selCircles[selCircle];
+		circ.setPos(posX, posY + vertPos);
+		circ.draw();
 	}
 
 	public void update() {
@@ -223,87 +172,17 @@ public final class Unit extends Flingy {
 		if (subunit2 != null)
 			subunit2.update();
 		
-		// TODO move this to attack target
-
-		if ((action == ACTION_GRND_ATTACK) || (action == ACTION_AIR_ATTACK)) {
-			if (targetUnit != null) {
-				Weapon selWeapon = airWeapon;
-				if (action == ACTION_GRND_ATTACK)
-					selWeapon = groundWeapon;
-
-				if (selWeapon != null) {
-					int dposX = (int) targetUnit.getPosX();
-					int dposY = (int) targetUnit.getPosY();
-					rotateTo(dposX, dposY);
-
-					int len_sq = (int) ((dposX - posX) * (dposX - posX) + (dposY - posY)
-							* (dposY - posY));
-
-					if (len_sq <= selWeapon.maxDistance * selWeapon.maxDistance) {
-						if (action == ACTION_GRND_ATTACK)
-							super.attack(Flingy.ATTACK_GRND);
-						else
-							super.attack(Flingy.ATTACK_AIR);
-						if (parent != null)
-							parent.stop();
-					} else {
-						moveUnit(dposX, dposY);
-					}
-				}
-			}
-		} else if ((action == ACTION_REPEAT_GRND_ATTACK)
-				|| (action == ACTION_REPEAT_AIR_ATTACK)) {
-			repeatTime++;
-			if (groundWeapon.reloadTime <= repeatTime) {
-				repeatTime = 0;
-				if (action == ACTION_REPEAT_GRND_ATTACK)
-					action = ACTION_GRND_ATTACK;
-				else
-					action = ACTION_AIR_ATTACK;
-
-				// Play repeat attack animation
-				super.repeatAttack();
-			}
-		}
+		if (currentOrder!=null)
+			currentOrder.update();
 	}
 	
-	// TODO subunit? must do this automatically
-	private void updateSubunits()
+	private void updateSubunitPos()
 	{
-		if (subunit1 != null) {
-			subunit1.setPos(posX, posY);
-			
-			if (subunit1.action != ACTION_GRND_ATTACK)
-				subunit1.rotateTo(target.getDestinationX(), target.getDestinationY());
-				
+		if (parent!=null)
+		{
+			setPos(parent.getPosX(), parent.getPosY());
+			rotateTo(parent.target.getDestinationX(), parent.target.getDestinationY());
 		}
-		if (subunit2 != null) {
-			subunit2.setPos(posX, posY);
-			
-			if (subunit2.action != ACTION_GRND_ATTACK)
-				subunit2.rotateTo(target.getDestinationX(), target.getDestinationY());
-		}
-
-	}
-
-	// TODO move to Orders
-	private void moveUnit(int dx, int dy) {
-
-		if ((specialAbilityFlags & ABILITY_BUILDING) != 0) {
-			return;
-		}
-
-		if ((specialAbilityFlags & ABILITY_SUBUNIT) == 0) {
-			updateSubunits();
-		}
-		
-		target = new StaticPointTarget(dx, dy);
-	}
-
-	// TODO move to Orders
-	public void move(int dx, int dy) {
-		action = ACTION_MOVE;
-		moveUnit(dx, dy);
 	}
 
 	// TODO do this as Order. lowest priority.
@@ -320,59 +199,32 @@ public final class Unit extends Flingy {
 			subunit2.kill();
 	}
 
-	// TODO move to Attack Order
 	public final void attack(Unit unit) {
-		action = ACTION_GRND_ATTACK;
-		if (!unit.isGround())
-			action = ACTION_AIR_ATTACK;
+		
+		currentOrder = new AttackOrder(this, unit);
 
 		if (subunit1 != null)
 			subunit1.attack(unit);
 		if (subunit2 != null)
 			subunit1.attack(unit);
 
-		targetUnit = unit;
-
-		if (action == ACTION_GRND_ATTACK)
-			super.attack(Flingy.ATTACK_GRND);
-		else
-			super.attack(Flingy.ATTACK_AIR);
-
 	}
-
-	// TODO move to Attack Order
-	public final void attack(int type) {
-		Weapon selWeapon = airWeapon;
-		if (type == 1)
-			selWeapon = groundWeapon;
-
-		if (selWeapon == null)
-			return;
-
-		if (targetUnit != null) {
-			if (selWeapon.attack(this, targetUnit)) {
-				targetUnit = null;
-				stop();
-
-				if (subunit1 != null)
-					subunit1.stop();
-				if (subunit2 != null)
-					subunit1.stop();
-			}
-		} else
-			finishAttack();
-	}
-
-	// TODO move to Attack Order
 	
-	public void repeatAttack() {
-		repeatTime = 0;
-		if (action == ACTION_GRND_ATTACK)
-			action = ACTION_REPEAT_GRND_ATTACK;
-		else
-			action = ACTION_REPEAT_AIR_ATTACK;
+	public final void startAttackAnimation(int type)
+	{
+		super.attack(type);
+	}
 
-		// super.repeatAttack();
+	public final void attack(int type) {
+		
+		if (currentOrder instanceof AttackOrder)
+			((AttackOrder)currentOrder).attack(type);
+	}
+
+	public void repeatAttack() {
+		
+		if (currentOrder instanceof AttackOrder)
+			((AttackOrder)currentOrder).repeatAttack();
 	}
 
 	public final void hit(int points) {

@@ -90,6 +90,15 @@ public class Flingy extends Sprite {
 
 	int speed = 0;
 	int action = IDLE;
+	
+	public final int getSqLenToTarget()
+	{
+		int destX = target.getDestinationX();
+		int destY = target.getDestinationY();
+		
+		return (int) ((posX - destX) * (posX - destX) + (posY - destY)
+				* (posY - destY));
+	}
 
 	public final void move(int d) {
 		final float dx = (float) Math

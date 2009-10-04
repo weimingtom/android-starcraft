@@ -422,14 +422,14 @@ public class ImageScriptEngine {
 		case 0x1b:
 		case OP_ATTACK:
 			if (instance.image instanceof Unit)
-				((Unit) instance.image).attack(-1);
+				((Unit) instance.image).shoot(-1);
 
 			break;
 
 		case OP_ATTACK_WITH:
 			if (instance.image instanceof Unit)
 				((Unit) instance.image)
-						.attack(script[instance.scriptPos + 1] & 0xFF);
+						.shoot(script[instance.scriptPos + 1] & 0xFF);
 
 			instance.scriptPos++;
 
@@ -437,7 +437,7 @@ public class ImageScriptEngine {
 
 		case OP_ATTACK_WITH_SOUND:
 			if (instance.image instanceof Unit)
-				((Unit) instance.image).attack(-1);
+				((Unit) instance.image).shoot(-1);
 
 			// Sound control
 		case OP_PLAY_RANDROM_SOUND:// Play random sound

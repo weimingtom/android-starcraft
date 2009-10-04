@@ -5,11 +5,19 @@ import hotheart.starcraft.units.Flingy;
 public class FlingyTarget extends AbstractTarget {
 
 	Flingy dest;
+	int R;
 	
-	public FlingyTarget(Flingy u)
+	public FlingyTarget(Flingy u, int radius)
 	{
 		dest = u;
+		R = radius;
 	}
+	public FlingyTarget(Flingy u)
+	{
+		this(u, 10);
+		
+	}
+
 	
 	@Override
 	public int getDestinationX() {
@@ -23,7 +31,7 @@ public class FlingyTarget extends AbstractTarget {
 
 	@Override
 	public int getDestinationRadius() {
-		return 10;
+		return R;
 	}
 
 }

@@ -169,7 +169,7 @@ public class ImageScriptEngine {
 					+ ((script[instance.scriptPos++] & 0xFF) << 8);
 
 			if (instance.image instanceof Unit)
-				if (((Unit) instance.image).getLenSqToTarget() <= (dist * dist))
+				if (((Unit) instance.image).getSqLenToTarget() <= (dist * dist))
 					instance.scriptPos = destPos;
 
 			break;

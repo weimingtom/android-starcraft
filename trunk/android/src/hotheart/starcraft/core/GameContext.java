@@ -5,6 +5,7 @@ import hotheart.starcraft.graphics.render.Render;
 import hotheart.starcraft.graphics.utils.SelectionCircles;
 import hotheart.starcraft.map.Map;
 import hotheart.starcraft.units.Unit;
+import hotheart.starcraft.units.target.StaticPointTarget;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -43,6 +44,8 @@ public final class GameContext {
 	}
 
 	public ArrayList<Unit> units;
+	
+	public ArrayList<Unit> selectedUnits = new ArrayList<Unit>();
 
 	public void addUnit(Unit u, int x, int y) {
 		int R = 0;
@@ -125,6 +128,7 @@ public final class GameContext {
 
 	public void removeUnit(Unit u) {
 		units.remove(u);
+		selectedUnits.remove(u);
 	}
 
 	public ArrayList<Image> sprites = new ArrayList<Image>();
@@ -154,11 +158,14 @@ public final class GameContext {
 
 		for (Image i : drawObjects)
 			i.drawWithoutChilds();
+		
+		
 
-//		for (Unit u : units) {
+		for (Unit u : selectedUnits) {
+			u.drawSelection();
 //			u.draw_selection();
 //			u.draw_healths();
-//		}
+		}
 	}
 
 	public void update() {
@@ -178,40 +185,32 @@ public final class GameContext {
 		render.begin();
 		drawTree();
 		
-		for (Unit u : units) {
-			u.draw_selection();
-			u.draw_healths();
-		}
-		
 		render.end();
-		
-		
 	}
 
 	public void moveSelected(int x, int y)
 	{
-		for (Object u : units.toArray()) {
+		for (Object u : selectedUnits.toArray()) {
 			Unit unit = (Unit) u;
-			if (unit.selected)
-				unit.move(x, y);
+			unit.target = new StaticPointTarget(x, y);
 		}
 	}
 	
 	public void removeSelection()
 	{
-		for (Object u : units.toArray()) {
-			Unit unit = (Unit) u;
-			unit.selected = false;
-		}
+		selectedUnits.clear();
 	}
 	
 	public void selectUnit(Unit u)
 	{
-		u.selected = true;
-		StarcraftCore.viewController.setControlIcons(u.controlPanel.getButtons());
+		selectedUnits.remove(u);
+		selectedUnits.add(u);
+		
+		if (StarcraftCore.viewController!=null)
+			StarcraftCore.viewController.setControlIcons(u.controlPanel.getButtons());
 	}
 	public void deselectUnit(Unit u)
 	{
-		u.selected = false;
+		selectedUnits.remove(u);
 	}
 }

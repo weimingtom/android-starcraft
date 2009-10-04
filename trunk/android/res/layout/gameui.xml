@@ -62,13 +62,21 @@
 		android:layout_height="wrap_content" android:layout_alignBottom="@+id/GameView"
 		android:layout_y="55px">
 
-		<ImageButton android:id="@+id/moveButton"
-			android:layout_width="50px" android:layout_height="50px"
-			android:src="@drawable/movemap" android:clickable="true" />
+		<Button android:id="@+id/moveButton"
+			android:layout_width="wrap_content" android:layout_height="wrap_content"
+			android:text="Move" android:clickable="true" />
+			
+		<Button android:id="@+id/unitMoveButton"
+			android:layout_width="wrap_content" android:layout_height="wrap_content"
+			android:text="UMove" android:clickable="true" />
 
-		<ImageButton android:id="@+id/selectButton"
-			android:layout_width="50px" android:layout_height="50px"
-			android:src="@drawable/movemap" android:clickable="true" />
+		<Button android:id="@+id/selectButton"
+			android:layout_width="wrap_content" android:layout_height="wrap_content"
+			android:text="Select" android:clickable="true" />
+			
+		<Button android:id="@+id/attackButton"
+			android:layout_width="wrap_content" android:layout_height="wrap_content"
+			android:text="Attack" android:clickable="true" />
 	</LinearLayout>
 	
 

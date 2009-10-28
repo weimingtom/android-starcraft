@@ -201,6 +201,9 @@ public final class Unit extends Flingy {
 
 	public final void attack(Unit unit) {
 		
+		if (unit == this)
+			return;
+		
 		Weapon selWeapon = this.airWeapon;
 		if (!unit.isAir)
 			selWeapon = this.groundWeapon;

@@ -48,18 +48,23 @@ public class AttackOrder extends Order {
 		}
 	}
 
+	// TODO must use attack type!
 	public void shoot(int type) {
-
-		Weapon selWeapon = unit.airWeapon;
-		if (type == 1)
-			selWeapon = unit.groundWeapon;
 		
-		if (type == -1)
-		{
-			selWeapon = unit.airWeapon;
-			if (!destUnit.isAir)
-				selWeapon = unit.groundWeapon;
-		}
+		Weapon selWeapon = unit.airWeapon;
+		if (!destUnit.isAir)
+			selWeapon = unit.groundWeapon;
+
+//		Weapon selWeapon = unit.airWeapon;
+//		if (type == 1)
+//			selWeapon = unit.groundWeapon;
+//		
+//		if (type == -1)
+//		{
+//			Weapon selWeapon = unit.airWeapon;
+//			if (!destUnit.isAir)
+//				selWeapon = unit.groundWeapon;
+//		}
 
 		if (selWeapon == null)
 			return;

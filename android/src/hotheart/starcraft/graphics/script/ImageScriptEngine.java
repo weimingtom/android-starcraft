@@ -198,6 +198,7 @@ public class ImageScriptEngine {
 			overlay.parentOverlay = instance.image;
 			overlay.imageState.followParent = true;
 			overlay.imageState.followParentAngle = true;
+			overlay.imageState.followParentAnim = true;
 			// overlay.followParentAnim = true;
 			// overlay.followParentAngle = true;
 			overlay.setOffsetX(ov_dx);
@@ -221,6 +222,7 @@ public class ImageScriptEngine {
 			underlay.parentOverlay = instance.image;
 			underlay.imageState.followParent = true;
 			underlay.imageState.followParentAngle = true;
+			underlay.imageState.followParentAnim = true;
 			// underlay.followParentAnim = true;
 			// underlay.followParentAngle = true;
 

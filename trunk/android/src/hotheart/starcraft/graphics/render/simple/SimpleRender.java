@@ -2,6 +2,7 @@ package hotheart.starcraft.graphics.render.simple;
 
 import hotheart.starcraft.controller.ViewController;
 import hotheart.starcraft.graphics.render.Render;
+import hotheart.starcraft.graphics.render.RenderFlags;
 import hotheart.starcraft.graphics.render.RenderImage;
 import hotheart.starcraft.graphics.render.RenderTile;
 import hotheart.starcraft.graphics.render.simple.grp.GrpRenderFactory;
@@ -23,7 +24,7 @@ public class SimpleRender extends Render {
 	}
 
 	@Override
-	protected RenderImage _createObject(int grpId) {
+	protected RenderImage _createObject(int grpId, RenderFlags flags) {
 		return new SimpleRenderImage(this, GrpRenderFactory.getGraphics(grpId));
 	}
 

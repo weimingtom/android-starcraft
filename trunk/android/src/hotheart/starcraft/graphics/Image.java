@@ -221,10 +221,8 @@ public class Image {
 
 		deleted = true;
 		StarcraftCore.context.removeImage(this);
-		if (childCount == 0) {
-			if (parentOverlay != null) {
-				parentOverlay.removeChild(this);
-			}
+		if (parentOverlay != null) {
+			parentOverlay.removeChild(this);
 		}
 	}
 
@@ -244,8 +242,6 @@ public class Image {
 				childCount--;
 				break;
 			}
-		if ((deleted) & (childCount == 0))
-			delete();
 	}
 
 	public void update() {

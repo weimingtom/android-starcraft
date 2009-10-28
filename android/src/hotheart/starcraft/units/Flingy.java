@@ -238,6 +238,7 @@ public class Flingy extends Sprite {
 	}
 
 	public void finishAttack() {
+		action = IDLE;
 		play(8);
 	}
 

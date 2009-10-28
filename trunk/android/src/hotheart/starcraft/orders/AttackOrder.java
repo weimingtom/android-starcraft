@@ -20,6 +20,8 @@ public class AttackOrder extends Order {
 			selWeapon = unit.groundWeapon;
 		
 		u.target = new UnitTarget(dUnit, selWeapon.maxDistance);
+		if (u.parent != null)
+			u.parent.target = u.target;
 	}
 
 	public void update() {

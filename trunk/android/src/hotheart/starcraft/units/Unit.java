@@ -201,7 +201,12 @@ public final class Unit extends Flingy {
 
 	public final void attack(Unit unit) {
 		
-		currentOrder = new AttackOrder(this, unit);
+		Weapon selWeapon = this.airWeapon;
+		if (!unit.isAir)
+			selWeapon = this.groundWeapon;
+		
+		if (selWeapon != null)
+			currentOrder = new AttackOrder(this, unit);
 
 		if (subunit1 != null)
 			subunit1.attack(unit);

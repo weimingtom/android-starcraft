@@ -13,6 +13,7 @@ import hotheart.starcraft.core.GameContext;
 import hotheart.starcraft.core.StarcraftCore;
 import hotheart.starcraft.files.DatFile;
 import hotheart.starcraft.graphics.render.Render;
+import hotheart.starcraft.graphics.render.RenderFlags;
 import hotheart.starcraft.graphics.render.simple.grp.GrpRenderFactory;
 import hotheart.starcraft.graphics.script.ImageScriptEngine;
 import hotheart.starcraft.graphics.script.ImageState;
@@ -77,9 +78,11 @@ public class Image {
 		int align = gfxTurns[id] & 0xFF;
 		int functionId = drawFunc[id] & 0xFF;
 		int remapping = remappingData[id] & 0xFF;
+		
+		RenderFlags flags = new RenderFlags(functionId, remapping, color);
 
 		ImageStaticData data = new ImageStaticData(id, StarcraftCore.render
-				.createObject(grpId), ImageScriptEngine.createHeader(scriptId),
+				.createObject(grpId, flags), ImageScriptEngine.createHeader(scriptId),
 				functionId, remapping, align == 1);
 
 		Image res = new Image(layer, data);

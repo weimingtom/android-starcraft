@@ -69,7 +69,7 @@ public class StarcraftCore {
 			gameController = new GameController();
 
 			render = new OpenGLRender();
-			//render = new SimpleRender();
+			// render = new SimpleRender();
 
 			FileInputStream fs = null;
 
@@ -123,13 +123,34 @@ public class StarcraftCore {
 			// 32,
 			// 55 * 32);
 
-			context.addUnit(Unit.getUnit(3, TeamColors.COLOR_GREEN), 66 * 32, 55 * 32);
-		
-			context.addUnit(Unit.getUnit(3, TeamColors.COLOR_GREEN), 66 * 32, 55 * 32);
-			
-			context.addUnit(Unit.getUnit(3, TeamColors.COLOR_GREEN), 66 * 32, 55 * 32);
+			context.addUnit(Unit.getUnit(1, TeamColors.COLOR_GREEN), 66 * 32,
+					55 * 32);
 
-			//context.selectUnit(u);
+			context.addUnit(Unit.getUnit(1, TeamColors.COLOR_GREEN), 66 * 32,
+					55 * 32);
+
+			context.addUnit(Unit.getUnit(1, TeamColors.COLOR_GREEN), 66 * 32,
+					55 * 32);
+
+			context.addUnit(Unit.getUnit(1, TeamColors.COLOR_GREEN), 66 * 32,
+					55 * 32);
+
+			context.addUnit(Unit.getUnit(1, TeamColors.COLOR_GREEN), 66 * 32,
+					55 * 32);
+
+			context.addUnit(Unit.getUnit(1, TeamColors.COLOR_GREEN), 66 * 32,
+					55 * 32);
+
+			context.addUnit(Unit.getUnit(1, TeamColors.COLOR_GREEN), 66 * 32,
+					55 * 32);
+
+			context.addUnit(Unit.getUnit(1, TeamColors.COLOR_GREEN), 66 * 32,
+					55 * 32);
+
+			context.addUnit(Unit.getUnit(135, TeamColors.COLOR_GREEN), 66 * 32,
+					55 * 32);
+
+			// context.selectUnit(u);
 			//			
 			// context.addUnit(Unit.getUnit(1, TeamColors.COLOR_GREEN), 66 * 32,
 			// 55 * 32);

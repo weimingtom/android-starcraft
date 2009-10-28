@@ -14,6 +14,7 @@ import android.opengl.GLUtils;
 
 import hotheart.starcraft.files.GrpFile;
 import hotheart.starcraft.graphics.StarcraftPalette;
+import hotheart.starcraft.graphics.render.RenderFlags;
 import hotheart.starcraft.graphics.render.RenderImage;
 
 public class OpenGLRenderImage extends RenderImage {
@@ -41,8 +42,9 @@ public class OpenGLRenderImage extends RenderImage {
 			gl.glTexEnvf(GL10.GL_TEXTURE_ENV, GL10.GL_TEXTURE_ENV_MODE,
 					GL10.GL_REPLACE);
 
-			Bitmap bitmap = image.createBitmap(i,
-					StarcraftPalette.greenPalette);
+			Bitmap bitmap = image.createBitmap(i, StarcraftPalette
+					.getImagePalette(flags.functionId, flags.remapping,
+							flags.teamColor));
 
 			calcSize(bitmap.getWidth(), bitmap.getHeight());
 			genTexture(bitmap);
@@ -146,6 +148,8 @@ public class OpenGLRenderImage extends RenderImage {
 
 	Frame[] frames = null;
 
+	RenderFlags flags;
+
 	synchronized void init(GL10 gl) {
 		if (frames != null)
 			return;
@@ -164,9 +168,10 @@ public class OpenGLRenderImage extends RenderImage {
 			frames[i] = new Frame(i, gl);
 	}
 
-	public OpenGLRenderImage(OpenGLRender r, GrpFile data) {
+	public OpenGLRenderImage(OpenGLRender r, GrpFile data, RenderFlags flags) {
 		render = r;
 		image = data;
+		this.flags = flags;
 	}
 
 	@Override
@@ -174,7 +179,7 @@ public class OpenGLRenderImage extends RenderImage {
 			int function, int remapping, int teamColor) {
 
 		init(render.gl);
-		
+
 		if (frameId >= frames.length)
 			return;
 
@@ -207,17 +212,17 @@ public class OpenGLRenderImage extends RenderImage {
 
 		render.gl.glActiveTexture(GL10.GL_TEXTURE0);
 		render.gl.glBindTexture(GL10.GL_TEXTURE_2D, frames[frameId].texture);
-		
-		
-		
-//		if (function == RenderFunction.SHADOW)
-//		{
-//			render.gl.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
-//		}
-//		else
-//		{
-//			render.gl.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
-//		}
+
+		// if (function == RenderFunction.SHADOW)
+		// {
+		// render.gl.glBlendFunc(GL10.GL_SRC_ALPHA,
+		// GL10.GL_ONE_MINUS_SRC_ALPHA);
+		// }
+		// else
+		// {
+		// render.gl.glBlendFunc(GL10.GL_SRC_ALPHA,
+		// GL10.GL_ONE_MINUS_SRC_ALPHA);
+		// }
 
 		render.gl.glDrawElements(GL10.GL_TRIANGLE_STRIP, 4,
 				GL10.GL_UNSIGNED_BYTE, mIndexBuffer);

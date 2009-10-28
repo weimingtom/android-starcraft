@@ -2,6 +2,7 @@ package hotheart.starcraft.graphics.render;
 
 import hotheart.starcraft.controller.ViewController;
 
+import java.util.HashMap;
 import java.util.TreeMap;
 
 import android.content.Context;
@@ -26,16 +27,24 @@ public abstract class Render {
 		return cached;
 	}
 
-	protected abstract RenderImage _createObject(int grpId);
+	protected abstract RenderImage _createObject(int grpId, RenderFlags flags);
+	
+	private static TreeMap<Long, RenderImage> resources = new TreeMap<Long, RenderImage>();
+	
+	private long getHash(int grpId, RenderFlags flags)
+	{
+		return grpId + ((flags.functionId&0xFF)<<16) + ((flags.teamColor&0xFF)<<24) + ((flags.remapping&0xFF)<<32);
+	}
 
-	private static TreeMap<Integer, RenderImage> resources = new TreeMap<Integer, RenderImage>();
+	public RenderImage createObject(int grpId, RenderFlags flags) {
 
-	public RenderImage createObject(int grpId) {
-		if (resources.containsKey((Integer) grpId))
-			return resources.get((Integer) grpId);
+		Long hash = getHash(grpId, flags);
+		
+		if (resources.containsKey(hash))
+			return resources.get(hash);
 		else {
-			RenderImage res = _createObject(grpId);
-			resources.put((Integer) grpId, res);
+			RenderImage res = _createObject(grpId, flags);
+			resources.put(hash, res);
 			return res;
 		}
 	}

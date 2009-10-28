@@ -3,6 +3,7 @@ package hotheart.starcraft.graphics.render.opengl;
 import hotheart.starcraft.controller.ViewController;
 import hotheart.starcraft.graphics.grp.GrpLibrary;
 import hotheart.starcraft.graphics.render.Render;
+import hotheart.starcraft.graphics.render.RenderFlags;
 import hotheart.starcraft.graphics.render.RenderImage;
 import hotheart.starcraft.graphics.render.RenderTile;
 
@@ -22,8 +23,8 @@ public class OpenGLRender extends Render {
 	}
 
 	@Override
-	protected RenderImage _createObject(int grpId) {
-		return new OpenGLRenderImage(this, GrpLibrary.getGraphics(grpId));
+	protected RenderImage _createObject(int grpId, RenderFlags flags) {
+		return new OpenGLRenderImage(this, GrpLibrary.getGraphics(grpId), flags);
 	}
 
 	@Override

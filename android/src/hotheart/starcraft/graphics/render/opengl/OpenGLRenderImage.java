@@ -52,9 +52,9 @@ public class OpenGLRenderImage extends RenderImage {
 			bitmap.recycle();
 
 			gl.glTexParameterx(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MIN_FILTER,
-					GL10.GL_LINEAR);
+					GL10.GL_NEAREST);
 			gl.glTexParameterx(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MAG_FILTER,
-					GL10.GL_LINEAR);
+					GL10.GL_NEAREST);
 
 			// ======================================
 			// Creating coord buffers
@@ -175,8 +175,7 @@ public class OpenGLRenderImage extends RenderImage {
 	}
 
 	@Override
-	protected void draw(int x, int y, int frameId, boolean isMirrored,
-			int function, int remapping, int teamColor) {
+	protected void draw(int x, int y, int frameId, boolean isMirrored) {
 
 		init(render.gl);
 

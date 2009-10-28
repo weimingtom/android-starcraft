@@ -193,7 +193,7 @@ public class ImageScriptEngine {
 			int ov_dx = script[instance.scriptPos++] & 0xFF;
 			int ov_dy = script[instance.scriptPos++] & 0xFF;
 			Image overlay = Image.getImage(overlayId,
-					instance.image.foregroundColor,
+					instance.image.getForegroundColor(),
 					instance.image.currentImageLayer + 1);
 			overlay.parentOverlay = instance.image;
 			overlay.imageState.followParent = true;
@@ -217,7 +217,7 @@ public class ImageScriptEngine {
 			int un_dx = script[instance.scriptPos++] & 0xFF;
 			int un_dy = script[instance.scriptPos++] & 0xFF;
 			Image underlay = Image.getImage(underlayId,
-					instance.image.foregroundColor,
+					instance.image.getForegroundColor(),
 					instance.image.currentImageLayer - 1);
 			underlay.parentOverlay = instance.image;
 			underlay.imageState.followParent = true;
@@ -241,7 +241,7 @@ public class ImageScriptEngine {
 			int sh_dx = script[instance.scriptPos++] & 0xFF;
 			int sh_dy = script[instance.scriptPos++] & 0xFF;
 			Image shadow = Image.getImage(shadowId,
-					instance.image.foregroundColor,
+					instance.image.getForegroundColor(),
 					instance.image.currentImageLayer - 1);
 			shadow.parentOverlay = instance.image;
 			shadow.imageState.followParent = true;
@@ -287,7 +287,7 @@ public class ImageScriptEngine {
 					+ ((script[instance.scriptPos++] & 0xFF) << 8);
 			int sp_dx = script[instance.scriptPos++] & 0xFF;
 			int sp_dy = script[instance.scriptPos++] & 0xFF;
-			Sprite sp = Sprite.getSprite(sp_Id, instance.image.foregroundColor,
+			Sprite sp = Sprite.getSprite(sp_Id, instance.image.getForegroundColor(),
 					Image.MIN_IMAGE_LAYER);
 
 			sp.setPos(instance.image.getPosX() + sp_dx, instance.image
@@ -313,7 +313,7 @@ public class ImageScriptEngine {
 			// ((script[instance.scriptPos ++ ]&0xFF)<<8);
 
 			Sprite lo_sprite = Sprite.getSprite(x15_Id,
-					instance.image.foregroundColor,
+					instance.image.getForegroundColor(),
 					instance.image.currentImageLayer + 1);
 			// LoFile lo = OldGrpImage.getLoData(lo_Id);
 			// byte[] offsets = new byte[2];
@@ -337,7 +337,7 @@ public class ImageScriptEngine {
 					+ ((script[instance.scriptPos++] & 0xFF) << 8);
 			int l_dx = script[instance.scriptPos++] & 0xFF;
 			int l_dy = script[instance.scriptPos++] & 0xFF;
-			Sprite l = Sprite.getSprite(Id, instance.image.foregroundColor,
+			Sprite l = Sprite.getSprite(Id, instance.image.getForegroundColor(),
 					instance.image.currentImageLayer + 1);
 
 			l.setPos(instance.image.getOffsetX() + l_dx, instance.image

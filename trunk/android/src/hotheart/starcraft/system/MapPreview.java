@@ -77,7 +77,7 @@ public class MapPreview extends View {
 		for (Unit u : StarcraftCore.context.units) {
 			int color = Color.GRAY;
 
-			switch (u.foregroundColor) {
+			switch (u.getForegroundColor()) {
 			case TeamColors.COLOR_GREEN:
 				color = Color.GREEN;
 				break;

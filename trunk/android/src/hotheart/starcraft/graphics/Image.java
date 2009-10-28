@@ -78,55 +78,22 @@ public class Image {
 		int align = gfxTurns[id] & 0xFF;
 		int functionId = drawFunc[id] & 0xFF;
 		int remapping = remappingData[id] & 0xFF;
-		
+
 		RenderFlags flags = new RenderFlags(functionId, remapping, color);
 
 		ImageStaticData data = new ImageStaticData(id, StarcraftCore.render
-				.createObject(grpId, flags), ImageScriptEngine.createHeader(scriptId),
-				functionId, remapping, align == 1);
+				.createObject(grpId, flags), ImageScriptEngine
+				.createHeader(scriptId), align == 1);
 
-		Image res = new Image(layer, data);
-
-		// res.align = align == 1;
-		// res.graphicsFuntion = functionId;
-		// res.remapping = remapping;
-
-		if (BuildParameters.CACHE_GRP) {
-
-			int[] pal = StarcraftPalette.normalPalette;
-
-			if (functionId == 10)
-				pal = StarcraftPalette.shadowPalette;
-			else if (functionId == 9) {
-				switch (remapping) {
-				case 1:
-					pal = StarcraftPalette.ofirePalette;
-					break;
-				case 2:
-					pal = StarcraftPalette.gfirePalette;
-					break;
-				case 3:
-					pal = StarcraftPalette.bfirePalette;
-					break;
-				case 4:
-					pal = StarcraftPalette.bexplPalette;
-					break;
-				}
-			}
-
-			// res.imageData.grp.image.makeCache(pal);
-			// res.imageData.grp.image.makeCache(StarcraftPalette.blendedPalette);
-		}
-
-		res.foregroundColor = color;
-		return res;
+		return new Image(layer, data, color);
 	}
 
-	public Image(int imageLayer, ImageStaticData data) {
+	public Image(int imageLayer, ImageStaticData data, int color) {
 
 		this.imageData = data;
 		this.imageState = new ImageState(this, data.scriptHeader);
 		this.imageId = imageData.imageId;
+		this.foregroundColor = color;
 
 		ImageScriptEngine.init(this.imageState);
 		currentImageLayer = imageLayer;
@@ -151,7 +118,12 @@ public class Image {
 
 	public int imageId = 0;
 
-	public int foregroundColor;
+	protected int foregroundColor;
+	
+	public int getForegroundColor()
+	{
+		return foregroundColor;
+	}
 
 	public int currentImageLayer;
 
@@ -272,7 +244,7 @@ public class Image {
 			return;
 
 		// setPos(dX, dY);
-		
+
 		StarcraftCore.context.drawObjects.add(this);
 
 		for (int i = 0; i < childs.length; i++)
@@ -294,8 +266,7 @@ public class Image {
 		if (!deleted) {
 			imageData.renderImage.draw(posX + offsetX, posY + offsetY,
 					this.imageData.align, imageState.baseFrame,
-					imageState.angle, this.imageData.graphicsFuntion,
-					this.imageData.remapping, this.foregroundColor);
+					imageState.angle);
 		}
 	}
 

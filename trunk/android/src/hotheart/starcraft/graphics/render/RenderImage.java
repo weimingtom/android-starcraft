@@ -1,21 +1,21 @@
 package hotheart.starcraft.graphics.render;
 
 public abstract class RenderImage {
-	public void draw(int x, int y, boolean align, int baseFrame, int angle, int function, int remapping, int teamColor)
+	public void draw(int x, int y, boolean align, int baseFrame, int angle)
 	{
 		if (align)
 		{
-			draw(x,y, getFrameId(angle, baseFrame), isMirrored(angle), function, remapping, teamColor);
+			draw(x,y, getFrameId(angle, baseFrame), isMirrored(angle));
 			//draw(x,y, getFrameId(angle, baseFrame), false, function, remapping, teamColor);
 		}
 		else
 		{
-			draw(x,y, baseFrame, false, function, remapping, teamColor);
+			draw(x,y, baseFrame, false);
 		}
 		//draw(x,y, getFrameId(angle))
 	}
 	
-	protected abstract void draw(int x, int y, int frameId, boolean isMirrored, int function, int remapping, int teamColor);
+	protected abstract void draw(int x, int y, int frameId, boolean isMirrored);
 	
 	private int getFrameId(int alpha, int baseFrame)
 	{

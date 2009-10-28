@@ -25,7 +25,7 @@ public class SimpleRender extends Render {
 
 	@Override
 	protected RenderImage _createObject(int grpId, RenderFlags flags) {
-		return new SimpleRenderImage(this, GrpRenderFactory.getGraphics(grpId));
+		return new SimpleRenderImage(this, GrpRenderFactory.getGraphics(grpId), flags);
 	}
 
 	@Override

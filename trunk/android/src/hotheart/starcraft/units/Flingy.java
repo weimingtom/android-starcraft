@@ -172,12 +172,14 @@ public class Flingy extends Sprite {
 			final int len_sq = (int) ((posX - destX) * (posX - destX) + (posY - destY)
 					* (posY - destY));
 
-			if (len_sq > destR * destR) {
-				action = MOVING;
-				play(11);
-				speed = 0;
+			if (action != MOVING) {
+				if (len_sq > destR * destR) {
+					action = MOVING;
+					play(11);
+					speed = 0;
+				}
 			}
-			
+
 			rotateTo(destX, destY);
 
 			if (action == MOVING) {

@@ -6,7 +6,6 @@ import hotheart.starcraft.graphics.Image;
 import hotheart.starcraft.graphics.utils.SelectionCircles;
 import hotheart.starcraft.orders.Order;
 import hotheart.starcraft.orders.executers.AttackOrder;
-import hotheart.starcraft.orders.executers.OrderExecutor;
 import hotheart.starcraft.units.target.FlingyTarget;
 import hotheart.starcraft.units.target.StaticPointTarget;
 import hotheart.starcraft.units.target.UnitTarget;
@@ -139,7 +138,7 @@ public final class Unit extends Flingy {
 	
 	public int teamColor;
 	
-	public OrderExecutor currentOrder = null;
+	public Order currentOrder = null;
 	
 	public UnitOrders controlPanel;
 	
@@ -200,7 +199,10 @@ public final class Unit extends Flingy {
 			selWeapon = this.groundWeapon;
 		
 		if (selWeapon != null)
-			currentOrder = new AttackOrder(this, unit);
+		{
+			currentOrder = new AttackOrder(this);
+			currentOrder.execute(new UnitTarget(unit));
+		}
 
 		if (subunit1 != null)
 			subunit1.attack(unit);

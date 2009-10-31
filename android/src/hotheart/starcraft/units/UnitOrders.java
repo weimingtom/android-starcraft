@@ -1,6 +1,8 @@
 package hotheart.starcraft.units;
 
 import hotheart.starcraft.orders.Order;
+import hotheart.starcraft.orders.executers.AttackOrder;
+import hotheart.starcraft.orders.executers.MoveOrder;
 import hotheart.starcraft.units.target.AbstractTarget;
 import hotheart.starcraft.units.target.UnitTarget;
 
@@ -19,13 +21,10 @@ public class UnitOrders {
 		int count = 0;
 
 		if ((unit.specialAbilityFlags & Unit.ABILITY_BUILDING) == 0)
-			tmp[count++] = Order.Factory.getOrder(Order.ORDER_STOP);
-
-		if ((unit.specialAbilityFlags & Unit.ABILITY_BUILDING) == 0)
-			tmp[count++] = Order.Factory.getOrder(Order.ORDER_MOVE);
+			tmp[count++] = new MoveOrder(unit);
 
 		if ((unit.airWeapon != null) || (unit.groundWeapon != null))
-			tmp[count++] = Order.Factory.getOrder(Order.ORDER_ATTACK);
+			tmp[count++] = new AttackOrder(unit);
 
 		orders = new Order[count];
 		for (int i = 0; i < count; i++)
@@ -33,12 +32,12 @@ public class UnitOrders {
 	}
 
 	public void executeButton(int id) {
-		unit.currentOrder = orders[id].execute(unit);
+		orders[id].execute();
 		updateOrders();
 	}
 
 	public void executeButton(int id, AbstractTarget target) {
-		unit.currentOrder = orders[id].execute(unit, target);
+		orders[id].execute(target);
 		updateOrders();
 	}
 

@@ -62,8 +62,8 @@ public class Order {
 			libObscured = file.read1ByteData(COUNT);
 		}
 
-		public static final Order getOrder(int id) {
-			Order res = new Order();
+		public static final Order getOrder(int id, Unit u) {
+			Order res = new Order(u);
 			res.id = id;
 			res.iconId = libHighlight[id];
 			res.isTargeting = libTargeting[id] != 0;
@@ -72,34 +72,48 @@ public class Order {
 		}
 	}
 
-	private Order() {
+	private Order(Unit u) {
+		unit = u;
 	}
+
+	protected Order(Order base) {
+		id = base.id;
+		iconId = base.iconId;
+		isTargeting = base.isTargeting;
+		unit = base.unit;
+	}
+
+	public Unit unit;
 
 	public int id = 0;
 	public int iconId = -1;
-
 	public boolean isTargeting = false;
 
-	public OrderExecutor execute(Unit u) {
-		switch (id) {
-		case ORDER_DIE:
-			return new DieOrder(u);
-		default:
-			return null;
-		}
+	public void update() {
+
 	}
 
-	public OrderExecutor execute(Unit u, AbstractTarget target) {
-		switch (id) {
-		case ORDER_MOVE:
-			return new MoveOrder(u, target);
-		case ORDER_ATTACK:
-			if (target instanceof UnitTarget)
-				return new AttackOrder(u, ((UnitTarget) target).destUnit);
-			else
-				return null;
-		default:
-			return null;
-		}
+	protected boolean _execute() {
+		return false;
+	}
+
+	protected boolean _execute(AbstractTarget target) {
+		return false;
+	}
+
+	public final boolean execute() {
+		if (_execute()) {
+			unit.currentOrder = this;
+			return true;
+		} else
+			return false;
+	}
+
+	public final boolean execute(AbstractTarget target) {
+		if (_execute(target)) {
+			unit.currentOrder = this;
+			return true;
+		} else
+			return false;
 	}
 }

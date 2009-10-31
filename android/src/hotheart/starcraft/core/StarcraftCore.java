@@ -123,69 +123,69 @@ public class StarcraftCore {
 			// 32,
 			// 55 * 32);
 
-			context.addUnit(Unit.getUnit(1, TeamColors.COLOR_RED), 66 * 32,
+			context.addUnit(Unit.Factory.getUnit(1, TeamColors.COLOR_RED), 66 * 32,
 					55 * 32);
 
-			context.addUnit(Unit.getUnit(1, TeamColors.COLOR_BLUE), 66 * 32,
+			context.addUnit(Unit.Factory.getUnit(1, TeamColors.COLOR_BLUE), 66 * 32,
 					55 * 32);
 
-			context.addUnit(Unit.getUnit(1, TeamColors.COLOR_RED), 66 * 32,
+			context.addUnit(Unit.Factory.getUnit(1, TeamColors.COLOR_RED), 66 * 32,
 					55 * 32);
 
-			context.addUnit(Unit.getUnit(1, TeamColors.COLOR_BLUE), 66 * 32,
+			context.addUnit(Unit.Factory.getUnit(1, TeamColors.COLOR_BLUE), 66 * 32,
 					55 * 32);
 
-			context.addUnit(Unit.getUnit(1, TeamColors.COLOR_RED), 66 * 32,
+			context.addUnit(Unit.Factory.getUnit(1, TeamColors.COLOR_RED), 66 * 32,
 					55 * 32);
 
-			context.addUnit(Unit.getUnit(1, TeamColors.COLOR_BLUE), 66 * 32,
+			context.addUnit(Unit.Factory.getUnit(1, TeamColors.COLOR_BLUE), 66 * 32,
 					55 * 32);
 
-			context.addUnit(Unit.getUnit(0, TeamColors.COLOR_RED), 66 * 32,
+			context.addUnit(Unit.Factory.getUnit(0, TeamColors.COLOR_RED), 66 * 32,
 					55 * 32);
 
-			context.addUnit(Unit.getUnit(0, TeamColors.COLOR_BLUE), 66 * 32,
+			context.addUnit(Unit.Factory.getUnit(0, TeamColors.COLOR_BLUE), 66 * 32,
 					55 * 32);
 
-			context.addUnit(Unit.getUnit(0, TeamColors.COLOR_RED), 66 * 32,
+			context.addUnit(Unit.Factory.getUnit(0, TeamColors.COLOR_RED), 66 * 32,
 					55 * 32);
 			
-			context.addUnit(Unit.getUnit(0, TeamColors.COLOR_BLUE), 66 * 32,
+			context.addUnit(Unit.Factory.getUnit(0, TeamColors.COLOR_BLUE), 66 * 32,
 					55 * 32);
 
-			context.addUnit(Unit.getUnit(0, TeamColors.COLOR_RED), 66 * 32,
+			context.addUnit(Unit.Factory.getUnit(0, TeamColors.COLOR_RED), 66 * 32,
 					55 * 32);
 			
-			context.addUnit(Unit.getUnit(0, TeamColors.COLOR_BLUE), 66 * 32,
+			context.addUnit(Unit.Factory.getUnit(0, TeamColors.COLOR_BLUE), 66 * 32,
 					55 * 32);
 			
 			
 			
-			context.addUnit(Unit.getUnit(65, TeamColors.COLOR_RED), 66 * 32,
+			context.addUnit(Unit.Factory.getUnit(65, TeamColors.COLOR_RED), 66 * 32,
 					55 * 32);
 
-			context.addUnit(Unit.getUnit(65, TeamColors.COLOR_BLUE), 66 * 32,
+			context.addUnit(Unit.Factory.getUnit(65, TeamColors.COLOR_BLUE), 66 * 32,
 					55 * 32);
 
-			context.addUnit(Unit.getUnit(65, TeamColors.COLOR_RED), 66 * 32,
+			context.addUnit(Unit.Factory.getUnit(65, TeamColors.COLOR_RED), 66 * 32,
 					55 * 32);
 			
-			context.addUnit(Unit.getUnit(65, TeamColors.COLOR_BLUE), 66 * 32,
+			context.addUnit(Unit.Factory.getUnit(65, TeamColors.COLOR_BLUE), 66 * 32,
 					55 * 32);
 
-			context.addUnit(Unit.getUnit(65, TeamColors.COLOR_RED), 66 * 32,
+			context.addUnit(Unit.Factory.getUnit(65, TeamColors.COLOR_RED), 66 * 32,
 					55 * 32);
 			
-			context.addUnit(Unit.getUnit(65, TeamColors.COLOR_BLUE), 66 * 32,
+			context.addUnit(Unit.Factory.getUnit(65, TeamColors.COLOR_BLUE), 66 * 32,
 					55 * 32);
 			
-			context.addUnit(Unit.getUnit(124, TeamColors.COLOR_RED), 66 * 32,
+			context.addUnit(Unit.Factory.getUnit(124, TeamColors.COLOR_RED), 66 * 32,
 					58 * 32);
 			
-			context.addUnit(Unit.getUnit(124, TeamColors.COLOR_RED), 66 * 32,
+			context.addUnit(Unit.Factory.getUnit(124, TeamColors.COLOR_RED), 66 * 32,
 					58 * 32);
 			
-			context.addUnit(Unit.getUnit(124, TeamColors.COLOR_RED), 66 * 32,
+			context.addUnit(Unit.Factory.getUnit(124, TeamColors.COLOR_RED), 66 * 32,
 					58 * 32);
 			// context.selectUnit(u);
 			//			

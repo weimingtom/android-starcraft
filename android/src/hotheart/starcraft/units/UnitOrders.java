@@ -46,33 +46,5 @@ public class UnitOrders {
 		updateOrders();
 	}
 	
-	public int[] getButtons()
-	{
-		int[] res = new int[9];
-		for(int i = 0; i < 9; i++)
-			res[i] = -1;
-		
-		for(int i = 0; i < orders.length; i++)
-		{
-			res[i] = orders[i].iconId;
-		}
-		
-		return res;
-	}
-	
-	public boolean[] getTargeting()
-	{
-		boolean[] res = new boolean[9];
-		for(int i = 0; i < 9; i++)
-			res[i] = false;
-		
-		for(int i = 0; i < orders.length; i++)
-		{
-			res[i] = orders[i].isTargeting;
-		}
-		
-		return res;
-	}
-
 	public int selectedButton = -1;
 }

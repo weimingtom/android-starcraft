@@ -1,5 +1,6 @@
 package hotheart.starcraft.system;
 
+import hotheart.starcraft.core.GameContext;
 import hotheart.starcraft.core.StarcraftCore;
 import hotheart.starcraft.graphics.TeamColors;
 import hotheart.starcraft.units.Unit;
@@ -28,9 +29,10 @@ public class MapPreview extends View {
 
 	public MapPreview(Context context, AttributeSet attrs) {
 		super(context, attrs);
+		setBitmap(GameContext.map.generateMapPreview());
 	}
 
-	public void setBitmap(Bitmap img) {
+	private void setBitmap(Bitmap img) {
 		image = img;
 
 		int imageMaxSide = Math.max(image.getWidth(), image.getHeight());
@@ -47,7 +49,7 @@ public class MapPreview extends View {
 		int x = (int) (event.getX() / resize) * 32;
 		int y = (int) (event.getY() / resize) * 32;
 
-		StarcraftCore.viewController.setPosXY(x, y);
+		StarcraftCore.viewController.setScrollPosXY(x, y);
 		return true;
 	}
 
@@ -55,8 +57,8 @@ public class MapPreview extends View {
 	protected void onDraw(Canvas canvas) {
 
 		if (StarcraftCore.viewController != null) {
-			selX = StarcraftCore.viewController.getX() / 32;
-			selY = StarcraftCore.viewController.getY() / 32;
+			selX = StarcraftCore.viewController.getScrollX() / 32;
+			selY = StarcraftCore.viewController.getScrollY() / 32;
 		}
 
 		// Map Image

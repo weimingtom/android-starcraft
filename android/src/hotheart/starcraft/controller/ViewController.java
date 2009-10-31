@@ -4,8 +4,11 @@ import hotheart.starcraft.core.StarcraftCore;
 import hotheart.starcraft.graphics.IconFactory;
 import hotheart.starcraft.map.Map;
 import hotheart.starcraft.system.MapPreview;
+import hotheart.starcraft.units.Unit;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.ImageButton;
 
 public abstract class ViewController implements View.OnTouchListener {
@@ -20,73 +23,92 @@ public abstract class ViewController implements View.OnTouchListener {
 	private boolean isScrolling = false;
 
 	View renderView = null;
-	
 	MapPreview previewView = null;
-	
 	ImageButton buttons[] = null;
+	Button mapMoveButton = null;
 
 	public View getRenderView() {
 		if (renderView == null) {
 			renderView = _getRenderView();
 			renderView.setOnTouchListener(this);
-			setPosXY(mx, my);
+			setScrollPosXY(mx, my);
 		}
 		return renderView;
 	}
 
-	public void setMapPreview(MapPreview view) {
-		previewView = view;
-	}
-	
-	public void setControlButtons(ImageButton _b11, ImageButton _b21, ImageButton _b31,
-			ImageButton _b12, ImageButton _b22, ImageButton _b32,
-			ImageButton _b13, ImageButton _b23, ImageButton _b33)
-	{
-		buttons = new ImageButton[] {_b11, _b21, _b31, _b12, _b22, _b32, _b13, _b23, _b33};
+	public void onUnitSelectChanged() {
+
 	}
 
-	public void setControlIcon(int buttonId, int iconId)
-	{
-		ImageButton btn =buttons[buttonId];
+	public void setUI(MapPreview mapPrev, ImageButton[] unitControls,
+			Button mapMove) {
+		buttons = unitControls;
+		previewView = mapPrev;
+		mapMoveButton = mapMove;
+		initUI();
+		onUnitSelectChanged();
+	}
+
+	private void initUI() {
+		for (int i = 0; i < buttons.length; i++) {
+			buttons[i].setTag((Integer) i);
+			buttons[i].setOnClickListener(new OnClickListener() {
+
+				public void onClick(View v) {
+					Integer index = (Integer) v.getTag();
+					buttons[index].setEnabled(false);
+				}
+			});
+		}
+
+		if (StarcraftCore.context.majorSelectedUnit == null) {
+			for (int i = 0; i < 9; i++)
+				setControlIcon(i, -1);
+		} else {
+			int[] buttons = getButtons(StarcraftCore.context.majorSelectedUnit);
+			for (int i = 0; i < buttons.length; i++)
+				setControlIcon(i, buttons[i]);
+		}
+	}
+
+	public int[] getButtons(Unit u) {
+		int[] res = new int[9];
+		for (int i = 0; i < 9; i++)
+			res[i] = -1;
+
+		for (int i = 0; i < u.controlPanel.orders.length; i++) {
+			res[i] = u.controlPanel.orders[i].iconId;
+		}
+
+		return res;
+	}
+
+	public void setControlIcon(int buttonId, int iconId) {
+		ImageButton btn = buttons[buttonId];
 		if (btn == null)
 			return;
-		
+
 		if (iconId == -1)
 			btn.setVisibility(View.INVISIBLE);
-		else
-		{
+		else {
 			btn.setVisibility(View.VISIBLE);
 			btn.setImageBitmap(IconFactory.getIcon(iconId));
 		}
 	}
-	
-	public void setControlIcons(int[] ids)
-	{
-		for(int i = 0; i<ids.length; i++)
-			setControlIcon(i,ids[i]);
-	}
-	
-	public void setPosXY(int x, int y) {
+
+	public void setScrollPosXY(int x, int y) {
 		mx = x;
 		my = y;
-		
+
 		_setPosXY(x, y);
 	}
 
-	public int getX() {
+	public int getScrollX() {
 		return mx;
 	}
 
-	public int getY() {
+	public int getScrollY() {
 		return my;
-	}
-
-	public boolean isMapScroll() {
-		return isScrolling;
-	}
-
-	public void setMapScrollingState(boolean isScroll) {
-		this.isScrolling = isScroll;
 	}
 
 	int oldX = 0, oldY = 0;
@@ -108,14 +130,14 @@ public abstract class ViewController implements View.OnTouchListener {
 					mx += dx;
 					my += dy;
 
-					setPosXY(mx, my);
+					setScrollPosXY(mx, my);
 				} catch (Exception e) {
 				}
 			}
 			return true;
 		} else {
-			int mapX = (int) event.getX() + getX();
-			int mapY = (int) event.getY() + getY();
+			int mapX = (int) event.getX() + getScrollX();
+			int mapY = (int) event.getY() + getScrollY();
 			StarcraftCore.gameController.onClick(mapX, mapY);
 			return true;
 		}

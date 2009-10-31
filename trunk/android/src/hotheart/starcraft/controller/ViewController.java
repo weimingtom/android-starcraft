@@ -16,6 +16,9 @@ import android.widget.ImageButton;
 
 public abstract class ViewController implements View.OnTouchListener {
 
+	private static final int BUTTON_SELECT = -2;
+	private static final int BUTTON_MOVE = -1;
+
 	protected abstract View _getRenderView();
 
 	protected abstract void _setPosXY(int x, int y);
@@ -28,8 +31,28 @@ public abstract class ViewController implements View.OnTouchListener {
 	MapPreview previewView = null;
 	ImageButton buttons[] = null;
 	Button mapMoveButton = null;
+	Button selectButton = null;
 
-	int selectedButton = -1;
+	int selectedButton = BUTTON_MOVE;
+
+	private void updateButtonsState() {
+		for (int i = 0; i < buttons.length; i++) {
+			if (i != selectedButton)
+				buttons[i].setEnabled(true);
+			else
+				buttons[i].setEnabled(false);
+		}
+
+		if (selectedButton != BUTTON_MOVE)
+			mapMoveButton.setEnabled(true);
+		else
+			mapMoveButton.setEnabled(false);
+
+		if (selectedButton != BUTTON_SELECT)
+			selectButton.setEnabled(true);
+		else
+			selectButton.setEnabled(false);
+	}
 
 	public View getRenderView() {
 		if (renderView == null) {
@@ -41,18 +64,20 @@ public abstract class ViewController implements View.OnTouchListener {
 	}
 
 	public void onUnitSelectChanged() {
-		selectedButton = -1;
+		selectedButton = BUTTON_MOVE;
 		for (int i = 0; i < buttons.length; i++)
 			buttons[i].setEnabled(true);
 	}
 
 	public void setUI(MapPreview mapPrev, ImageButton[] unitControls,
-			Button mapMove) {
+			Button mapMove, Button selection) {
 		buttons = unitControls;
 		previewView = mapPrev;
 		mapMoveButton = mapMove;
+		selectButton = selection;
 		initUI();
 		onUnitSelectChanged();
+		updateButtonsState();
 	}
 
 	private void initUI() {
@@ -66,41 +91,32 @@ public abstract class ViewController implements View.OnTouchListener {
 					Unit selectedUnit = StarcraftCore.context.majorSelectedUnit;
 					if (selectedUnit.controlPanel.orders[index].isTargeting) {
 
-						for (int i = 0; i < buttons.length; i++)
-							buttons[i].setEnabled(true);
-						
-						mapMoveButton.setEnabled(true);
-
-						buttons[index].setEnabled(false);
-
 						selectedButton = index;
-					}
-					else
-					{
-						for (int i = 0; i < buttons.length; i++)
-							buttons[i].setEnabled(true);
-						
-						mapMoveButton.setEnabled(true);
-						
+						updateButtonsState();
+					} else {
 						selectedButton = -1;
+						updateButtonsState();
 						selectedUnit.controlPanel.executeButton(index);
 					}
 				}
 			});
 		}
-		
+
 		mapMoveButton.setOnClickListener(new OnClickListener() {
-			
+
 			public void onClick(View v) {
-				for (int i = 0; i < buttons.length; i++)
-					buttons[i].setEnabled(true);
-				
-				selectedButton = -1;
-				
-				mapMoveButton.setEnabled(false);
+				selectedButton = BUTTON_MOVE;
+				updateButtonsState();
 			}
 		});
-		
+
+		selectButton.setOnClickListener(new OnClickListener() {
+
+			public void onClick(View v) {
+				selectedButton = BUTTON_SELECT;
+				updateButtonsState();
+			}
+		});
 
 		if (StarcraftCore.context.majorSelectedUnit == null) {
 			for (int i = 0; i < 9; i++)
@@ -155,7 +171,7 @@ public abstract class ViewController implements View.OnTouchListener {
 	int oldX = 0, oldY = 0;
 
 	public boolean onTouch(View v, MotionEvent event) {
-		if (selectedButton == -1) {
+		if (selectedButton == BUTTON_MOVE) {
 
 			if (event.getAction() == MotionEvent.ACTION_DOWN) {
 				oldX = (int) event.getX();
@@ -174,6 +190,17 @@ public abstract class ViewController implements View.OnTouchListener {
 					setScrollPosXY(mx, my);
 				} catch (Exception e) {
 				}
+			}
+			return true;
+		} else if (selectedButton == BUTTON_SELECT) {
+			int mapX = (int) event.getX() + getScrollX();
+			int mapY = (int) event.getY() + getScrollY();
+
+			
+			Unit dest = StarcraftCore.context.PickUnit(mapX, mapY);
+			if (dest != null) {
+				StarcraftCore.context.removeSelection();
+				StarcraftCore.context.selectUnit(dest);
 			}
 			return true;
 		} else {

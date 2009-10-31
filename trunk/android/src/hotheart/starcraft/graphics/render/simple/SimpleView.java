@@ -112,7 +112,7 @@ public class SimpleView extends View {
 		Matrix transf;
 
 		if (mapRend == null) {
-			setMap(GameContext.map);
+			setMap(StarcraftCore.context.map);
 		}
 
 		render.canvas = canvas;

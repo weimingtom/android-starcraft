@@ -14,7 +14,7 @@ public class SelectionCircles {
 	public static final void initCircles() {
 		selCircles = new Image[20];
 		for (int i = 0; i < 20; i++) {
-			selCircles[i] = Image.getImage(i + FIRST_CIRCLE_IMAGE,
+			selCircles[i] = Image.Factory.getImage(i + FIRST_CIRCLE_IMAGE,
 					TeamColors.COLOR_GREEN, Image.MAX_IMAGE_LAYER);
 		}
 	}

@@ -24,68 +24,71 @@ public class Image {
 	public static final int MAX_IMAGE_LAYER = 10000;
 	public static final int MIN_IMAGE_LAYER = -10000;
 
-	// Data from images.dat file
-	private static final int COUNT = 999;
+	public static class Factory {
+		// Data from images.dat file
+		private static final int COUNT = 999;
 
-	private static int[] grpFileId;
-	private static byte[] gfxTurns;
-	// private static byte[] clickable;
-	// private static byte[] useFullISCript;
-	// private static byte[] drawIfCloacked;
-	private static byte[] drawFunc;
-	private static byte[] remappingData;
-	private static int[] iScriptId;
+		private static int[] grpFileId;
+		private static byte[] gfxTurns;
+		// private static byte[] clickable;
+		// private static byte[] useFullISCript;
+		// private static byte[] drawIfCloacked;
+		private static byte[] drawFunc;
+		private static byte[] remappingData;
+		private static int[] iScriptId;
 
-	// private static int[] shieldOverlay;
-	// private static int[] attackOverlay;
-	// private static int[] damageOverlay;
-	// private static int[] SpecialOverlay;
-	// private static int[] landingDustOverlay;
-	// private static int[] liftOffOverlay;
+		// private static int[] shieldOverlay;
+		// private static int[] attackOverlay;
+		// private static int[] damageOverlay;
+		// private static int[] SpecialOverlay;
+		// private static int[] landingDustOverlay;
+		// private static int[] liftOffOverlay;
 
-	public static void initImages(FileInputStream _is) throws IOException {
-		StarcraftPalette.initPalette();
-		initBuffers(_is);
-	}
+		public static void initImages(FileInputStream _is) throws IOException {
+			StarcraftPalette.initPalette();
+			initBuffers(_is);
+		}
 
-	private static void initBuffers(FileInputStream _is) throws IOException {
-		DatFile file = new DatFile(_is);
-		grpFileId = file.read4ByteData(COUNT);
-		gfxTurns = file.read1ByteData(COUNT);
+		private static void initBuffers(FileInputStream _is) throws IOException {
+			DatFile file = new DatFile(_is);
+			grpFileId = file.read4ByteData(COUNT);
+			gfxTurns = file.read1ByteData(COUNT);
 
-		// Seek unused sections
-		file.skip(COUNT * 3);
-		// clickable = file.read1ByteData(COUNT, buff);
-		// useFullISCript = file.read1ByteData(COUNT, buff);
-		// drawIfCloacked = file.read1ByteData(COUNT, buff);
+			// Seek unused sections
+			file.skip(COUNT * 3);
+			// clickable = file.read1ByteData(COUNT, buff);
+			// useFullISCript = file.read1ByteData(COUNT, buff);
+			// drawIfCloacked = file.read1ByteData(COUNT, buff);
 
-		drawFunc = file.read1ByteData(COUNT);
-		remappingData = file.read1ByteData(COUNT);
-		iScriptId = file.read4ByteData(COUNT);
+			drawFunc = file.read1ByteData(COUNT);
+			remappingData = file.read1ByteData(COUNT);
+			iScriptId = file.read4ByteData(COUNT);
 
-		// Unused sections
-		// shieldOverlay = file.read4ByteData(COUNT, buff);
-		// attackOverlay = file.read4ByteData(COUNT, buff);
-		// damageOverlay = file.read4ByteData(COUNT, buff);
-		// SpecialOverlay = file.read4ByteData(COUNT, buff);
-		// landingDustOverlay = file.read4ByteData(COUNT, buff);
-		// liftOffOverlay = file.read4ByteData(COUNT, buff);
-	}
+			// Unused sections
+			// shieldOverlay = file.read4ByteData(COUNT, buff);
+			// attackOverlay = file.read4ByteData(COUNT, buff);
+			// damageOverlay = file.read4ByteData(COUNT, buff);
+			// SpecialOverlay = file.read4ByteData(COUNT, buff);
+			// landingDustOverlay = file.read4ByteData(COUNT, buff);
+			// liftOffOverlay = file.read4ByteData(COUNT, buff);
+		}
 
-	public final static Image getImage(int id, int color, int layer) {
-		int grpId = grpFileId[id];
-		int scriptId = iScriptId[id];
-		int align = gfxTurns[id] & 0xFF;
-		int functionId = drawFunc[id] & 0xFF;
-		int remapping = remappingData[id] & 0xFF;
+		public final static Image getImage(int id, int color, int layer) {
+			int grpId = grpFileId[id];
+			int scriptId = iScriptId[id];
+			int align = gfxTurns[id] & 0xFF;
+			int functionId = drawFunc[id] & 0xFF;
+			int remapping = remappingData[id] & 0xFF;
 
-		RenderFlags flags = new RenderFlags(functionId, remapping, color);
+			RenderFlags flags = new RenderFlags(functionId, remapping, color);
 
-		ImageStaticData data = new ImageStaticData(id, StarcraftCore.render
-				.createObject(grpId, flags), ImageScriptEngine
-				.createHeader(scriptId), align == 1);
+			ImageStaticData data = new ImageStaticData(id, StarcraftCore.render
+					.createObject(grpId, flags), ImageScriptEngine
+					.createHeader(scriptId), align == 1);
 
-		return new Image(layer, data, color);
+			return new Image(layer, data, color);
+		}
+
 	}
 
 	public Image(int imageLayer, ImageStaticData data, int color) {
@@ -119,9 +122,8 @@ public class Image {
 	public int imageId = 0;
 
 	protected int foregroundColor;
-	
-	public int getForegroundColor()
-	{
+
+	public int getForegroundColor() {
 		return foregroundColor;
 	}
 

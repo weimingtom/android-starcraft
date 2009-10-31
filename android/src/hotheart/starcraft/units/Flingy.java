@@ -13,43 +13,46 @@ public class Flingy extends Sprite {
 	public static final int MIXED = 1;
 	public static final int ISCRIPT_BIN = 2;
 
-	private static byte[] flingy;
-	private static int count;
+	public static class Factory {
+		private static byte[] flingy;
+		private static int count;
 
-	public static void init(byte[] arr) {
-		flingy = arr;
-		count = arr.length / 15;
-	}
+		public static void init(byte[] arr) {
+			flingy = arr;
+			count = arr.length / 15;
+		}
 
-	public static final Flingy getFlingy(int id, int teamColor) {
-		final int spriteId = (flingy[id * 2] & 0xFF)
-				+ ((flingy[id * 2 + 1] & 0xFF) << 8);
+		public static final Flingy getFlingy(int id, int teamColor) {
+			final int spriteId = (flingy[id * 2] & 0xFF)
+					+ ((flingy[id * 2 + 1] & 0xFF) << 8);
 
-		final int speed = (flingy[id * 4 + count * 2] & 0xFF)
-				+ ((flingy[id * 4 + count * 2 + 1] & 0xFF) << 8)
-				+ ((flingy[id * 4 + count * 2 + 2] & 0xFF) << 16)
-				+ ((flingy[id * 4 + count * 2 + 3] & 0xFF) << 24);
+			final int speed = (flingy[id * 4 + count * 2] & 0xFF)
+					+ ((flingy[id * 4 + count * 2 + 1] & 0xFF) << 8)
+					+ ((flingy[id * 4 + count * 2 + 2] & 0xFF) << 16)
+					+ ((flingy[id * 4 + count * 2 + 3] & 0xFF) << 24);
 
-		final int accel = (flingy[id * 2 + count * 6] & 0xFF)
-				+ ((flingy[id * 2 + count * 6 + 1] & 0xFF) << 8);
+			final int accel = (flingy[id * 2 + count * 6] & 0xFF)
+					+ ((flingy[id * 2 + count * 6 + 1] & 0xFF) << 8);
 
-		final int haltDist = (flingy[id * 4 + count * 8] & 0xFF)
-				+ ((flingy[id * 4 + count * 8 + 1] & 0xFF) << 8)
-				+ ((flingy[id * 4 + count * 8 + 2] & 0xFF) << 16)
-				+ ((flingy[id * 4 + count * 8 + 3] & 0xFF) << 24);
+			final int haltDist = (flingy[id * 4 + count * 8] & 0xFF)
+					+ ((flingy[id * 4 + count * 8 + 1] & 0xFF) << 8)
+					+ ((flingy[id * 4 + count * 8 + 2] & 0xFF) << 16)
+					+ ((flingy[id * 4 + count * 8 + 3] & 0xFF) << 24);
 
-		final int turnRadius = (flingy[id + count * 12] & 0xFF);
+			final int turnRadius = (flingy[id + count * 12] & 0xFF);
 
-		final int moveControl = (flingy[id + count * 14] & 0xFF);
+			final int moveControl = (flingy[id + count * 14] & 0xFF);
 
-		final Flingy res = new Flingy(Sprite.getSprite(spriteId, teamColor, 0));
+			final Flingy res = new Flingy(Sprite.Factory.getSprite(spriteId, teamColor,
+					0));
 
-		res.topSpeed = speed / 120;
-		res.acceleration = accel;
-		res.haltDistantion = haltDist / 256;
-		res.turnRadius = turnRadius;
-		res.moveControl = moveControl;
-		return res;
+			res.topSpeed = speed / 120;
+			res.acceleration = accel;
+			res.haltDistantion = haltDist / 256;
+			res.turnRadius = turnRadius;
+			res.moveControl = moveControl;
+			return res;
+		}
 	}
 
 	public Flingy(Flingy src) {

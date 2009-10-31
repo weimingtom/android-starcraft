@@ -21,13 +21,13 @@ public class UnitOrders {
 		int count = 0;
 		
 		if ((unit.specialAbilityFlags&Unit.ABILITY_BUILDING) == 0)
-			tmp[count++] = Order.getOrder(Order.ORDER_STOP);
+			tmp[count++] = Order.Factory.getOrder(Order.ORDER_STOP);
 		
 		if ((unit.specialAbilityFlags&Unit.ABILITY_BUILDING) == 0)
-			tmp[count++] = Order.getOrder(Order.ORDER_MOVE);
+			tmp[count++] = Order.Factory.getOrder(Order.ORDER_MOVE);
 		
 		if ((unit.airWeapon!=null)||(unit.groundWeapon!=null))
-			tmp[count++] = Order.getOrder(Order.ORDER_ATTACK);
+			tmp[count++] = Order.Factory.getOrder(Order.ORDER_ATTACK);
 		
 		orders = new Order[count];
 		for(int i = 0; i< count; i++)

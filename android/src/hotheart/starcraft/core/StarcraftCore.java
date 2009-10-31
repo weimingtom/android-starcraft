@@ -88,26 +88,26 @@ public class StarcraftCore {
 			showMessage("Init Images");
 			// Images
 			fs = new FileInputStream(FilePaths.IMAGES_DAT);
-			Image.initImages(fs);
+			Image.Factory.initImages(fs);
 			fs.close();
 
 			showMessage("Init Sprites");
 			// Sprite
 			fs = new FileInputStream(FilePaths.SPRITES_DAT);
-			Sprite.initSprites(fs);
+			Sprite.Factory.initSprites(fs);
 			fs.close();
 
 			showMessage("Init Orders");
 			fs = new FileInputStream(FilePaths.ORDERS_DAT);
-			Order.initOrders(fs);
+			Order.Factory.initOrders(fs);
 			fs.close();
 
 			showMessage("Init Flingy");
-			Flingy.init(FileSystemUtils.readAllBytes(FilePaths.FLINGY_DAT));
+			Flingy.Factory.init(FileSystemUtils.readAllBytes(FilePaths.FLINGY_DAT));
 			showMessage("Init Units");
-			Unit.init(FileSystemUtils.readAllBytes(FilePaths.UNITS_DAT));
+			Unit.Factory.init(FileSystemUtils.readAllBytes(FilePaths.UNITS_DAT));
 			showMessage("Init Weapons");
-			Weapon.init(FileSystemUtils.readAllBytes(FilePaths.WEAPONS_DAT));
+			Weapon.Factory.init(FileSystemUtils.readAllBytes(FilePaths.WEAPONS_DAT));
 
 			SelectionCircles.initCircles();
 

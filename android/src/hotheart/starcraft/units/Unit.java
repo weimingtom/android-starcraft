@@ -72,7 +72,7 @@ public final class Unit extends Flingy {
 
 			int specialAbilityFlags = libSpecialAbilityFlags[id];
 
-			Unit res = new Unit(Flingy.getFlingy(flingyId, teamColor));
+			Unit res = new Unit(Flingy.Factory.getFlingy(flingyId, teamColor));
 
 			res.teamColor = teamColor;
 			res.hipPoints = hitPoints;
@@ -87,9 +87,9 @@ public final class Unit extends Flingy {
 			}
 			
 			if (groundWeapon != 130)
-				res.groundWeapon = Weapon.getWeapon(groundWeapon);
+				res.groundWeapon = Weapon.Factory.getWeapon(groundWeapon);
 			if (airWeapon != 130)
-				res.airWeapon = Weapon.getWeapon(airWeapon); 
+				res.airWeapon = Weapon.Factory.getWeapon(airWeapon); 
 
 			if (subUnit1 != 228) {
 				res.subunit1 = getUnit(subUnit1, teamColor);

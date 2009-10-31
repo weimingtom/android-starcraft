@@ -1,7 +1,6 @@
 package hotheart.starcraft.core;
 
 import hotheart.starcraft.configure.FilePaths;
-import hotheart.starcraft.controller.GameController;
 import hotheart.starcraft.controller.ViewController;
 import hotheart.starcraft.graphics.Image;
 import hotheart.starcraft.graphics.Sprite;
@@ -9,12 +8,10 @@ import hotheart.starcraft.graphics.TeamColors;
 import hotheart.starcraft.graphics.grp.GrpLibrary;
 import hotheart.starcraft.graphics.render.Render;
 import hotheart.starcraft.graphics.render.opengl.OpenGLRender;
-import hotheart.starcraft.graphics.render.simple.SimpleRender;
 import hotheart.starcraft.graphics.script.ImageScriptEngine;
 import hotheart.starcraft.graphics.utils.SelectionCircles;
 import hotheart.starcraft.map.Map;
 import hotheart.starcraft.orders.Order;
-import hotheart.starcraft.sounds.StarcraftSoundPool;
 import hotheart.starcraft.units.Flingy;
 import hotheart.starcraft.units.Unit;
 import hotheart.starcraft.utils.FileSystemUtils;
@@ -29,7 +26,6 @@ public class StarcraftCore {
 
 	public static Render render;
 	public static GameContext context;
-	public static GameController gameController;
 	public static ViewController viewController;
 
 	public static String state = "";
@@ -66,17 +62,16 @@ public class StarcraftCore {
 		try {
 			act = parentAcrivity;
 			context = new GameContext();
-			gameController = new GameController();
 
 			render = new OpenGLRender();
 			// render = new SimpleRender();
 
 			FileInputStream fs = null;
 
-			showMessage("Init sound lib");
-			StarcraftSoundPool.init(FileSystemUtils
-					.readAllBytes(FilePaths.SFX_DATA_TBL), FileSystemUtils
-					.readAllBytes(FilePaths.SFX_DATA_DAT));
+//			showMessage("Init sound lib");
+//			StarcraftSoundPool.init(FileSystemUtils
+//					.readAllBytes(FilePaths.SFX_DATA_TBL), FileSystemUtils
+//					.readAllBytes(FilePaths.SFX_DATA_DAT));
 
 			showMessage("GRP library");
 			GrpLibrary.init(FileSystemUtils.readAllBytes(FilePaths.IMAGES_TBL));

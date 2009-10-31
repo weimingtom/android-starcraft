@@ -29,7 +29,7 @@ public class MapPreview extends View {
 
 	public MapPreview(Context context, AttributeSet attrs) {
 		super(context, attrs);
-		setBitmap(GameContext.map.generateMapPreview());
+		setBitmap(StarcraftCore.context.map.generateMapPreview());
 	}
 
 	private void setBitmap(Bitmap img) {

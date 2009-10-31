@@ -114,7 +114,7 @@ public class Flingy extends Sprite {
 			posX += dx;
 			posY += dy;
 		} else {
-			if (GameContext.map.isWalkable(posX + (int) dx, posY + (int) dy)) {
+			if (StarcraftCore.context.map.isWalkable(posX + (int) dx, posY + (int) dy)) {
 				posX += dx;
 				posY += dy;
 			} else {

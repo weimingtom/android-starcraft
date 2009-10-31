@@ -209,12 +209,12 @@ public class StarcraftCore {
 
 			showMessage("Loading map");
 
-			GameContext.map = new Map(FileSystemUtils
+			StarcraftCore.context.map = new Map(FileSystemUtils
 					.readAllBytes(FilePaths.SCENARIO_CHK));
 
 			showMessage("Generating map preview");
 
-			GameContext.map.generateMapPreview();
+			StarcraftCore.context.map.generateMapPreview();
 
 			hideProgress();
 

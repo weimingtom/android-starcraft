@@ -16,7 +16,7 @@ import java.util.TreeSet;
 public final class GameContext {
 	public Random rnd;
 	public int drawCount;
-	public static Map map = null;
+	public Map map = null;
 
 	public Unit majorSelectedUnit = null;
 

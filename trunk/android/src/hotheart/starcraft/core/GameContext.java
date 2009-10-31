@@ -193,7 +193,8 @@ public final class GameContext {
 	{
 		for (Object u : selectedUnits.toArray()) {
 			Unit unit = (Unit) u;
-			unit.currentOrder = new MoveOrder(unit, new StaticPointTarget(x, y));
+			unit.currentOrder = new MoveOrder(unit);
+			unit.currentOrder.execute(new StaticPointTarget(x, y));
 		}
 	}
 	

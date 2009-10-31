@@ -6,7 +6,7 @@ import hotheart.starcraft.units.Unit;
 import hotheart.starcraft.units.target.UnitTarget;
 import hotheart.starcraft.weapons.Weapon;
 
-public class AttackOrder extends OrderExecuter {
+public class AttackOrder extends OrderExecutor {
 
 	int reloadTime = 0;
 

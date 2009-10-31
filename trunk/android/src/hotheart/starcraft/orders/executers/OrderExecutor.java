@@ -2,10 +2,10 @@ package hotheart.starcraft.orders.executers;
 
 import hotheart.starcraft.units.Unit;
 
-public class OrderExecuter {
+public class OrderExecutor {
 	
 	public Unit unit;
-	public OrderExecuter(Unit u)
+	public OrderExecutor(Unit u)
 	{
 		unit = u;
 	}

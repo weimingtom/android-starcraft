@@ -6,7 +6,7 @@ import hotheart.starcraft.graphics.Image;
 import hotheart.starcraft.graphics.utils.SelectionCircles;
 import hotheart.starcraft.orders.Order;
 import hotheart.starcraft.orders.executers.AttackOrder;
-import hotheart.starcraft.orders.executers.OrderExecuter;
+import hotheart.starcraft.orders.executers.OrderExecutor;
 import hotheart.starcraft.units.target.FlingyTarget;
 import hotheart.starcraft.units.target.StaticPointTarget;
 import hotheart.starcraft.units.target.UnitTarget;
@@ -108,16 +108,11 @@ public final class Unit extends Flingy {
 			if (res.subunit2 != null)
 				res.subunit2.parent = res;
 		}
+		
+		res.controlPanel = new UnitOrders(res);
 
 		return res;
 	}
-
-	public static final int ACTION_IDLE = 0;
-	public static final int ACTION_MOVE = 1;
-	public static final int ACTION_GRND_ATTACK = 2;
-	public static final int ACTION_REPEAT_GRND_ATTACK = 3;
-	public static final int ACTION_AIR_ATTACK = 4;
-	public static final int ACTION_REPEAT_AIR_ATTACK = 5;
 
 	public static final int MAX_GROUND_LEVEL = 11;
 	
@@ -141,10 +136,10 @@ public final class Unit extends Flingy {
 	
 	public int teamColor;
 	
-	public OrderExecuter currentOrder = null;
+	public OrderExecutor currentOrder = null;
 	
 	// TODO replace by a function in Unit class
-	public UnitControlPanel controlPanel = new UnitControlPanel(this);
+	public UnitOrders controlPanel;
 	
 	public void buildTree() {
 		if (parent!=null)

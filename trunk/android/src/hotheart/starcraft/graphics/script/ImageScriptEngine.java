@@ -5,7 +5,6 @@ import hotheart.starcraft.core.GameContext;
 import hotheart.starcraft.core.StarcraftCore;
 import hotheart.starcraft.graphics.Image;
 import hotheart.starcraft.graphics.Sprite;
-import hotheart.starcraft.sounds.StarcraftSoundPool;
 import hotheart.starcraft.units.Flingy;
 import hotheart.starcraft.units.Unit;
 
@@ -449,7 +448,7 @@ public class ImageScriptEngine {
 		case OP_PLAY_SOUND:// Play sound
 			int sound_id = (script[instance.scriptPos++] & 0xFF)
 					+ ((script[instance.scriptPos++] & 0xFF) << 8);
-			StarcraftSoundPool.playSound(sound_id);
+//			StarcraftSoundPool.playSound(sound_id);
 			break;
 		case OP_PLAY_SOUND_BETWEEN:
 			int sound_start = (script[instance.scriptPos++] & 0xFF)
@@ -457,8 +456,8 @@ public class ImageScriptEngine {
 			int sound_end = (script[instance.scriptPos++] & 0xFF)
 					+ ((script[instance.scriptPos++] & 0xFF) << 8);
 
-			StarcraftSoundPool.playSound(sound_start
-					+ rnd.nextInt(sound_end - sound_start));
+//			StarcraftSoundPool.playSound(sound_start
+//					+ rnd.nextInt(sound_end - sound_start));
 			break;
 
 		// Unimplemented opcodes.

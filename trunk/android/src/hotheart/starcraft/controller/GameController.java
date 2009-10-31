@@ -20,6 +20,10 @@ public class GameController {
 			if (u != null) {
 				StarcraftCore.context.removeSelection();
 				StarcraftCore.context.selectUnit(u);
+				
+				if (StarcraftCore.viewController!=null)
+					StarcraftCore.viewController.onUnitSelectChanged();
+				
 			}
 			break;
 		case ACTION_ATTACK:

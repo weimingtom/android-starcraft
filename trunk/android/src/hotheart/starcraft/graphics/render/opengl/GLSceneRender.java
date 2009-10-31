@@ -35,8 +35,8 @@ public class GLSceneRender implements GLSurfaceView.Renderer {
 		
 		render.gl = gl;
 
-		int offsetX = StarcraftCore.viewController.getX();
-		int offsetY = StarcraftCore.viewController.getY();
+		int offsetX = StarcraftCore.viewController.getScrollX();
+		int offsetY = StarcraftCore.viewController.getScrollY();
 
 		gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 

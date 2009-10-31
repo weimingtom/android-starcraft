@@ -234,7 +234,7 @@ public class Flingy extends Sprite {
 		}
 	}
 
-	public void repeatAttack() {
+	public void repeatAttackCallback() {
 		action = currentAttack;
 		play(5);
 	}

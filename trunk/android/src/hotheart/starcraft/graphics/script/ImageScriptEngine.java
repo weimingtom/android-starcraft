@@ -418,20 +418,20 @@ public class ImageScriptEngine {
 		// Attacking control
 		case OP_REPEAT_ATTACK:
 			if (instance.image instanceof Unit)
-				((Unit) instance.image).repeatAttack();
+				((Unit) instance.image).repeatAttackCallback();
 			break;
 
 		case 0x1b:
 		case OP_ATTACK:
 			if (instance.image instanceof Unit)
-				((Unit) instance.image).shoot(-1);
+				((Unit) instance.image).shootCallback(-1);
 
 			break;
 
 		case OP_ATTACK_WITH:
 			if (instance.image instanceof Unit)
 				((Unit) instance.image)
-						.shoot(script[instance.scriptPos + 1] & 0xFF);
+						.shootCallback(script[instance.scriptPos + 1] & 0xFF);
 
 			instance.scriptPos++;
 
@@ -439,7 +439,7 @@ public class ImageScriptEngine {
 
 		case OP_ATTACK_WITH_SOUND:
 			if (instance.image instanceof Unit)
-				((Unit) instance.image).shoot(-1);
+				((Unit) instance.image).shootCallback(-1);
 
 			// Sound control
 		case OP_PLAY_RANDROM_SOUND:// Play random sound

@@ -16,102 +16,105 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 
 public final class Unit extends Flingy {
+	
+	public static class Factory
+	{
+		private static final int COUNT = 228;
+
+		private static byte[] libFlingyId;
+		private static int[] libSubUnit1;
+		private static int[] libSubUnit2;
+		private static int[] libHitPoints;
+		private static byte[] libElevationLevel;
+		private static byte[] libGroundWeapon;
+		private static byte[] libAirWeapon;
+		private static int[] libSpecialAbilityFlags;
+
+		public static void init(byte[] arr) {
+
+			DatFile file = new DatFile(new ByteArrayInputStream(arr));
+			try {
+				libFlingyId = file.read1ByteData(COUNT);
+				libSubUnit1 = file.read2ByteData(COUNT);
+				libSubUnit2 = file.read2ByteData(COUNT);
+
+				file.skip((201 - 106 + 1)*2);
+				file.skip(COUNT * 8);
+
+				libHitPoints = file.read4ByteData2InnerBytes(COUNT);
+				libElevationLevel = file.read1ByteData(COUNT);
+
+				file.skip(COUNT * 7);
+
+				libGroundWeapon = file.read1ByteData(COUNT);
+
+				file.skip(COUNT);
+
+				libAirWeapon = file.read1ByteData(COUNT);
+
+				file.skip(COUNT * 2);
+
+				libSpecialAbilityFlags = file.read4ByteData(COUNT);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+		public static Unit getUnit(int id, int teamColor) {
+			int flingyId = libFlingyId[id]&0xFF;
+			int subUnit1 = libSubUnit1[id];
+			int subUnit2 = libSubUnit2[id];
+			int hitPoints = libHitPoints[id];
+			int elevationLevel = libElevationLevel[id]&0xFF;
+			int groundWeapon = libGroundWeapon[id]&0xFF;
+			int airWeapon = libAirWeapon[id]&0xFF;
+
+			int specialAbilityFlags = libSpecialAbilityFlags[id];
+
+			Unit res = new Unit(Flingy.getFlingy(flingyId, teamColor));
+
+			res.teamColor = teamColor;
+			res.hipPoints = hitPoints;
+			res.maxHitPoints = hitPoints;
+			res.elevationLevel = elevationLevel;
+			res.specialAbilityFlags = specialAbilityFlags;
+
+			if (elevationLevel >= 12) {
+				res.isAir = true;
+			} else {
+				res.isAir = false;
+			}
+			
+			if (groundWeapon != 130)
+				res.groundWeapon = Weapon.getWeapon(groundWeapon);
+			if (airWeapon != 130)
+				res.airWeapon = Weapon.getWeapon(airWeapon); 
+
+			if (subUnit1 != 228) {
+				res.subunit1 = getUnit(subUnit1, teamColor);
+				if (res.subunit1 != null)
+					res.subunit1.parent = res;
+			}
+
+			if (subUnit2 != 228) {
+				res.subunit2 = getUnit(subUnit2, teamColor);
+				if (res.subunit2 != null)
+					res.subunit2.parent = res;
+			}
+			
+			res.controlPanel = new UnitOrders(res);
+
+			return res;
+		}	
+	}
 
 	public static final int ABILITY_BUILDING = 1 << 0;
 	public static final int ABILITY_WORKER = 1 << 3;
 	public static final int ABILITY_SUBUNIT = 1 << 4;
 
-	public Unit(Flingy src) {
+	private Unit(Flingy src) {
 		super(src);
-	}
-
-	private static final int COUNT = 228;
-
-	private static byte[] libFlingyId;
-	private static int[] libSubUnit1;
-	private static int[] libSubUnit2;
-	private static int[] libHitPoints;
-	private static byte[] libElevationLevel;
-	private static byte[] libGroundWeapon;
-	private static byte[] libAirWeapon;
-	private static int[] libSpecialAbilityFlags;
-
-	public static void init(byte[] arr) {
-
-		DatFile file = new DatFile(new ByteArrayInputStream(arr));
-		try {
-			libFlingyId = file.read1ByteData(COUNT);
-			libSubUnit1 = file.read2ByteData(COUNT);
-			libSubUnit2 = file.read2ByteData(COUNT);
-
-			file.skip((201 - 106 + 1)*2);
-			file.skip(COUNT * 8);
-
-			libHitPoints = file.read4ByteData2InnerBytes(COUNT);
-			libElevationLevel = file.read1ByteData(COUNT);
-
-			file.skip(COUNT * 7);
-
-			libGroundWeapon = file.read1ByteData(COUNT);
-
-			file.skip(COUNT);
-
-			libAirWeapon = file.read1ByteData(COUNT);
-
-			file.skip(COUNT * 2);
-
-			libSpecialAbilityFlags = file.read4ByteData(COUNT);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
-	public static Unit getUnit(int id, int teamColor) {
-		int flingyId = libFlingyId[id]&0xFF;
-		int subUnit1 = libSubUnit1[id];
-		int subUnit2 = libSubUnit2[id];
-		int hitPoints = libHitPoints[id];
-		int elevationLevel = libElevationLevel[id]&0xFF;
-		int groundWeapon = libGroundWeapon[id]&0xFF;
-		int airWeapon = libAirWeapon[id]&0xFF;
-
-		int specialAbilityFlags = libSpecialAbilityFlags[id];
-
-		Unit res = new Unit(Flingy.getFlingy(flingyId, teamColor));
-
-		res.teamColor = teamColor;
-		res.hipPoints = hitPoints;
-		res.maxHitPoints = hitPoints;
-		res.elevationLevel = elevationLevel;
-		res.specialAbilityFlags = specialAbilityFlags;
-
-		if (elevationLevel >= 12) {
-			res.isAir = true;
-		} else {
-			res.isAir = false;
-		}
-		
-		if (groundWeapon != 130)
-			res.groundWeapon = Weapon.getWeapon(groundWeapon);
-		if (airWeapon != 130)
-			res.airWeapon = Weapon.getWeapon(airWeapon); 
-
-		if (subUnit1 != 228) {
-			res.subunit1 = getUnit(subUnit1, teamColor);
-			if (res.subunit1 != null)
-				res.subunit1.parent = res;
-		}
-
-		if (subUnit2 != 228) {
-			res.subunit2 = getUnit(subUnit2, teamColor);
-			if (res.subunit2 != null)
-				res.subunit2.parent = res;
-		}
-		
-		res.controlPanel = new UnitOrders(res);
-
-		return res;
 	}
 
 	public static final int MAX_GROUND_LEVEL = 11;
@@ -138,12 +141,14 @@ public final class Unit extends Flingy {
 	
 	public OrderExecutor currentOrder = null;
 	
-	// TODO replace by a function in Unit class
 	public UnitOrders controlPanel;
 	
 	public void buildTree() {
 		if (parent!=null)
-			updateSubunitPos();
+		{
+			setPos(parent.getPosX(), parent.getPosY());
+			rotateTo(parent.target.getDestinationX(), parent.target.getDestinationY());
+		}
 		
 		super.buildTree();
 		
@@ -172,16 +177,6 @@ public final class Unit extends Flingy {
 			currentOrder.update();
 	}
 	
-	private void updateSubunitPos()
-	{
-		if (parent!=null)
-		{
-			setPos(parent.getPosX(), parent.getPosY());
-			rotateTo(parent.target.getDestinationX(), parent.target.getDestinationY());
-		}
-	}
-
-	// TODO do this as Order. lowest priority.
 	public void kill() {
 
 		StarcraftCore.context.removeUnit(this);
@@ -214,18 +209,18 @@ public final class Unit extends Flingy {
 
 	}
 	
-	public final void shoot(int type) {
+	public final void shootCallback(int type) {
 		
 		if (currentOrder instanceof AttackOrder)
 			((AttackOrder)currentOrder).shoot(type);
 	}
 
-	public void repeatAttack() {
+	public void repeatAttackCallback() {
 		
 		if (currentOrder instanceof AttackOrder)
 			((AttackOrder)currentOrder).repeatAttack();
 		
-		super.repeatAttack();
+		super.repeatAttackCallback();
 	}
 
 	public final void hit(int points) {

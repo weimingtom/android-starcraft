@@ -206,9 +206,7 @@ public final class GameContext {
 	{
 		selectedUnits.remove(u);
 		selectedUnits.add(u);
-		
-		if (StarcraftCore.viewController!=null)
-			StarcraftCore.viewController.setControlIcons(u.controlPanel.getButtons());
+		majorSelectedUnit = u;
 	}
 	public void deselectUnit(Unit u)
 	{

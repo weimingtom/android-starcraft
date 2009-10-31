@@ -65,6 +65,11 @@
 		<Button android:id="@+id/moveButton"
 			android:layout_width="wrap_content" android:layout_height="wrap_content"
 			android:text="Move" android:clickable="true" />
+			
+		<Button android:id="@+id/selectButton"
+			android:layout_width="wrap_content" android:layout_height="wrap_content"
+			android:text="Select" android:clickable="true" />
+			
 
 	</LinearLayout>
 	

@@ -53,8 +53,9 @@ public final class GameActivity extends Activity {
 		ImageButton[] unitControls = new ImageButton[]{b11, b21, b31, b12, b22, b32, b13, b23, b33};
 		
 		Button mapMoveButton = (Button) gui.findViewById(R.id.moveButton);
+		Button selectButton = (Button) gui.findViewById(R.id.selectButton);
 
-		cont.setUI(prev, unitControls, mapMoveButton);
+		cont.setUI(prev, unitControls, mapMoveButton, selectButton);
 
 		rl.addView(gui);
 		setContentView(rl);

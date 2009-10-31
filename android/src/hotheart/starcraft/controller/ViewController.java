@@ -5,6 +5,9 @@ import hotheart.starcraft.graphics.IconFactory;
 import hotheart.starcraft.map.Map;
 import hotheart.starcraft.system.MapPreview;
 import hotheart.starcraft.units.Unit;
+import hotheart.starcraft.units.target.AbstractTarget;
+import hotheart.starcraft.units.target.StaticPointTarget;
+import hotheart.starcraft.units.target.UnitTarget;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -27,6 +30,8 @@ public abstract class ViewController implements View.OnTouchListener {
 	ImageButton buttons[] = null;
 	Button mapMoveButton = null;
 
+	int selectedButton = -1;
+
 	public View getRenderView() {
 		if (renderView == null) {
 			renderView = _getRenderView();
@@ -37,7 +42,9 @@ public abstract class ViewController implements View.OnTouchListener {
 	}
 
 	public void onUnitSelectChanged() {
-
+		selectedButton = -1;
+		for (int i = 0; i < buttons.length; i++)
+			buttons[i].setEnabled(true);
 	}
 
 	public void setUI(MapPreview mapPrev, ImageButton[] unitControls,
@@ -56,10 +63,45 @@ public abstract class ViewController implements View.OnTouchListener {
 
 				public void onClick(View v) {
 					Integer index = (Integer) v.getTag();
-					buttons[index].setEnabled(false);
+
+					Unit selectedUnit = StarcraftCore.context.majorSelectedUnit;
+					if (selectedUnit.controlPanel.orders[index].isTargeting) {
+
+						for (int i = 0; i < buttons.length; i++)
+							buttons[i].setEnabled(true);
+						
+						mapMoveButton.setEnabled(true);
+
+						buttons[index].setEnabled(false);
+
+						selectedButton = index;
+					}
+					else
+					{
+						for (int i = 0; i < buttons.length; i++)
+							buttons[i].setEnabled(true);
+						
+						mapMoveButton.setEnabled(true);
+						
+						selectedButton = -1;
+						selectedUnit.controlPanel.executeButton(index);
+					}
 				}
 			});
 		}
+		
+		mapMoveButton.setOnClickListener(new OnClickListener() {
+			
+			public void onClick(View v) {
+				for (int i = 0; i < buttons.length; i++)
+					buttons[i].setEnabled(true);
+				
+				selectedButton = -1;
+				
+				mapMoveButton.setEnabled(false);
+			}
+		});
+		
 
 		if (StarcraftCore.context.majorSelectedUnit == null) {
 			for (int i = 0; i < 9; i++)
@@ -114,7 +156,7 @@ public abstract class ViewController implements View.OnTouchListener {
 	int oldX = 0, oldY = 0;
 
 	public boolean onTouch(View v, MotionEvent event) {
-		if (isScrolling) {
+		if (selectedButton == -1) {
 
 			if (event.getAction() == MotionEvent.ACTION_DOWN) {
 				oldX = (int) event.getX();
@@ -138,7 +180,16 @@ public abstract class ViewController implements View.OnTouchListener {
 		} else {
 			int mapX = (int) event.getX() + getScrollX();
 			int mapY = (int) event.getY() + getScrollY();
-			StarcraftCore.gameController.onClick(mapX, mapY);
+
+			Unit selectedUnit = StarcraftCore.context.majorSelectedUnit;
+
+			Unit dest = StarcraftCore.context.PickUnit(mapX, mapY);
+			AbstractTarget target = new StaticPointTarget(mapX, mapY);
+			if (dest != null)
+				target = new UnitTarget(dest);
+
+			selectedUnit.controlPanel.executeButton(selectedButton, target);
+
 			return true;
 		}
 	}

@@ -85,7 +85,7 @@ public class Order {
 		case ORDER_DIE:
 			return new DieOrder(u);
 		default:
-			throw new UnsupportedOperationException();
+			return null;
 		}
 	}
 
@@ -97,9 +97,9 @@ public class Order {
 			if (target instanceof UnitTarget)
 				return new AttackOrder(u, ((UnitTarget) target).destUnit);
 			else
-				throw new UnsupportedOperationException();
+				return null;
 		default:
-			throw new UnsupportedOperationException();
+			return null;
 		}
 	}
 }

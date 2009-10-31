@@ -55,24 +55,20 @@ public class Order {
 	
 	public static final Order getOrder(int id, Unit unit)
 	{
-		Order res = new Order(unit);
+		Order res = new Order();
 		res.id = id;
 		res.iconId = libHighlight[id]&0xFF;
+		res.isTargeting = libTargeting[id] != 0;
 		
 		return res;
 	}
 	
-	public Order(Unit u)
+	private Order()
 	{
-		unit = u;
 	}
-	
-	public Unit unit;
 	
 	public int id = 0;
 	public int iconId = -1;
 	
-	public void update()
-	{
-	}
+	public boolean isTargeting = false;
 }

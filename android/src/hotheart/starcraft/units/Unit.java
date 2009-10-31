@@ -4,8 +4,9 @@ import hotheart.starcraft.core.StarcraftCore;
 import hotheart.starcraft.files.DatFile;
 import hotheart.starcraft.graphics.Image;
 import hotheart.starcraft.graphics.utils.SelectionCircles;
-import hotheart.starcraft.orders.AttackOrder;
 import hotheart.starcraft.orders.Order;
+import hotheart.starcraft.orders.executers.AttackOrder;
+import hotheart.starcraft.orders.executers.OrderExecuter;
 import hotheart.starcraft.units.target.FlingyTarget;
 import hotheart.starcraft.units.target.StaticPointTarget;
 import hotheart.starcraft.units.target.UnitTarget;
@@ -140,7 +141,7 @@ public final class Unit extends Flingy {
 	
 	public int teamColor;
 	
-	public Order currentOrder = null;
+	public OrderExecuter currentOrder = null;
 	
 	// TODO replace by a function in Unit class
 	public UnitControlPanel controlPanel = new UnitControlPanel(this);

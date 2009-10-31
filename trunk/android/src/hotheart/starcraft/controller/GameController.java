@@ -9,7 +9,7 @@ public class GameController {
 	public static final int ACTION_ATTACK = 3;
 
 	public int currentAction = ACTION_MOVE;
-
+	
 	public void onClick(int mapX, int mapY) {
 		switch (currentAction) {
 		case ACTION_MOVE:

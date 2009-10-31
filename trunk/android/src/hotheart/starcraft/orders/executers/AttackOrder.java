@@ -1,11 +1,12 @@
-package hotheart.starcraft.orders;
+package hotheart.starcraft.orders.executers;
 
+import hotheart.starcraft.orders.Order;
 import hotheart.starcraft.units.Flingy;
 import hotheart.starcraft.units.Unit;
 import hotheart.starcraft.units.target.UnitTarget;
 import hotheart.starcraft.weapons.Weapon;
 
-public class AttackOrder extends Order {
+public class AttackOrder extends OrderExecuter {
 
 	int reloadTime = 0;
 

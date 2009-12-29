@@ -73,6 +73,7 @@ public final class Unit extends Flingy {
 
 			Unit res = new Unit(Flingy.Factory.getFlingy(flingyId, teamColor));
 
+			res.unitId = id;
 			res.teamColor = teamColor;
 			res.hipPoints = hitPoints;
 			res.maxHitPoints = hitPoints;
@@ -133,6 +134,8 @@ public final class Unit extends Flingy {
 	public int elevationLevel;
 	
 	public int specialAbilityFlags = 0;
+	
+	public int unitId = 0;
 	
 	// Game data
 	

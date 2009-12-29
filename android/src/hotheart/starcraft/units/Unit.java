@@ -103,6 +103,11 @@ public final class Unit extends Flingy {
 					res.subunit2.parent = res;
 			}
 			
+			if ((res.specialAbilityFlags & Unit.ABILITY_BUILDING) != 0)
+			{
+				res.buildQueue = new BuildingQueue(res);
+			}
+			
 			res.controlPanel = new UnitOrders(res);
 
 			return res;
@@ -136,6 +141,8 @@ public final class Unit extends Flingy {
 	public int specialAbilityFlags = 0;
 	
 	public int unitId = 0;
+	
+	public BuildingQueue buildQueue = null;
 	
 	// Game data
 	

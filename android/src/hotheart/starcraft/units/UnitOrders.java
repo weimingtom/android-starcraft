@@ -2,7 +2,9 @@ package hotheart.starcraft.units;
 
 import hotheart.starcraft.orders.Order;
 import hotheart.starcraft.orders.executers.AttackOrder;
+import hotheart.starcraft.orders.executers.IdleOrder;
 import hotheart.starcraft.orders.executers.MoveOrder;
+import hotheart.starcraft.orders.executers.SCVBuildOrder;
 import hotheart.starcraft.units.target.AbstractTarget;
 import hotheart.starcraft.units.target.UnitTarget;
 
@@ -19,7 +21,13 @@ public class UnitOrders {
 	private void updateOrders() {
 		Order[] tmp = new Order[9];
 		int count = 0;
-
+		
+		// MUST BE FIRST
+		tmp[count++] = new IdleOrder(unit);
+		
+		if (unit.unitId == 7)
+			tmp[count++] = new SCVBuildOrder(unit);
+		
 		if ((unit.specialAbilityFlags & Unit.ABILITY_BUILDING) == 0)
 			tmp[count++] = new MoveOrder(unit);
 

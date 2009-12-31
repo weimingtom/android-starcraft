@@ -3,6 +3,7 @@ package hotheart.starcraft.orders.executers;
 import hotheart.starcraft.orders.Order;
 import hotheart.starcraft.units.Unit;
 import hotheart.starcraft.units.target.AbstractTarget;
+import hotheart.starcraft.units.target.UnitTarget;
 
 public class IdleOrder extends Order {
 	public IdleOrder(Unit u)
@@ -11,9 +12,9 @@ public class IdleOrder extends Order {
 		this.isTargeting = false;
 	}
 	
-	protected boolean _execute(AbstractTarget target)
+	protected boolean _execute()
 	{
-		unit.target = target;
+		unit.target = new UnitTarget(unit);
 		return true;
 	}
 }

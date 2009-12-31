@@ -66,6 +66,7 @@ public class Order {
 			Order res = new Order(u);
 			res.id = id;
 			res.iconId = libHighlight[id];
+			//res.isTargeting = libUseWeaponTargeting[id] != 0;
 			res.isTargeting = libTargeting[id] != 0;
 
 			return res;

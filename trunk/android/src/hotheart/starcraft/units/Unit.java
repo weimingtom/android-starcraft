@@ -111,7 +111,7 @@ public final class Unit extends Flingy {
 			res.controlPanel = new UnitOrders(res);
 
 			return res;
-		}	
+		}
 	}
 
 	public static final int ABILITY_BUILDING = 1 << 0;

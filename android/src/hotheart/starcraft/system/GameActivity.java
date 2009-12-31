@@ -2,6 +2,7 @@ package hotheart.starcraft.system;
 
 import hotheart.starcraft.controller.ViewController;
 import hotheart.starcraft.core.StarcraftCore;
+import hotheart.starcraft.utils.UIUtils;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -31,7 +32,7 @@ public final class GameActivity extends Activity {
 
 	ViewController createContentView() {
 		ViewController cont = StarcraftCore.render.getController(this);
-
+		
 		RelativeLayout rl = new RelativeLayout(this);
 		rl.addView(cont.getRenderView());
 		View gui = LayoutInflater.from(this).inflate(R.layout.gameui, null);
@@ -66,6 +67,7 @@ public final class GameActivity extends Activity {
 	void init() {
 
 		final Activity currentActivity = this;
+		UIUtils.init(this);
 
 		new Thread() {
 			public void run() {
@@ -73,7 +75,7 @@ public final class GameActivity extends Activity {
 				runOnUiThread(new Runnable() {
 					public void run() {
 						if (result) {
-
+							
 							StarcraftCore.viewController = createContentView();
 
 //							final Button move = (Button) findViewById(R.id.moveButton);

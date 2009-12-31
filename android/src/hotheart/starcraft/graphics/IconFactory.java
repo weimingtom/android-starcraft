@@ -4,6 +4,7 @@ import hotheart.starcraft.configure.FilePaths;
 import hotheart.starcraft.files.GrpFile;
 import hotheart.starcraft.graphics.grp.GrpLibrary;
 import android.graphics.Bitmap;
+import android.graphics.Bitmap.Config;
 
 public class IconFactory {
 	private static GrpFile iconGrp = null;
@@ -11,7 +12,14 @@ public class IconFactory {
 	{
 		if (iconGrp == null)
 			iconGrp = GrpLibrary.getGraphics(FilePaths.ICON_GRP_FILE);
-		
-		return iconGrp.createBitmap(id, StarcraftPalette.iconPalette);
+	
+		try
+		{
+			return iconGrp.createBitmap(id, StarcraftPalette.iconPalette);
+		}
+		catch(Exception e)
+		{
+			return Bitmap.createBitmap(1, 1, Config.RGB_565); 
+		}
 	}
 }

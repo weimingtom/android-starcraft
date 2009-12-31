@@ -8,6 +8,7 @@ public class IdleOrder extends Order {
 	public IdleOrder(Unit u)
 	{
 		super(Order.Factory.getOrder(1, u));
+		this.isTargeting = false;
 	}
 	
 	protected boolean _execute(AbstractTarget target)

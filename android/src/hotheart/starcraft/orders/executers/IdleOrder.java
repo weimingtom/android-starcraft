@@ -13,6 +13,7 @@ public class IdleOrder extends Order {
 	
 	protected boolean _execute(AbstractTarget target)
 	{
+		unit.target = target;
 		return true;
 	}
 }

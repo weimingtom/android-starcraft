@@ -62,11 +62,19 @@ public class MapRender {
 			Bitmap tmpImage = Bitmap.createBitmap(256, 256, Config.RGB_565);
 
 			for (int i = 0; i < stride; i++)
-				for (int j = 0; j < stride; j++) {
-					TileLib.draw(i * TileLib.TILE_SIZE, j * TileLib.TILE_SIZE,
+				for (int j = 0; j < stride; j++) 
+				{
+					//if (gameMap.height > (startX + i) && gameMap.width > (startY + j))
+						TileLib.draw(i * TileLib.TILE_SIZE, j * TileLib.TILE_SIZE,
 							gameMap.mapTiles[startX + i + (startY + j)
 									* gameMap.width], colors, 256);
-
+					//else
+					//{
+						//loadTile((gameMap.height - stride) / stride - tilesOfsX - 1,
+							//	(gameMap.width - stride) / stride - tilesOfsY - 1);
+						//bottom right corner
+						//return;
+					//}
 				}
 
 			tmpImage.setPixels(colors, 0, 256, 0, 0, 256, 256);

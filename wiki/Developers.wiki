@@ -12,7 +12,7 @@ Just post a comment here, leaving your capabilities and I will contact you regar
 
 = Roadmap =
 
-(what's written in Bold is on the TO DO List
+(what's written in Bold is on the TODO List)
 
 == 0.1 ==
 Basic Game Engine, Pathfinding, Attacking

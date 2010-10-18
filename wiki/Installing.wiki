@@ -7,9 +7,9 @@ You may use to variants of install:
 
 = Install from my archive =
 
-You may get everything is on the page in my blog: [http://stepa.name/starcraft-files/]
+You may get everything that is needed from here: [http://www.mediafire.com/?hm54fbprxsm8dfp]
 
-Get an archive and unpack starcraft.7z to /sdcard/starcraft folder and everything must work =)
+Get the archive and unpack starcraft.zip to /sdcard/starcraft folder and everything must work =)
 
 = Install from original Starcraft (c) =
 

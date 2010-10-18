@@ -3,9 +3,14 @@ package hotheart.starcraft.units;
 import hotheart.starcraft.core.GameContext;
 import hotheart.starcraft.core.StarcraftCore;
 import hotheart.starcraft.graphics.Sprite;
+import hotheart.starcraft.map.Map;
 import hotheart.starcraft.units.target.AbstractTarget;
 import hotheart.starcraft.units.target.FlingyTarget;
 import hotheart.starcraft.units.target.StaticPointTarget;
+import hotheart.starcraft.utils.MapNode;
+import hotheart.starcraft.utils.AStarSearch;
+
+import android.util.Log;
 
 public class Flingy extends Sprite {
 
@@ -67,6 +72,9 @@ public class Flingy extends Sprite {
 		this.action = src.action;
 		this.isAir = src.isAir;
 		this.target = new FlingyTarget(this);
+		
+		this.aStarSearch = new AStarSearch();
+		this.nextNode = new MapNode();
 	}
 
 	private Flingy(Sprite src) {
@@ -88,7 +96,17 @@ public class Flingy extends Sprite {
 	public boolean isAir = true;
 
 	public AbstractTarget target = new FlingyTarget(this);
+	
+	// A* search related
+	public boolean searchStarted = false;
+	public int searchMove;
+	public int searchStep;
 
+	public MapNode nextNode;
+	public AStarSearch aStarSearch;
+	public int remX = target.getDestinationX();
+	public int remY = target.getDestinationY();
+		
 	private int currentAttack = ATTACK_GRND;
 
 	int speed = 0;
@@ -113,7 +131,8 @@ public class Flingy extends Sprite {
 		if (isAir) {
 			posX += dx;
 			posY += dy;
-		} else {
+		} else 
+		{
 			if (StarcraftCore.context.map.isWalkable(posX + (int) dx, posY + (int) dy)) {
 				posX += dx;
 				posY += dy;
@@ -121,17 +140,81 @@ public class Flingy extends Sprite {
 				stop();
 			}
 		}
-
 	}
+	public void aStar() {	
 
+		if (searchStarted == false)
+		{
+		
+		//Log.i("hotheart.starcraft.system", "Start X Y " + posX/32 + " " + posY/32);
+		//Log.i("hotheart.starcraft.system", "Goal X Y " + target.getDestinationX()/32 + " " 
+			//	+ target.getDestinationY()/32);
+		
+		MapNode startNode = new MapNode (posX/32, posY/32);
+		MapNode goalNode = new MapNode (target.getDestinationX()/32, target.getDestinationY()/32);
+		
+		int searchState;
+		
+		searchStep = 0;
+		searchMove = 0;
+		
+		aStarSearch.freeAllNodes();
+		
+		aStarSearch = null;
+		aStarSearch = new AStarSearch();
+		
+		remX = target.getDestinationX();
+		remY = target.getDestinationY();
+		
+		nextNode = null;
+		nextNode = new MapNode(posX/32, posY/32);
+		
+		
+		
+		aStarSearch.setStartAndGoal(startNode, goalNode);
+		
+		do
+		{
+			searchState = aStarSearch.searchStep();
+			//Log.i("hotheart.starcraft.system", "Search State is " + searchState);
+		}
+		while ( searchState == AStarSearch.SEARCH_STATE_SEARCHING );
+		
+		if (searchState == AStarSearch.SEARCH_STATE_SUCCEEDED)
+			{
+				nextNode = aStarSearch.getSolutionStart().getClone();
+				searchStarted = true;
+				searchStep++;
+			}
+			
+		if (searchState == AStarSearch.SEARCH_STATE_FAILED)
+			stop();
+		}
+		else
+		{
+			//Log.i("hotheart.starcraft.system", "trying to continue sS sM " + searchStep + " " + searchMove);
+			if (posX / 32 == nextNode.getX() && posY / 32 == nextNode.getY())
+			{	
+				//Log.i("hotheart.starcraft.system", "Got new NextNode");
+				nextNode = aStarSearch.getSolutionNext().getClone();
+				//searchStep ++;
+			}
+			//Log.i("hotheart.starcraft.system","nextNode X, Y " + nextNode.getX() + " "+ nextNode.getY());
+		}
+	}
+	
 	public final void stop() {
-		if (action != MOVING)
+		if (action != MOVING || action != ATTACK_GRND || action != ATTACK_AIR)
 			return;
-
-		play(12);
-
+		
+		aStarSearch.cancelSearch();
+		searchStarted = false;
 		action = IDLE;
 		speed = 0;
+		searchMove = 0;
+		
+		play(12);
+
 	}
 
 	public final void rotateTo(int dx, int dy) {
@@ -171,7 +254,7 @@ public class Flingy extends Sprite {
 			int destR = target.getDestinationRadius();
 			int destX = target.getDestinationX();
 			int destY = target.getDestinationY();
-
+			
 			final int len_sq = (int) ((posX - destX) * (posX - destX) + (posY - destY)
 					* (posY - destY));
 
@@ -182,7 +265,40 @@ public class Flingy extends Sprite {
 					speed = 0;
 				}
 			}
+			
+			if (len_sq > destR * destR && target.getDestinationX()/32 != nextNode.getX() &&
+					target.getDestinationY()/32 != nextNode.getY())
+			{
+				if (StarcraftCore.context.map.isWalkable(target.getDestinationX(),
+						target.getDestinationY()))
+				{
+					aStar();
+					if ((StarcraftCore.context.map.isWalkable(nextNode.getX() * 32 + 31, 
+							nextNode.getY() * 32 + 16)) && (target.getDestinationX() == remX &&
+									target.getDestinationY() == remY))
+					{
+						destX = nextNode.getX() * 32 + 31;
+						destY = nextNode.getY() * 32 + 16;
+						//searchMove++;
+					}
+					else
+					{
+						searchStarted = false;
+						aStar();
+						destX = nextNode.getX() * 32 + 31;
+						destY = nextNode.getY() * 32 + 16;
+						//searchMove++;
+					}
+				}
+			}
 
+			//Log.i("hotheart.starcraft.system", "target X Y " + target.getDestinationX() + " " 
+				//	+ target.getDestinationY());
+			//Log.i("hotheart.starcraft.system", "dest X Y " + destX + " " + destY);
+			//Log.i("hotheart.starcraft.system","nextNode X, Y " + nextNode.getX() * 32 
+				//	+ " " + nextNode.getY() * 32);
+
+			
 			rotateTo(destX, destY);
 
 			if (action == MOVING) {
@@ -213,6 +329,8 @@ public class Flingy extends Sprite {
 
 				if (len_sq < destR * destR) {
 					stop();
+					searchStarted = false;
+					aStarSearch.cancelSearch();
 					return;
 				}
 

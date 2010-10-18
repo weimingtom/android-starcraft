@@ -156,7 +156,7 @@ public final class Unit extends Flingy {
 		if (parent!=null)
 		{
 			setPos(parent.getPosX(), parent.getPosY());
-			rotateTo(parent.target.getDestinationX(), parent.target.getDestinationY());
+			rotateTo(parent.nextNode.getX()*32, parent.nextNode.getY()*32);
 		}
 		
 		super.buildTree();
